@@ -1,15 +1,15 @@
-import React from 'react';
+import React, {forwardRef} from 'react';
 import styled from 'styled-components/native';
-import {TextInputProps} from 'react-native';
+import {TextInput, TextInputProps} from 'react-native';
 import {FontAwesome6} from "@expo/vector-icons";
 
 
-interface MyTextFieldProps extends TextInputProps {
+export interface MyTextFieldProps extends TextInputProps {
     iconName: string;
     isCorrect?: boolean | null;
 }
 
-export function MyTextField({isCorrect, ...props}: MyTextFieldProps) {
+export const MyTextField = forwardRef((props: MyTextFieldProps, ref) => {
     return (
         <Container>
             <FontAwesome6
@@ -18,21 +18,30 @@ export function MyTextField({isCorrect, ...props}: MyTextFieldProps) {
                 color={'gray'}
                 style={{marginBottom: 1}}
             />
-            <StyledTextInput
+            <TextInput
                 placeholderTextColor={'gray'}
-                {...props} // This will pass all other TextInputProps to the StyledTextInput
+                style={{
+                    width: '78%',
+                    height: 50,
+                    borderRadius: 15,
+                    fontSize: 16,
+                    color: 'white',
+                }}
+                // @ts-ignore
+                ref={ref}
+                {...props}
             />
-            {props.value !== '' && isCorrect !== undefined && (
+            {props.value !== '' && props.isCorrect !== undefined && (
                 <IconContainer>
                     <FontAwesome6
-                        name={isCorrect ? 'check' : 'exclamation'} size={22}
-                        color={isCorrect ? 'green' : 'red'}
+                        name={props.isCorrect ? 'check' : 'exclamation'} size={22}
+                        color={props.isCorrect ? 'green' : 'red'}
                     />
                 </IconContainer>
             )}
         </Container>
     );
-}
+})
 
 const Container = styled.View`
   width: 100%;
@@ -56,11 +65,3 @@ const IconContainer = styled.View`
   align-items: center;
   justify-content: center;
 `
-
-const StyledTextInput = styled.TextInput`
-  width: 78%;
-  height: 50px;
-  border-radius: 15px;
-  font-size: 16px;
-  color: white;
-`;
