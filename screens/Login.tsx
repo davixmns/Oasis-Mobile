@@ -8,6 +8,7 @@ import {backgroundColors, textColors, verifyEmail} from "../utils/utils";
 import {useNavigation} from "@react-navigation/native";
 import {Container, Content, ScreenTitle} from "./Styles";
 import {FontAwesome6} from "@expo/vector-icons";
+import * as Animatable from 'react-native-animatable';
 
 export function Login() {
     //Background animation
@@ -99,6 +100,9 @@ export function Login() {
                     snapPoints={snapPoints}
                     index={0}
                     ref={bottomSheetRef}
+                    enableOverDrag={false}
+                    enableContentPanningGesture={false}
+                    enableHandlePanningGesture={false}
                     backgroundComponent={({style}) => (
                         <View style={[{
                             backgroundColor: 'black',
@@ -123,7 +127,7 @@ export function Login() {
                                             setSignInEmailIsCorrect(verifyEmail(text));
                                         }}
                                         onFocus={() => snapToIndex(2)}
-                                        onSubmitEditing={() => focusNextField(signInEmail, signInPasswordRef, 2)}
+                                        onSubmitEditing={() => focusNextField(signInEmail, signInPasswordRef, 0)}
                                         iconName={'envelope'}
                                         isCorrect={signInEmailIsCorrect}
                                     />
@@ -184,7 +188,7 @@ export function Login() {
                                             onChangeText={setRegisterName}
                                             iconName={'user'}
                                             onFocus={() => snapToIndex(3)}
-                                            onSubmitEditing={() => focusNextField(registerName, signUpEmailRef, 3)}
+                                            onSubmitEditing={() => focusNextField(registerName, signUpEmailRef, 1)}
                                         />
                                         <MyTextField
                                             placeholder={'Email'}
@@ -193,7 +197,7 @@ export function Login() {
                                             onChangeText={setRegisterEmail}
                                             iconName={'envelope'}
                                             onFocus={() => snapToIndex(3)}
-                                            onSubmitEditing={() => focusNextField(registerEmail, signUpPasswordRef, 3)}
+                                            onSubmitEditing={() => focusNextField(registerEmail, signUpPasswordRef, 1)}
                                             ref={signUpEmailRef}
                                         />
                                         <MyTextField
