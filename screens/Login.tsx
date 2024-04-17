@@ -1,5 +1,5 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Animated, View, TouchableWithoutFeedback, Keyboard, TextInput} from 'react-native';
+import {Animated, View, TouchableWithoutFeedback, Keyboard, TextInput, StyleSheet} from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import styled from 'styled-components/native';
 import {MyTextField} from "../components/MyTextField";
@@ -58,12 +58,12 @@ export function Login() {
 
 
     const backgroundColor = animatedColor.interpolate({
-        inputRange: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+        inputRange: Array.from({length: backgroundColors.length}, (_, i) => i),
         outputRange: backgroundColors
     });
 
     const textColor = animatedColor.interpolate({
-        inputRange: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14],
+        inputRange: Array.from({length: textColors.length}, (_, i) => i),
         outputRange: textColors
     });
 
@@ -113,7 +113,7 @@ export function Login() {
                     <BottomSheetContainer>
                         <BottomSheetContent>
                             {activeScreen === 'Sign In' ? (
-                                <>
+                                <Animatable.View animation={'fadeIn'} duration={1000} style={styles.bottomSheetContent} key={activeScreen}>
                                     <RegisterTitleContainer>
                                         <ScreenTitle>Sign In</ScreenTitle>
                                     </RegisterTitleContainer>
@@ -142,7 +142,7 @@ export function Login() {
                                         iconName={'lock'}
                                         ref={signInPasswordRef}
                                     />
-                                    <ButtonsContainer style={{flexDirection: 'row', marginTop: 3}}>
+                                    <ButtonsContainer style={{flexDirection: 'row', marginTop: 3}} key={activeScreen}>
                                         <ButtonBox>
                                             <MyButton
                                                 bgColor={'#fff'}
@@ -167,9 +167,9 @@ export function Login() {
                                             </MyButton>
                                         </ButtonBox>
                                     </ButtonsContainer>
-                                </>
+                                </Animatable.View>
                             ) : (
-                                <>
+                                <Animatable.View animation={'fadeIn'} duration={700} style={styles.bottomSheetContent}>
                                     <View>
                                         <TextContainer>
                                             <ScreenTitle>Sign Up</ScreenTitle>
@@ -231,7 +231,7 @@ export function Login() {
                                             Cancel
                                         </MyButton>
                                     </ButtonsContainer>
-                                </>
+                                </Animatable.View>
                             )}
                         </BottomSheetContent>
                     </BottomSheetContainer>
@@ -309,6 +309,14 @@ const RegisterTitleContainer = styled.View`
   gap: 10px;
   margin-left: 10px;
 `
+
+const styles = StyleSheet.create({
+    bottomSheetContent: {
+        display: 'flex',
+        width: '100%',
+        gap: 10
+    }
+})
 
 const TextContainer = styled.View`
   display: flex;
