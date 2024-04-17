@@ -5,19 +5,18 @@ import styled from 'styled-components/native';
 import {MyTextField} from "../components/MyTextField";
 import {MyButton} from "../components/MyButton";
 import {verifyEmail} from "../utils/utils";
+import {useNavigation} from "@react-navigation/native";
+import {Container, Content, ScreenTitle} from "./Styles";
+import {FontAwesome6} from "@expo/vector-icons";
 
 export function Login() {
     const animatedColor = useRef(new Animated.Value(0)).current;
-    const [signInEmail, setSignInEmail] = useState('');
-    const [signInPassword, setSignInPassword] = useState('');
-    const [name, setName] = useState('');
-    const [registerEmail, setRegisterEmail] = useState('');
-    const [registerPassword, setRegisterPassword] = useState('');
-    const [activeScreen, setActiveScreen] = useState('signIn');
-
-    const snapPoints = useMemo(() => ['27%', '40%', '65%', '75%', '95%'], []);
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const snapPoints = useMemo(() => ['35%','58%', '71%', '95%'], []);
     const bottomSheetRef = useRef<BottomSheet>(null);
     const [emailIsCorrect, setEmailIsCorrect] = useState<boolean | null>(null);
+    const navigation = useNavigation();
     const colors = [
         'rgba(255, 165, 0, 1)', // Orange
         'rgba(255, 50, 100, 1)', // Red
@@ -28,6 +27,11 @@ export function Login() {
         'rgba(0, 255, 255, 1)', // Cyan
         'rgba(128, 0, 0, 1)' // Maroon
     ];
+
+    const [registerName, setRegisterName] = useState('');
+    const [registerEmail, setRegisterEmail] = useState('');
+    const [registerPassword, setRegisterPassword] = useState('');
+    const [activeScreen, setActiveScreen] = useState('Sign In');
 
     useEffect(() => {
         Animated.loop(
@@ -49,28 +53,43 @@ export function Login() {
         outputRange: colors.reverse()
     });
 
-    function openBottomSheet(index: number) {
-        bottomSheetRef.current?.snapToIndex(index);
-    }
-
-    function closeBottomSheet(index: number) {
-        bottomSheetRef.current?.snapToIndex(index);
-    }
-
     function onChangeEmail(text: string) {
-        setSignInEmail(text);
+        setEmail(text);
         setEmailIsCorrect(verifyEmail(text));
+    }
+
+    function openSignUp(){
+        bottomSheetRef.current?.snapToIndex(1)
+        setActiveScreen('Sign Up')
+    }
+
+    function closeSignUp(){
+        bottomSheetRef.current?.snapToIndex(0)
+        setActiveScreen('Sign In')
+    }
+
+    function expandBottomSheetSignIn(){
+        bottomSheetRef.current?.snapToIndex(2)
+    }
+
+    function expandBottomSheetSignUp(){
+        bottomSheetRef.current?.snapToIndex(3)
+    }
+
+    function snapToIndex(index: number){
+        bottomSheetRef.current?.snapToIndex(index)
     }
 
     return (
         <AnimatedContainer style={{backgroundColor}}>
-            <Content>
+            {/*@ts-ignore*/}
+            <Content style={{alignItems: 'unset'}}>
                 <AnimatedTitle style={{color: textColor}}>Oasis</AnimatedTitle>
                 <AnimatedSubtitle style={{color: textColor}}>Your personal AI MultiChat</AnimatedSubtitle>
             </Content>
             <BottomSheet
                 snapPoints={snapPoints}
-                index={3}
+                index={0}
                 ref={bottomSheetRef}
                 backgroundComponent={({style}) => (
                     <View style={[{
@@ -80,117 +99,126 @@ export function Login() {
                 )}
             >
                 <BottomSheetContainer>
-                    {activeScreen === 'signIn' && (
-
-                        <BottomSheetContent>
-                            <RegisterTitleContainer>
-                                <RegisterTitle>Sign In</RegisterTitle>
-                            </RegisterTitleContainer>
-                            <MyTextField
-                                placeholder={'Email'}
-                                value={signInEmail}
-                                keyboardType={'email-address'}
-                                onChangeText={onChangeEmail}
-                                onFocus={() => openBottomSheet(2)}
-                                onSubmitEditing={() => closeBottomSheet(0)}
-                                iconName={'envelope'}
-                                isCorrect={emailIsCorrect}
-                            />
-                            <MyTextField
-                                placeholder={'Password'}
-                                value={signInPassword}
-                                onChangeText={setSignInPassword}
-                                secureTextEntry={true}
-                                onFocus={() => openBottomSheet(2)}
-                                onSubmitEditing={() => closeBottomSheet(0)}
-                                iconName={'lock'}
-                            />
-                            <ButtonsContainer>
-                                <ButtonBox>
+                    <BottomSheetContent>
+                        {activeScreen === 'Sign In' ? (
+                            <>
+                                <RegisterTitleContainer>
+                                    <ScreenTitle>Sign In</ScreenTitle>
+                                </RegisterTitleContainer>
+                                <MyTextField
+                                    placeholder={'Email'}
+                                    value={email}
+                                    keyboardType={'email-address'}
+                                    onChangeText={onChangeEmail}
+                                    onFocus={expandBottomSheetSignIn}
+                                    onSubmitEditing={() => snapToIndex(0)}
+                                    iconName={'envelope'}
+                                    isCorrect={emailIsCorrect}
+                                />
+                                <MyTextField
+                                    placeholder={'Password'}
+                                    value={password}
+                                    onChangeText={setPassword}
+                                    secureTextEntry={true}
+                                    onFocus={expandBottomSheetSignIn}
+                                    onSubmitEditing={() => snapToIndex(0)}
+                                    iconName={'lock'}
+                                />
+                                <ButtonsContainer style={{flexDirection: 'row'}}>
+                                    <ButtonBox>
+                                        <MyButton
+                                            bgColor={'#fff'}
+                                            textColor={'#000'}
+                                            onPress={() => console.log('Login')}
+                                        >
+                                            Sign In
+                                        </MyButton>
+                                    </ButtonBox>
+                                    <ButtonBox>
+                                        <MyButton
+                                            bgColor={'transparent'}
+                                            textColor={'#fff'}
+                                            style={{
+                                                borderStyle: 'solid',
+                                                borderWidth: 1,
+                                                borderColor: 'gray'
+                                            }}
+                                            onPress={openSignUp}
+                                        >
+                                            Sign Up
+                                        </MyButton>
+                                    </ButtonBox>
+                                </ButtonsContainer>
+                            </>
+                        ) : (
+                            <>
+                                <View>
+                                    <TextContainer>
+                                        <ScreenTitle>Sign Up</ScreenTitle>
+                                        <Xbutton onPress={closeSignUp}>
+                                            <FontAwesome6 name={'x'} size={30} color={'white'}/>
+                                        </Xbutton>
+                                    </TextContainer>
+                                    <TextContainer>
+                                        <Descriptions>Just a few fields to get you started</Descriptions>
+                                    </TextContainer>
+                                </View>
+                                <InputsContainer>
+                                    <MyTextField
+                                        placeholder={'Name'}
+                                        value={registerName}
+                                        onChangeText={setRegisterName}
+                                        iconName={'user'}
+                                        onFocus={expandBottomSheetSignUp}
+                                        onSubmitEditing={openSignUp}
+                                    />
+                                    <MyTextField
+                                        placeholder={'Email'}
+                                        value={registerEmail}
+                                        keyboardType={'email-address'}
+                                        onChangeText={setRegisterEmail}
+                                        iconName={'envelope'}
+                                        onFocus={expandBottomSheetSignUp}
+                                        onSubmitEditing={openSignUp}
+                                    />
+                                    <MyTextField
+                                        placeholder={'Password'}
+                                        value={registerPassword}
+                                        onChangeText={setRegisterPassword}
+                                        secureTextEntry={false}
+                                        iconName={'lock'}
+                                        onFocus={expandBottomSheetSignUp}
+                                        onSubmitEditing={openSignUp}
+                                    />
+                                </InputsContainer>
+                                <ButtonsContainer style={{marginTop: 25}}>
                                     <MyButton
                                         bgColor={'#fff'}
                                         textColor={'#000'}
-                                        onPress={() => console.log('Login')}
                                     >
-                                        Sign In
+                                        Sign Up
                                     </MyButton>
-                                </ButtonBox>
-                                <ButtonBox>
                                     <MyButton
-                                        bgColor={'transparent'}
+                                        bgColor={'#000'}
                                         textColor={'#fff'}
+                                        onPress={closeSignUp}
                                         style={{
                                             borderStyle: 'solid',
                                             borderWidth: 1,
                                             borderColor: 'gray'
                                         }}
-                                        onPress={() => {
-                                            openBottomSheet(3);
-                                        }}
                                     >
-                                        Sign Up
+                                        Cancel
                                     </MyButton>
-                                </ButtonBox>
-                            </ButtonsContainer>
-                        </BottomSheetContent>
-                    )}
-                    {activeScreen === 'register' && (
-                        <BottomSheetContent style={{marginTop: 20}}>
-                            <RegisterTitleContainer>
-                                <RegisterTitle>Sign Up</RegisterTitle>
-                                <RegisterDescription>Just a few fields to get you started</RegisterDescription>
-                            </RegisterTitleContainer>
-                            <MyTextField
-                                placeholder={'Name'}
-                                value={name}
-                                onChangeText={setName}
-                                onFocus={() => openBottomSheet(4)}
-                                iconName={'user'}
-                            />
-                            <MyTextField
-                                placeholder={'Email'}
-                                value={registerEmail}
-                                keyboardType={'email-address'}
-                                onChangeText={setRegisterEmail}
-                                onFocus={() => openBottomSheet(4)}
-                                iconName={'envelope'}
-                            />
-                            <MyTextField
-                                placeholder={'Password'}
-                                value={registerPassword}
-                                onChangeText={setRegisterPassword}
-                                secureTextEntry={false}
-                                onFocus={() => openBottomSheet(4)}
-                                iconName={'lock'}
-                            />
-                        </BottomSheetContent>
-                    )}
-
+                                </ButtonsContainer>
+                            </>
+                        )}
+                    </BottomSheetContent>
                 </BottomSheetContainer>
             </BottomSheet>
         </AnimatedContainer>
     );
 }
-
-const RegisterDescription = styled.Text`
-  font-size: 16px;
-  font-weight: 600;
-  color: white;
-`
-
-const Container = styled.View`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-`;
-
-const Content = styled.View`
-  display: flex;
-  width: 90%;
-  height: 80%;;
-`
 
 const BottomSheetContainer = styled.View`
   display: flex;
@@ -199,6 +227,11 @@ const BottomSheetContainer = styled.View`
   align-items: center;
   justify-content: center;
   gap: 10px;
+`
+const Xbutton = styled.TouchableOpacity`
+  //background-color: blue;
+  height: 100%;
+  padding-top: 5px;
 `
 
 const BottomSheetContent = styled.View`
@@ -210,14 +243,27 @@ const BottomSheetContent = styled.View`
   gap: 10px;
 `
 
+const InputsContainer = styled.View`
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+`
+
 const ButtonsContainer = styled.View`
   display: flex;
   width: 100%;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
   gap: 10px;
+`
 
+const Descriptions = styled.Text`
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
 `
 
 const ButtonBox = styled.View`
@@ -243,12 +289,13 @@ const RegisterTitleContainer = styled.View`
   margin-left: 10px;
 `
 
-const RegisterTitle = styled.Text`
-  font-size: 35px;
-  font-weight: 600;
-  color: white;
+const TextContainer = styled.View`
+  display: flex;
+  width: 98%;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-direction: row;
 `
-
 
 const AnimatedContainer = Animated.createAnimatedComponent(Container);
 const AnimatedTitle = Animated.createAnimatedComponent(OasisTitle);
