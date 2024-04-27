@@ -94,7 +94,9 @@ export function Login() {
                 {/*@ts-ignore*/}
                 <Content style={{alignItems: 'unset'}}>
                     <AnimatedTitle style={{color: textColor}}>Oasis</AnimatedTitle>
-                    <AnimatedSubtitle style={{color: textColor}}>Your personal AI MultiChat</AnimatedSubtitle>
+                    <AnimatedSubtitle style={{color: textColor}}>
+                        Exploring new {'\n'}frontiers with AI
+                    </AnimatedSubtitle>
                 </Content>
                 <BottomSheet
                     snapPoints={snapPoints}

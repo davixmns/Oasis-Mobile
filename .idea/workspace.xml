@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":art: animação no login e registro">
+      <change beforePath="$PROJECT_DIR$/screens/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Login.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="TypeScript File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 0
+}</component>
+  <component name="ProjectId" id="2f9op0wv4itMgr6EZuViCyPPAtU" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ReactCreateComponentLastSelected&quot;: &quot;functionDeclarationComponent&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/davixmns/projetos/react-native/Oasis&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/davixmns/projetos/react-native/Oasis/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="ReactDesignerToolWindowState">
+    <option name="myId2Visible">
+      <map>
+        <entry key="com.haulmont.rcb.reactComponents" value="false" />
+        <entry key="com.haulmont.rcb.reactInspector" value="false" />
+      </map>
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/screens" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment="" />
+      <created>1713222833822</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1713222833822</updated>
+      <workItem from="1713222834902" duration="70000" />
+      <workItem from="1713223001223" duration="1495000" />
+      <workItem from="1713274059428" duration="17000" />
+      <workItem from="1713292867334" duration="9997000" />
+      <workItem from="1713316991432" duration="4502000" />
+      <workItem from="1713322433078" duration="2557000" />
+      <workItem from="1713358239211" duration="16578000" />
+      <workItem from="1713391747596" duration="5000" />
+      <workItem from="1713394510889" duration="584000" />
+      <workItem from="1713458997024" duration="106000" />
+    </task>
+    <task id="LOCAL-00001" summary=":tada: first">
+      <option name="closed" value="true" />
+      <created>1713224489790</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1713224489790</updated>
+    </task>
+    <task id="LOCAL-00002" summary=":sparkles: estrutura da tela de login">
+      <option name="closed" value="true" />
+      <created>1713324990321</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1713324990321</updated>
+    </task>
+    <task id="LOCAL-00003" summary=":art: cadastro e login na mesma tela">
+      <option name="closed" value="true" />
+      <created>1713364122036</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1713364122036</updated>
+    </task>
+    <task id="LOCAL-00004" summary=":rocket: tela login e cadastro ok">
+      <option name="closed" value="true" />
+      <created>1713378419916</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1713378419916</updated>
+    </task>
+    <task id="LOCAL-00005" summary=":rocket: tela login e cadastro ok">
+      <option name="closed" value="true" />
+      <created>1713379036703</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1713379036703</updated>
+    </task>
+    <task id="LOCAL-00006" summary=":art: animação no login e registro">
+      <option name="closed" value="true" />
+      <created>1713384314245</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1713384314245</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value=":tada: first" />
+    <MESSAGE value=":sparkles: estrutura da tela de login" />
+    <MESSAGE value=":art: registro e cadastro na mesma tela" />
+    <MESSAGE value=":art: cadastro e login na mesma tela" />
+    <MESSAGE value=":rocket: tela login e cadastro ok" />
+    <MESSAGE value=":art: animação no login e registro" />
+    <option name="LAST_COMMIT_MESSAGE" value=":art: animação no login e registro" />
+  </component>
+</project>
