@@ -88,6 +88,10 @@ export function Login() {
         Keyboard.dismiss()
     }
 
+    async function handleLogin() {
+
+    }
+
     return (
         <TouchableWithoutFeedback onPress={closeBottomSheetAndKeyboard}>
             <AnimatedContainer style={{backgroundColor}}>

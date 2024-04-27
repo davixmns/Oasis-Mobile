@@ -1,0 +1,1 @@
+export const OASIS_API_URL = "http://localhost:5003";

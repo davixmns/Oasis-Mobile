@@ -1,22 +1,15 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import {StatusBar} from 'expo-status-bar';
 import {NavigationContainer} from "@react-navigation/native";
 import {AuthStack} from "./navigations/AuthStack";
+import {AuthProvider} from "./contexts/AuthContext";
 
 export default function App() {
-  return (
-    <NavigationContainer>
-      <StatusBar style="auto" backgroundColor={'transparent'}/>
-      <AuthStack/>
-    </NavigationContainer>
-  );
+    return (
+        <NavigationContainer>
+            <AuthProvider>
+                <StatusBar style="auto" backgroundColor={'transparent'}/>
+                <AuthStack/>
+            </AuthProvider>
+        </NavigationContainer>
+    );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
