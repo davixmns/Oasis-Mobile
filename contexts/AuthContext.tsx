@@ -1,4 +1,4 @@
-import {createContext, useContext, useState} from "react";
+import {createContext, useContext, useEffect, useState} from "react";
 import {createUserService, tryLoginService} from "../service/apiService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {OasisUser, ProviderProps} from "../interfaces/interfaces";
@@ -23,21 +23,31 @@ export function AuthProvider({children}: ProviderProps) {
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(true)
 
+    useEffect(() => {
+        async function checkAuthentication() {
+            await new Promise(resolve => setTimeout(resolve, 1000))
+            setIsLoading(false)
+        }
+
+        checkAuthentication()
+    }, []);
+
     async function tryLogin(email: string, password: string) {
         if (email === '' || password === '') return
         await tryLoginService(email, password)
             .then(async (response) => {
-                const accessToken = response.data.accessToken
-                const refreshToken = response.data.refreshToken
-
+                const data = response.data.data
+                const accessToken = data.accessToken
+                const refreshToken = data.refreshToken
                 await AsyncStorage.setItem('@oasis-accessToken', accessToken)
                 await AsyncStorage.setItem('@oasis-refreshToken', refreshToken)
+                setIsAuthenticated(true)
             })
     }
 
     async function createUser(user: OasisUser) {
         await createUserService(user)
-            .then(async (response) => {
+            .then(() => {
                 setIsAuthenticated(true)
             })
             .catch((error) => {

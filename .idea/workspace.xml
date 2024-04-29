@@ -4,10 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment="iniciando registro">
+    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":sparkles: realizando cadastro">
+      <change afterPath="$PROJECT_DIR$/screens/SplashScreen.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/config.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/MyTextField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/MyTextField.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contexts/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/AuthContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/navigations/AuthStack.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/AuthStack.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/DrawerApp.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/DrawerApp.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Login.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils.ts" afterDir="false" />
     </list>
@@ -85,7 +88,8 @@
       <workItem from="1714238618158" duration="1784000" />
       <workItem from="1714323360835" duration="73000" />
       <workItem from="1714348400060" duration="7623000" />
-      <workItem from="1714396023162" duration="3088000" />
+      <workItem from="1714396023162" duration="6664000" />
+      <workItem from="1714409734886" duration="5734000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
@@ -151,7 +155,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714357129881</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary=":sparkles: realizando cadastro">
+      <option name="closed" value="true" />
+      <created>1714399199033</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1714399199033</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -166,17 +178,7 @@
     <MESSAGE value=":art: animação no login e registro" />
     <MESSAGE value=":sparkles: AuthContext.tsx" />
     <MESSAGE value="iniciando registro" />
-    <option name="LAST_COMMIT_MESSAGE" value="iniciando registro" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/screens/Login.tsx</url>
-          <line>246</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value=":sparkles: realizando cadastro" />
+    <option name="LAST_COMMIT_MESSAGE" value=":sparkles: realizando cadastro" />
   </component>
 </project>

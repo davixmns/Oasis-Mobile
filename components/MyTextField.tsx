@@ -31,7 +31,7 @@ export const MyTextField = forwardRef((props: MyTextFieldProps, ref) => {
                 ref={ref}
                 {...props}
             />
-            {props.value !== '' && props.isCorrect !== undefined && (
+            {(props.isCorrect !== undefined && props.isCorrect !== null) && (
                 <IconContainer>
                     <FontAwesome6
                         name={props.isCorrect ? 'check' : 'exclamation'} size={22}

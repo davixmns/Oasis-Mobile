@@ -22,7 +22,8 @@ import {useAuthContext} from "../contexts/AuthContext";
 import {OasisUser} from "../interfaces/interfaces";
 
 export function Login() {
-    const {createUser} = useAuthContext()
+    const {createUser, tryLogin} = useAuthContext()
+    const navigation = useNavigation();
 
     //Background animation
     const animatedColor = useRef(new Animated.Value(0)).current;
@@ -39,19 +40,15 @@ export function Login() {
     const signInPasswordRef = useRef<TextInput>();
 
     //Sign Up
-    const [registerIsLoading, setRegisterIsLoading] = useState<boolean>(false);
+    const [requestIsLoading, setRequestIsLoading] = useState<boolean>(false);
     const [registerName, setRegisterName] = useState('');
     const [registerNameIsCorret, setRegisterNameIsCorret] = useState<boolean | null>(null);
-
     const [registerEmail, setRegisterEmail] = useState('');
     const [registerEmailIsCorrect, setRegisterEmailIsCorrect] = useState<boolean | null>(null);
-
     const [registerPassword, setRegisterPassword] = useState('');
     const [registerPasswordIsCorrect, setRegisterPasswordIsCorrect] = useState<boolean | null>(null);
-
     const signUpEmailRef = useRef<TextInput>(null);
     const signUpPasswordRef = useRef<TextInput>(null);
-    const navigation = useNavigation();
 
     useEffect(() => {
         Animated.loop(
@@ -68,10 +65,14 @@ export function Login() {
             setRegisterName('')
             setRegisterEmail('')
             setRegisterPassword('')
+            setRegisterNameIsCorret(null)
+            setRegisterEmailIsCorrect(null)
+            setRegisterPasswordIsCorrect(null)
             snapToIndex(0)
         } else {
             setSignInEmail('')
             setSignInPassword('')
+            setSignInEmailIsCorrect(null)
             snapToIndex(1)
         }
     }, [activeScreen]);
@@ -101,6 +102,7 @@ export function Login() {
 
     function closeBottomSheetAndKeyboard() {
         if (activeScreen === 'Sign Up') {
+            setSignInEmailIsCorrect(null)
             snapToIndex(1)
         } else {
             snapToIndex(0)
@@ -108,8 +110,46 @@ export function Login() {
         Keyboard.dismiss()
     }
 
-    async function handleLogin() {
+    async function handleTryLogin() {
+        if (!verifyEmail(signInEmail)){
+            setSignInEmailIsCorrect(false)
+            return
+        }
+        setRequestIsLoading(true)
+        setRequestIsLoading(true)
+        await new Promise(resolve => setTimeout(resolve, 1000))
+        await tryLogin(signInEmail, signInPassword)
+            .then(() => {
+                // @ts-ignore
+                navigation.navigate('DrawerApp')
+            })
+            .catch((error) => {
+                if (error.response) {
+                    console.log(error.response.data.message)
+                    Alert.alert('Error', error.response.data.message);
+                }
+            })
+            .finally(() => {
+                setRequestIsLoading(false)
+            })
+    }
 
+    function validateRegisterFields(user: OasisUser) {
+        const validatedFields = verifyUser(user)
+        let fieldsOk = true
+        if(validatedFields[0] === false){
+            setRegisterNameIsCorret(false)
+            fieldsOk = false
+        }
+        if(validatedFields[1] === false){
+            setRegisterEmailIsCorrect(false)
+            fieldsOk = false
+        }
+        if(validatedFields[2] === false){
+            setRegisterPasswordIsCorrect(false)
+            fieldsOk = false
+        }
+        return fieldsOk
     }
 
 
@@ -119,8 +159,10 @@ export function Login() {
             Email: registerEmail,
             Password: registerPassword
         };
-        if(!verifyUser(user)) return Alert.alert('Error', 'Invalid fields');
-        setRegisterIsLoading(true)
+
+        if(!validateRegisterFields(user)) return
+
+        setRequestIsLoading(true)
         await new Promise(resolve => setTimeout(resolve, 1000))
         await createUser(user)
             .then(() => {
@@ -137,10 +179,9 @@ export function Login() {
                 }
             })
             .finally(() => {
-                setRegisterIsLoading(false)
+                setRequestIsLoading(false)
             })
     }
-
 
     return (
         <TouchableWithoutFeedback onPress={closeBottomSheetAndKeyboard}>
@@ -182,7 +223,7 @@ export function Login() {
                                         autoCapitalize={'none'}
                                         onChangeText={(text) => {
                                             setSignInEmail(text);
-                                            setSignInEmailIsCorrect(verifyEmail(text));
+                                            setSignInEmailIsCorrect(text !== '' ? verifyEmail(text) : null);
                                         }}
                                         onFocus={() => snapToIndex(2)}
                                         onSubmitEditing={() => focusNextField(signInEmail, signInPasswordRef, 0)}
@@ -204,11 +245,19 @@ export function Login() {
                                     <ButtonsContainer style={{flexDirection: 'row', marginTop: 3}} key={activeScreen}>
                                         <ButtonBox>
                                             <MyButton
-                                                bgColor={'#fff'}
+                                                bgColor={requestIsLoading ? '#000' : '#fff'}
                                                 textColor={'#000'}
-                                                onPress={() => console.log('Login')}
+                                                onPress={handleTryLogin}
                                             >
-                                                Sign In
+                                                {requestIsLoading ? (
+                                                    <ActivityIndicator
+                                                        size={"large"}
+                                                        color={'#fff'}
+                                                        style={{paddingTop: 10}}
+                                                    />
+                                                ) : (
+                                                    'Login'
+                                                )}
                                             </MyButton>
                                         </ButtonBox>
                                         <ButtonBox>
@@ -246,12 +295,12 @@ export function Login() {
                                             value={registerName}
                                             onChangeText={(text) => {
                                                 setRegisterName(text);
-                                                setRegisterNameIsCorret(text.length > 2);
+                                                setRegisterNameIsCorret(text !== '' ? text.length > 2 : null);
                                             }}
                                             iconName={'user'}
                                             onFocus={() => snapToIndex(3)}
-                                            isCorrect={registerNameIsCorret}
                                             onSubmitEditing={() => focusNextField(registerName, signUpEmailRef, 1)}
+                                            isCorrect={registerNameIsCorret}
                                         />
                                         <MyTextField
                                             placeholder={'Email'}
@@ -260,7 +309,7 @@ export function Login() {
                                             autoCapitalize={"none"}
                                             onChangeText={(text) => {
                                                 setRegisterEmail(text);
-                                                setRegisterEmailIsCorrect(verifyEmail(text));
+                                                setRegisterEmailIsCorrect(text !== '' ? verifyEmail(text) : null);
                                             }}
                                             iconName={'envelope'}
                                             onFocus={() => snapToIndex(3)}
@@ -274,7 +323,7 @@ export function Login() {
                                             autoCapitalize={'none'}
                                             onChangeText={(text) => {
                                                 setRegisterPassword(text);
-                                                setRegisterPasswordIsCorrect(text.length > 6);
+                                                setRegisterPasswordIsCorrect(text !== '' ? text.length > 6 : null);
                                             }}
                                             secureTextEntry={true}
                                             iconName={'lock'}
@@ -286,11 +335,11 @@ export function Login() {
                                     </InputsContainer>
                                     <ButtonsContainer style={{marginTop: 25}}>
                                         <MyButton
-                                            bgColor={registerIsLoading ? '#000' : '#fff'}
-                                            textColor={registerIsLoading ? '#fff' : '#000'}
+                                            bgColor={requestIsLoading ? '#000' : '#fff'}
+                                            textColor={requestIsLoading ? '#fff' : '#000'}
                                             onPress={handleRegister}
                                         >
-                                            {registerIsLoading ? (
+                                            {requestIsLoading ? (
                                                 <ActivityIndicator size={'large'} color={'#fff'}/>
                                             ) : (
                                                 'Sign Up'

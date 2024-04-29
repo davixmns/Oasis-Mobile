@@ -39,21 +39,13 @@ export const textColors = [
 ];
 
 export function verifyEmail(email: string) {
-    return emailRegex.test(email);
+    return emailRegex.test(email)
 }
 
 export function verifyUser(user: OasisUser) {
-    if(!verifyEmail(user.Email)){
-        console.log("Invalid email")
-        return false;
-    }
-    if(user.Password?.length! < 8){
-        console.log("Password too short")
-        return false;
-    }
-    if(user.Name.length < 2){
-        console.log("Name too short")
-        return false;
-    }
-    return true;
+    let array = []
+    user.Name.length > 3 ? array.push(true) : array.push(false)
+    verifyEmail(user.Email) ? array.push(true) : array.push(false)
+    user.Password?.length! > 7  ? array.push(true) : array.push(false)
+    return array;
 }

@@ -1,11 +1,17 @@
 import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
 import { DrawerApp } from '../screens/DrawerApp';
 import {Login} from "../screens/Login";
+import {useAuthContext} from "../contexts/AuthContext";
+import {SplashScreen} from "../screens/SplashScreen";
 
 const Stack = createStackNavigator();
 
 export function AuthStack() {
-    const isAuthenticated = false; //futuramente usar context
+    const {isAuthenticated, isLoading} = useAuthContext()
+
+    if (isLoading) {
+        return <SplashScreen/>
+    }
 
     return (
         <Stack.Navigator screenOptions={{
