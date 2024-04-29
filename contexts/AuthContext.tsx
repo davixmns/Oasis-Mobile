@@ -36,15 +36,15 @@ export function AuthProvider({children}: ProviderProps) {
     }
 
     async function createUser(user: OasisUser) {
-        if (user === null) return
         await createUserService(user)
             .then(async (response) => {
-                console.log(response)
+                setIsAuthenticated(true)
             })
             .catch((error) => {
-                console.log(error)
+                throw error
             })
     }
+
 
     return (
         <AuthContext.Provider

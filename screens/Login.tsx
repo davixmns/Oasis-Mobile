@@ -13,7 +13,7 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import styled from 'styled-components/native';
 import {MyTextField} from "../components/MyTextField";
 import {MyButton} from "../components/MyButton";
-import {backgroundColors, textColors, verifyEmail} from "../utils/utils";
+import {backgroundColors, textColors, verifyEmail, verifyUser} from "../utils/utils";
 import {useNavigation} from "@react-navigation/native";
 import {Container, Content, ScreenTitle} from "./Styles";
 import {FontAwesome6} from "@expo/vector-icons";
@@ -118,24 +118,29 @@ export function Login() {
             Name: registerName,
             Email: registerEmail,
             Password: registerPassword
-        }
-        if (!registerNameIsCorret || !registerEmailIsCorrect || !registerPasswordIsCorrect) {
-            Alert.alert('Error', 'Please fill all fields correctly')
-            return
-        }
-
+        };
+        if(!verifyUser(user)) return Alert.alert('Error', 'Invalid fields');
         setRegisterIsLoading(true)
-        await new Promise((resolve) => setTimeout(resolve, 1000))
+        await new Promise(resolve => setTimeout(resolve, 1000))
         await createUser(user)
             .then(() => {
-                Alert.alert('Success', 'User created successfully')
-                setRegisterName('')
-                setRegisterEmail('')
-                setRegisterPassword('')
-                setActiveScreen('Sign In')
+                Alert.alert('Success', 'User created successfully');
+                setRegisterName('');
+                setRegisterEmail('');
+                setRegisterPassword('');
+                setActiveScreen("Sign In");
             })
-
+            .catch((error) => {
+                if (error.response) {
+                    console.log(error.response.data.message)
+                    Alert.alert('Error', error.response.data.message);
+                }
+            })
+            .finally(() => {
+                setRegisterIsLoading(false)
+            })
     }
+
 
     return (
         <TouchableWithoutFeedback onPress={closeBottomSheetAndKeyboard}>
