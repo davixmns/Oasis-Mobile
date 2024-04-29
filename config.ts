@@ -1,1 +1,1 @@
-export const OASIS_API_URL = "http://localhost:5003";
+export const OASIS_API_URL = "http://192.168.1.3:5013";

@@ -4,8 +4,9 @@ export interface ProviderProps {
     children: ReactNode
 }
 
-export interface AuthContextType {
-    isAuthenticated: boolean;
-    isLoading: boolean;
-    tryLogin: (email: string, password: string) => Promise<void>;
+export interface OasisUser {
+    OasisUserId?: number;
+    Name: string;
+    Email: string;
+    Password?: string;
 }

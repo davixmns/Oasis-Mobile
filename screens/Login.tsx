@@ -1,5 +1,14 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Animated, View, TouchableWithoutFeedback, Keyboard, TextInput, StyleSheet} from 'react-native';
+import {
+    Animated,
+    View,
+    TouchableWithoutFeedback,
+    Keyboard,
+    TextInput,
+    StyleSheet,
+    Alert,
+    ActivityIndicator
+} from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import styled from 'styled-components/native';
 import {MyTextField} from "../components/MyTextField";
@@ -9,13 +18,17 @@ import {useNavigation} from "@react-navigation/native";
 import {Container, Content, ScreenTitle} from "./Styles";
 import {FontAwesome6} from "@expo/vector-icons";
 import * as Animatable from 'react-native-animatable';
+import {useAuthContext} from "../contexts/AuthContext";
+import {OasisUser} from "../interfaces/interfaces";
 
 export function Login() {
+    const {createUser} = useAuthContext()
+
     //Background animation
     const animatedColor = useRef(new Animated.Value(0)).current;
 
     //BottomSheet
-    const snapPoints = useMemo(() => ['35%', '56%', '71%', '95%'], []);
+    const snapPoints = useMemo(() => ['35%', '50%', '71%', '87%'], []);
     const bottomSheetRef = useRef<BottomSheet>(null);
     const [activeScreen, setActiveScreen] = useState('Sign In');
 
@@ -26,9 +39,16 @@ export function Login() {
     const signInPasswordRef = useRef<TextInput>();
 
     //Sign Up
+    const [registerIsLoading, setRegisterIsLoading] = useState<boolean>(false);
     const [registerName, setRegisterName] = useState('');
+    const [registerNameIsCorret, setRegisterNameIsCorret] = useState<boolean | null>(null);
+
     const [registerEmail, setRegisterEmail] = useState('');
+    const [registerEmailIsCorrect, setRegisterEmailIsCorrect] = useState<boolean | null>(null);
+
     const [registerPassword, setRegisterPassword] = useState('');
+    const [registerPasswordIsCorrect, setRegisterPasswordIsCorrect] = useState<boolean | null>(null);
+
     const signUpEmailRef = useRef<TextInput>(null);
     const signUpPasswordRef = useRef<TextInput>(null);
     const navigation = useNavigation();
@@ -92,6 +112,31 @@ export function Login() {
 
     }
 
+
+    async function handleRegister() {
+        const user: OasisUser = {
+            Name: registerName,
+            Email: registerEmail,
+            Password: registerPassword
+        }
+        if (!registerNameIsCorret || !registerEmailIsCorrect || !registerPasswordIsCorrect) {
+            Alert.alert('Error', 'Please fill all fields correctly')
+            return
+        }
+
+        setRegisterIsLoading(true)
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        await createUser(user)
+            .then(() => {
+                Alert.alert('Success', 'User created successfully')
+                setRegisterName('')
+                setRegisterEmail('')
+                setRegisterPassword('')
+                setActiveScreen('Sign In')
+            })
+
+    }
+
     return (
         <TouchableWithoutFeedback onPress={closeBottomSheetAndKeyboard}>
             <AnimatedContainer style={{backgroundColor}}>
@@ -119,7 +164,8 @@ export function Login() {
                     <BottomSheetContainer>
                         <BottomSheetContent>
                             {activeScreen === 'Sign In' ? (
-                                <Animatable.View animation={'fadeIn'} duration={1000} style={styles.bottomSheetContent} key={activeScreen}>
+                                <Animatable.View animation={'fadeIn'} duration={1000} style={styles.bottomSheetContent}
+                                                 key={activeScreen}>
                                     <RegisterTitleContainer>
                                         <ScreenTitle>Sign In</ScreenTitle>
                                     </RegisterTitleContainer>
@@ -128,6 +174,7 @@ export function Login() {
                                         placeholder={'Email'}
                                         value={signInEmail}
                                         keyboardType={'email-address'}
+                                        autoCapitalize={'none'}
                                         onChangeText={(text) => {
                                             setSignInEmail(text);
                                             setSignInEmailIsCorrect(verifyEmail(text));
@@ -143,6 +190,7 @@ export function Login() {
                                         value={signInPassword}
                                         onChangeText={setSignInPassword}
                                         secureTextEntry={true}
+                                        autoCapitalize={'none'}
                                         onFocus={() => snapToIndex(2)}
                                         onSubmitEditing={() => snapToIndex(0)}
                                         iconName={'lock'}
@@ -191,50 +239,57 @@ export function Login() {
                                         <MyTextField
                                             placeholder={'Name'}
                                             value={registerName}
-                                            onChangeText={setRegisterName}
+                                            onChangeText={(text) => {
+                                                setRegisterName(text);
+                                                setRegisterNameIsCorret(text.length > 2);
+                                            }}
                                             iconName={'user'}
                                             onFocus={() => snapToIndex(3)}
+                                            isCorrect={registerNameIsCorret}
                                             onSubmitEditing={() => focusNextField(registerName, signUpEmailRef, 1)}
                                         />
                                         <MyTextField
                                             placeholder={'Email'}
                                             value={registerEmail}
                                             keyboardType={'email-address'}
-                                            onChangeText={setRegisterEmail}
+                                            autoCapitalize={"none"}
+                                            onChangeText={(text) => {
+                                                setRegisterEmail(text);
+                                                setRegisterEmailIsCorrect(verifyEmail(text));
+                                            }}
                                             iconName={'envelope'}
                                             onFocus={() => snapToIndex(3)}
                                             onSubmitEditing={() => focusNextField(registerEmail, signUpPasswordRef, 1)}
                                             ref={signUpEmailRef}
+                                            isCorrect={registerEmailIsCorrect}
                                         />
                                         <MyTextField
                                             placeholder={'Password'}
                                             value={registerPassword}
-                                            onChangeText={setRegisterPassword}
-                                            secureTextEntry={false}
+                                            autoCapitalize={'none'}
+                                            onChangeText={(text) => {
+                                                setRegisterPassword(text);
+                                                setRegisterPasswordIsCorrect(text.length > 6);
+                                            }}
+                                            secureTextEntry={true}
                                             iconName={'lock'}
                                             onFocus={() => snapToIndex(3)}
                                             onSubmitEditing={() => snapToIndex(1)}
                                             ref={signUpPasswordRef}
+                                            isCorrect={registerPasswordIsCorrect}
                                         />
                                     </InputsContainer>
                                     <ButtonsContainer style={{marginTop: 25}}>
                                         <MyButton
-                                            bgColor={'#fff'}
-                                            textColor={'#000'}
+                                            bgColor={registerIsLoading ? '#000' : '#fff'}
+                                            textColor={registerIsLoading ? '#fff' : '#000'}
+                                            onPress={handleRegister}
                                         >
-                                            Sign Up
-                                        </MyButton>
-                                        <MyButton
-                                            bgColor={'#000'}
-                                            textColor={'#fff'}
-                                            onPress={() => setActiveScreen('Sign In')}
-                                            style={{
-                                                borderStyle: 'solid',
-                                                borderWidth: 1,
-                                                borderColor: 'gray'
-                                            }}
-                                        >
-                                            Cancel
+                                            {registerIsLoading ? (
+                                                <ActivityIndicator size={'large'} color={'#fff'}/>
+                                            ) : (
+                                                'Sign Up'
+                                            )}
                                         </MyButton>
                                     </ButtonsContainer>
                                 </Animatable.View>
