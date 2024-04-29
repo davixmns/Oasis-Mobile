@@ -1,8 +1,8 @@
 import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
-import { DrawerApp } from '../screens/DrawerApp';
 import {Login} from "../screens/Login";
 import {useAuthContext} from "../contexts/AuthContext";
 import {SplashScreen} from "../screens/SplashScreen";
+import {MyDrawer} from "./MyDrawer";
 
 const Stack = createStackNavigator();
 
@@ -21,11 +21,10 @@ export function AuthStack() {
             {isAuthenticated ? (
                 <>
                     <Stack.Screen
-                        name={'DrawerApp'}
-                        component={DrawerApp}
+                        name={'MyDrawer'}
+                        component={MyDrawer}
                         options={{
-                            headerShown: false,
-                            cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter
+                            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
                         }}
                     />
                 </>

@@ -26,7 +26,12 @@ export function AuthProvider({children}: ProviderProps) {
     useEffect(() => {
         async function checkAuthentication() {
             await new Promise(resolve => setTimeout(resolve, 1000))
-            setIsLoading(false)
+            const accessToken = await AsyncStorage.getItem('@oasis-accessToken')
+            const refreshToken = await AsyncStorage.getItem('@oasis-refreshToken')
+            if (accessToken && refreshToken) {
+                setIsAuthenticated(true)
+                setIsLoading(false)
+            }
         }
 
         checkAuthentication()
