@@ -4,14 +4,18 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":art: validando campos de texto">
-      <change afterPath="$PROJECT_DIR$/navigations/MyDrawer.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/screens/Chat.tsx" afterDir="false" />
+    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":art: drawer">
+      <change afterPath="$PROJECT_DIR$/components/ChatInput.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/screens/Nothing.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/screens/Settings.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/config.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contexts/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/AuthContext.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/navigations/AuthStack.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/AuthStack.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/DrawerApp.tsx" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/navigations/MyDrawer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/MyDrawer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/Chat.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Chat.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -88,7 +92,9 @@
       <workItem from="1714323360835" duration="73000" />
       <workItem from="1714348400060" duration="7623000" />
       <workItem from="1714396023162" duration="6664000" />
-      <workItem from="1714409734886" duration="9622000" />
+      <workItem from="1714409734886" duration="9734000" />
+      <workItem from="1714481942703" duration="6170000" />
+      <workItem from="1714495181396" duration="13105000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
@@ -170,7 +176,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714415508419</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary=":art: drawer">
+      <option name="closed" value="true" />
+      <created>1714421577102</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1714421577102</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -187,6 +201,7 @@
     <MESSAGE value="iniciando registro" />
     <MESSAGE value=":sparkles: realizando cadastro" />
     <MESSAGE value=":art: validando campos de texto" />
-    <option name="LAST_COMMIT_MESSAGE" value=":art: validando campos de texto" />
+    <MESSAGE value=":art: drawer" />
+    <option name="LAST_COMMIT_MESSAGE" value=":art: drawer" />
   </component>
 </project>

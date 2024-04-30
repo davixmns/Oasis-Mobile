@@ -3,6 +3,7 @@ import {Login} from "../screens/Login";
 import {useAuthContext} from "../contexts/AuthContext";
 import {SplashScreen} from "../screens/SplashScreen";
 import {MyDrawer} from "./MyDrawer";
+import Settings from "../screens/Settings";
 
 const Stack = createStackNavigator();
 
@@ -25,6 +26,13 @@ export function AuthStack() {
                         component={MyDrawer}
                         options={{
                             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+                        }}
+                    />
+                    <Stack.Screen
+                        name={'Settings'}
+                        component={Settings}
+                        options={{
+                            cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
                         }}
                     />
                 </>

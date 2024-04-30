@@ -10,6 +10,7 @@ interface AuthContextType {
     setIsLoading: (value: boolean) => void;
     tryLogin: (email: string, password: string) => Promise<void>;
     createUser: (user: OasisUser) => Promise<void>;
+    user: OasisUser | null;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType)
@@ -28,10 +29,13 @@ export function AuthProvider({children}: ProviderProps) {
             await new Promise(resolve => setTimeout(resolve, 1000))
             const accessToken = await AsyncStorage.getItem('@oasis-accessToken')
             const refreshToken = await AsyncStorage.getItem('@oasis-refreshToken')
-            if (accessToken && refreshToken) {
+            const oasisUser = await AsyncStorage.getItem('@oasis-user')
+            if (accessToken && refreshToken && oasisUser) {
                 setIsAuthenticated(true)
                 setIsLoading(false)
+                setUser(JSON.parse(oasisUser))
             }
+            setIsLoading(false)
         }
 
         checkAuthentication()
@@ -41,12 +45,15 @@ export function AuthProvider({children}: ProviderProps) {
         if (email === '' || password === '') return
         await tryLoginService(email, password)
             .then(async (response) => {
+                setIsAuthenticated(true)
                 const data = response.data.data
                 const accessToken = data.accessToken
                 const refreshToken = data.refreshToken
+                const user: OasisUser = data.oasisUser
+                setUser(user)
+                await AsyncStorage.setItem('@oasis-user', JSON.stringify(user))
                 await AsyncStorage.setItem('@oasis-accessToken', accessToken)
                 await AsyncStorage.setItem('@oasis-refreshToken', refreshToken)
-                setIsAuthenticated(true)
             })
     }
 
@@ -69,7 +76,8 @@ export function AuthProvider({children}: ProviderProps) {
                 isLoading,
                 setIsLoading,
                 tryLogin,
-                createUser
+                createUser,
+                user
             }}
         >
             {children}
