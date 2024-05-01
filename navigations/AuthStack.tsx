@@ -1,7 +1,7 @@
 import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
 import {Login} from "../screens/Login";
 import {useAuthContext} from "../contexts/AuthContext";
-import {SplashScreen} from "../screens/SplashScreen";
+import {Splash} from "../screens/Splash";
 import {MyDrawer} from "./MyDrawer";
 import Settings from "../screens/Settings";
 import {TouchableOpacity, View} from "react-native";
@@ -15,7 +15,7 @@ export function AuthStack() {
     const navigation = useNavigation()
 
     if (isLoading) {
-        return <SplashScreen/>
+        return <Splash/>
     }
 
     return (

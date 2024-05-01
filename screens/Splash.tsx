@@ -3,7 +3,7 @@ import {ActivityIndicator} from "react-native";
 import React from "react";
 import styled from "styled-components/native";
 
-export function SplashScreen() {
+export function Splash() {
     return (
         <Container style={{backgroundColor: '#000'}}>
             <Content style={{alignItems: 'flex-start'}}>

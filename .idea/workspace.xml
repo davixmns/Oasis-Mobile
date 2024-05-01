@@ -4,20 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":sparkles: estrutura de chat">
-      <change afterPath="$PROJECT_DIR$/assets/defaultPicture.jpeg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/ChatBotSelector.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/CustomDrawerContent.tsx" afterDir="false" />
+    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":sparkles: customizando conteudo do drawer">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contexts/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/AuthContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/interfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/interfaces.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/navigations/AuthStack.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/AuthStack.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navigations/MyDrawer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/MyDrawer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/Login.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Login.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/Nothing.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/Settings.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Settings.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/SplashScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Splash.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,7 +92,7 @@
       <workItem from="1714481942703" duration="6170000" />
       <workItem from="1714495181396" duration="13177000" />
       <workItem from="1714517017139" duration="790000" />
-      <workItem from="1714525838874" duration="6401000" />
+      <workItem from="1714525838874" duration="9119000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
@@ -199,7 +190,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714508913022</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary=":sparkles: customizando conteudo do drawer">
+      <option name="closed" value="true" />
+      <created>1714534132193</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1714534132193</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -218,6 +217,7 @@
     <MESSAGE value=":art: validando campos de texto" />
     <MESSAGE value=":art: drawer" />
     <MESSAGE value=":sparkles: estrutura de chat" />
-    <option name="LAST_COMMIT_MESSAGE" value=":sparkles: estrutura de chat" />
+    <MESSAGE value=":sparkles: customizando conteudo do drawer" />
+    <option name="LAST_COMMIT_MESSAGE" value=":sparkles: customizando conteudo do drawer" />
   </component>
 </project>
