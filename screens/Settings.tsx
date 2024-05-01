@@ -9,11 +9,10 @@ export default function Settings(){
     const {user} = useAuthContext()
     const navigation = useNavigation()
 
-
     return (
         <Container style={{backgroundColor: '#212121'}}>
             <Text style={{color: 'white'}}>Settings</Text>
-            <Text style={{color: 'white'}}>User: {user?.Name}</Text>
+            <Text style={{color: 'white'}}>User: {user?.name}</Text>
             <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Text style={{color: 'white'}}>Go Back</Text>
             </TouchableOpacity>

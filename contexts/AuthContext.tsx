@@ -30,6 +30,7 @@ export function AuthProvider({children}: ProviderProps) {
             const accessToken = await AsyncStorage.getItem('@oasis-accessToken')
             const refreshToken = await AsyncStorage.getItem('@oasis-refreshToken')
             const oasisUser = await AsyncStorage.getItem('@oasis-user')
+
             if (accessToken && refreshToken && oasisUser) {
                 setIsAuthenticated(true)
                 setIsLoading(false)

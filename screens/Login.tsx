@@ -155,9 +155,9 @@ export function Login() {
 
     async function handleRegister() {
         const user: OasisUser = {
-            Name: registerName,
-            Email: registerEmail,
-            Password: registerPassword
+            name: registerName,
+            email: registerEmail,
+            password: registerPassword
         };
 
         if(!validateRegisterFields(user)) return

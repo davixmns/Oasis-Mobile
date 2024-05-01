@@ -5,8 +5,8 @@ export interface ProviderProps {
 }
 
 export interface OasisUser {
-    OasisUserId?: number;
-    Name: string;
-    Email: string;
-    Password?: string;
+    oasisUserId?: number;
+    name: string;
+    email: string;
+    password?: string;
 }
