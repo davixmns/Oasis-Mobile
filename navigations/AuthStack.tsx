@@ -43,7 +43,7 @@ export function AuthStack() {
                             headerStyle: {
                                 backgroundColor: '#212121',
                             },
-                            headerTransparent: true,
+                            // headerTransparent: true,
                             headerBackTitleVisible: false,
                             headerLeft: () => <View/>,
                             headerTintColor: '#fff',

@@ -2,6 +2,7 @@ import {createContext, useContext, useEffect, useState} from "react";
 import {createUserService, tryLoginService} from "../service/apiService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {OasisUser, ProviderProps} from "../interfaces/interfaces";
+import {useNavigation} from "@react-navigation/native";
 
 interface AuthContextType {
     isAuthenticated: boolean;
@@ -11,6 +12,7 @@ interface AuthContextType {
     tryLogin: (email: string, password: string) => Promise<void>;
     createUser: (user: OasisUser) => Promise<void>;
     user: OasisUser | null;
+    signOut: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType>({} as AuthContextType)
@@ -23,6 +25,7 @@ export function AuthProvider({children}: ProviderProps) {
     const [user, setUser] = useState<OasisUser | null>(null)
     const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false)
     const [isLoading, setIsLoading] = useState<boolean>(true)
+    const navigation = useNavigation()
 
     useEffect(() => {
         async function checkAuthentication() {
@@ -30,7 +33,6 @@ export function AuthProvider({children}: ProviderProps) {
             const accessToken = await AsyncStorage.getItem('@oasis-accessToken')
             const refreshToken = await AsyncStorage.getItem('@oasis-refreshToken')
             const oasisUser = await AsyncStorage.getItem('@oasis-user')
-
             if (accessToken && refreshToken && oasisUser) {
                 setIsAuthenticated(true)
                 setIsLoading(false)
@@ -38,7 +40,6 @@ export function AuthProvider({children}: ProviderProps) {
             }
             setIsLoading(false)
         }
-
         checkAuthentication()
     }, []);
 
@@ -52,9 +53,13 @@ export function AuthProvider({children}: ProviderProps) {
                 const refreshToken = data.refreshToken
                 const user: OasisUser = data.oasisUser
                 setUser(user)
-                await AsyncStorage.setItem('@oasis-user', JSON.stringify(user))
-                await AsyncStorage.setItem('@oasis-accessToken', accessToken)
-                await AsyncStorage.setItem('@oasis-refreshToken', refreshToken)
+                await Promise.all([
+                    AsyncStorage.setItem('@oasis-user', JSON.stringify(user)),
+                    AsyncStorage.setItem('@oasis-accessToken', accessToken),
+                    AsyncStorage.setItem('@oasis-refreshToken', refreshToken)
+                ])
+                //@ts-ignore
+                navigation.navigate('MyDrawer')
             })
     }
 
@@ -68,6 +73,19 @@ export function AuthProvider({children}: ProviderProps) {
             })
     }
 
+    async function signOut() {
+        setIsAuthenticated(false)
+        setUser(null)
+        await AsyncStorage.removeItem('@oasis-user')
+        await AsyncStorage.removeItem('@oasis-accessToken')
+        await AsyncStorage.removeItem('@oasis-refreshToken')
+        navigation.reset({
+            index: 0,
+            // @ts-ignore
+            routes: [{name: 'Login'}]
+        })
+    }
+
 
     return (
         <AuthContext.Provider
@@ -78,7 +96,8 @@ export function AuthProvider({children}: ProviderProps) {
                 setIsLoading,
                 tryLogin,
                 createUser,
-                user
+                user,
+                signOut
             }}
         >
             {children}

@@ -23,7 +23,6 @@ import {OasisUser} from "../interfaces/interfaces";
 
 export function Login() {
     const {createUser, tryLogin} = useAuthContext()
-    const navigation = useNavigation();
 
     //Background animation
     const animatedColor = useRef(new Animated.Value(0)).current;
@@ -119,10 +118,6 @@ export function Login() {
         setRequestIsLoading(true)
         await new Promise(resolve => setTimeout(resolve, 1000))
         await tryLogin(signInEmail, signInPassword)
-            .then(() => {
-                // @ts-ignore
-                navigation.navigate('DrawerApp')
-            })
             .catch((error) => {
                 if (error.response) {
                     console.log(error.response.data.message)
@@ -163,7 +158,7 @@ export function Login() {
         if(!validateRegisterFields(user)) return
 
         setRequestIsLoading(true)
-        await new Promise(resolve => setTimeout(resolve, 1000))
+        // await new Promise(resolve => setTimeout(resolve, 1000))
         await createUser(user)
             .then(() => {
                 Alert.alert('Success', 'User created successfully');
