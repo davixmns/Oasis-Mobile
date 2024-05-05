@@ -1,9 +1,9 @@
 import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/stack';
-import {Login} from "../screens/Login";
+import {LoginScreen} from "../screens/LoginScreen";
 import {useAuthContext} from "../contexts/AuthContext";
-import {Splash} from "../screens/Splash";
+import {SplashScreen} from "../screens/SplashScreen";
 import {MyDrawer} from "./MyDrawer";
-import Settings from "../screens/Settings";
+import SettingsScreen from "../screens/SettingsScreen";
 import {TouchableOpacity, View} from "react-native";
 import {FontAwesome6} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
@@ -15,7 +15,7 @@ export function AuthStack() {
     const navigation = useNavigation()
 
     if (isLoading) {
-        return <Splash/>
+        return <SplashScreen/>
     }
 
     return (
@@ -34,7 +34,7 @@ export function AuthStack() {
                     />
                     <Stack.Screen
                         name={'Settings'}
-                        component={Settings}
+                        component={SettingsScreen}
                         options={{
                             cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
                             gestureEnabled: true,
@@ -60,7 +60,7 @@ export function AuthStack() {
                 <>
                     <Stack.Screen
                         name={'Login'}
-                        component={Login}
+                        component={LoginScreen}
                         options={{
                             headerShown: false,
                             cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS

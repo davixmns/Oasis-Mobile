@@ -1,5 +1,5 @@
 import {createContext, useContext, useEffect, useState} from "react";
-import {createUserService, tryLoginService} from "../service/apiService";
+import {createUserService, tryLoginService, verifyAccessTokenService} from "../service/apiService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {OasisUser, ProviderProps} from "../interfaces/interfaces";
 import {useNavigation} from "@react-navigation/native";
@@ -28,20 +28,28 @@ export function AuthProvider({children}: ProviderProps) {
     const navigation = useNavigation()
 
     useEffect(() => {
-        async function checkAuthentication() {
-            await new Promise(resolve => setTimeout(resolve, 1000))
-            const accessToken = await AsyncStorage.getItem('@oasis-accessToken')
-            const refreshToken = await AsyncStorage.getItem('@oasis-refreshToken')
-            const oasisUser = await AsyncStorage.getItem('@oasis-user')
-            if (accessToken && refreshToken && oasisUser) {
-                setIsAuthenticated(true)
-                setIsLoading(false)
-                setUser(JSON.parse(oasisUser))
-            }
-            setIsLoading(false)
-        }
-        checkAuthentication()
+        verifyAccessToken()
     }, []);
+
+    async function verifyAccessToken() {
+        const accessToken = await AsyncStorage.getItem('@oasis-accessToken')
+        if (!accessToken) return
+
+        await verifyAccessTokenService(accessToken)
+            .then((response) => {
+                setIsAuthenticated(true)
+                const responseUser = response.data.data
+                setUser(responseUser)
+            })
+            .catch(() => {
+                console.log("Access Token expired")
+                setIsAuthenticated(false)
+            })
+            .finally(async () => {
+                await new Promise((resolve) => setTimeout(resolve, 1000))
+                setIsLoading(false)
+            })
+    }
 
     async function tryLogin(email: string, password: string) {
         if (email === '' || password === '') return

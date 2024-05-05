@@ -1,13 +1,10 @@
-import React, {useEffect, useRef} from "react";
-import {Container, Content} from "./Styles";
-import {useNavigation} from "@react-navigation/native";
+import {Container} from "./Styles";
 import {useAuthContext} from "../contexts/AuthContext";
-import {Button} from "react-native-paper";
-import {Alert, Linking, ScrollView, Text, TouchableOpacity, View} from "react-native";
+import {Alert, Linking, ScrollView} from "react-native";
 import styled from "styled-components/native";
 import {FontAwesome6} from "@expo/vector-icons";
 
-export default function Settings() {
+export default function SettingsScreen() {
     const {user, signOut} = useAuthContext()
     const goToLinkendin = () => Linking.openURL('https://www.linkedin.com/in/davi-ximenes-93314a20b/')
     const goToGithub = () => Linking.openURL('https://github.com/davixmns')
@@ -30,7 +27,6 @@ export default function Settings() {
         <SettingsContainer>
             <ScrollContainer>
                 <SettingsContent>
-
                     <OptionsContainer>
                         <SectionTitle>ACCOUNT</SectionTitle>
                         <OptionBox>

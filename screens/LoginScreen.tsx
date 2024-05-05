@@ -21,7 +21,7 @@ import * as Animatable from 'react-native-animatable';
 import {useAuthContext} from "../contexts/AuthContext";
 import {OasisUser} from "../interfaces/interfaces";
 
-export function Login() {
+export function LoginScreen() {
     const {createUser, tryLogin} = useAuthContext()
 
     //Background animation

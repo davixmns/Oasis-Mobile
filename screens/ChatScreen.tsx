@@ -9,21 +9,11 @@ import {
 } from "react-native";
 import styled from "styled-components/native";
 import ChatInput from "../components/ChatInput";
+import {OasisMessage} from "../interfaces/interfaces";
 
-export function Chat() {
+export function ChatScreen({messages, oasisChatId}: {messages: OasisMessage[], oasisChatId: number}) {
     const [userMessage, setUserMessage] = useState('');
-    const messages = [
-        {id: 1, message: 'Hello'},
-        {id: 2, message: 'Hi'},
-        {id: 3, message: 'How are you?'},
-        {id: 4, message: 'I am fine, thank you'},
-        {id: 5, message: 'How about you?'},
-        {id: 6, message: 'I am good too'},
-        {id: 7, message: 'What are you doing?'},
-        {id: 8, message: 'I am chatting with you'},
-        {id: 9, message: 'Haha'},
-        {id: 10, message: 'Haha'},
-    ];
+
     const messageListRef = useRef<FlatList>(null);
     async function scrollToBottom() {
         if (!messageListRef.current) return;
@@ -76,8 +66,3 @@ export function Chat() {
         </SafeAreaView>
     );
 }
-
-const ScrollContainer = styled.View`
-  flex: 1;
-  background-color: #000;
-`;

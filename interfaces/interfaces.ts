@@ -10,3 +10,16 @@ export interface OasisUser {
     email: string;
     password?: string;
 }
+
+export interface OasisChat {
+    oasisChatId: number;
+    oasisUserId: number;
+    title?: string;
+    chatgptThreadId: string;
+    geminiThreadId?: string;
+    messages: OasisMessage[];
+}
+
+export interface OasisMessage {
+
+}
