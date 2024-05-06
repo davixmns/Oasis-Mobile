@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {StatusBar} from 'expo-status-bar';
 import {Provider as PaperProvider} from 'react-native-paper';
@@ -8,11 +8,13 @@ import CustomDrawerContent from "../components/CustomDrawerContent";
 import {useChatContext} from "../contexts/ChatContext";
 import styled from "styled-components/native";
 import {NewChatScreen} from "../screens/NewChatScreen";
+import {log} from "expo/build/devtools/logger";
+import {OasisChat} from "../interfaces/interfaces";
 
 const Drawer = createDrawerNavigator();
 
 export function MyDrawer() {
-    const { chats } = useChatContext();
+    const {chats} = useChatContext();
     const [menuVisible, setMenuVisible] = useState(false);
 
     const openMenu = () => setMenuVisible(true);
@@ -21,7 +23,7 @@ export function MyDrawer() {
     return (
         <PaperProvider>
             <>
-                <StatusBar style="light" backgroundColor="#000" />
+                <StatusBar style="light" backgroundColor="#000"/>
                 <Drawer.Navigator
                     drawerContent={(props) => <CustomDrawerContent {...props} />}
                     // @ts-ignore
@@ -30,16 +32,13 @@ export function MyDrawer() {
                         headerRight: () => ChatBotSelector(closeMenu, menuVisible, openMenu),
                     }}
                 >
-                    <Drawer.Screen name="New Chat" component={NewChatScreen} />
-                    {chats.map((chat) => (
-                        <Drawer.Screen key={chat.oasisChatId} name={chat.oasisChatId.toString()}>
-                            {() => (
-                                <ChatScreen
-                                    messages={chat.messages}
-                                    oasisChatId={chat.oasisChatId}
-                                />
-                            )}
-                        </Drawer.Screen>
+                    <Drawer.Screen name="New Chat" component={NewChatScreen}/>
+                    {chats.map(chat => (
+                        <Drawer.Screen
+                            key={chat.oasisChatId}
+                            name={chat.oasisChatId.toString()}
+                            children={() => <ChatScreen chatData={chat}/>}
+                        />
                     ))}
                 </Drawer.Navigator>
             </>

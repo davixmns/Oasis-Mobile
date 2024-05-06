@@ -3,6 +3,7 @@ import {OasisChat, ProviderProps} from "../interfaces/interfaces";
 import {getAllChatsService} from "../service/apiService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useAuthContext} from "./AuthContext";
+import {useNavigation} from "@react-navigation/native";
 
 interface ChatContextType {
     chats: OasisChat[];
@@ -18,6 +19,7 @@ export function useChatContext() {
 export function ChatProvider({children}: ProviderProps) {
     const {isAuthenticated} = useAuthContext();
     const [chats, setChats] = useState<OasisChat[]>([]);
+    const navigation = useNavigation();
 
     useEffect(() => {
         async function fetchData() {
@@ -44,7 +46,7 @@ export function ChatProvider({children}: ProviderProps) {
     }
 
     async function createNewChat(newChat: OasisChat) {
-        setChats([...chats, newChat]);
+        setChats(currentChats => [...currentChats, newChat]);
     }
 
     return (

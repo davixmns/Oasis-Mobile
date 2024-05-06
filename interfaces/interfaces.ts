@@ -15,11 +15,17 @@ export interface OasisChat {
     oasisChatId: number;
     oasisUserId: number;
     title?: string;
-    chatgptThreadId: string;
+    chatGptThreadId: string;
     geminiThreadId?: string;
     messages: OasisMessage[];
 }
 
 export interface OasisMessage {
-
+    oasisMessageId: number;
+    oasisChatId: number;
+    message: string;
+    from: string;
+    fromThreadId?: string | null;
+    FromMessageId?: string | null;
+    createdAt: string;
 }

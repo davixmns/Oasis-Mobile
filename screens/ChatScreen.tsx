@@ -9,11 +9,10 @@ import {
 } from "react-native";
 import styled from "styled-components/native";
 import ChatInput from "../components/ChatInput";
-import {OasisMessage} from "../interfaces/interfaces";
+import {OasisChat, OasisMessage} from "../interfaces/interfaces";
 
-export function ChatScreen({messages, oasisChatId}: {messages: OasisMessage[], oasisChatId: number}) {
+export function ChatScreen({chatData}: {chatData: OasisChat}) {
     const [userMessage, setUserMessage] = useState('');
-
     const messageListRef = useRef<FlatList>(null);
     async function scrollToBottom() {
         if (!messageListRef.current) return;
@@ -40,7 +39,7 @@ export function ChatScreen({messages, oasisChatId}: {messages: OasisMessage[], o
                 keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
             >
                 <FlatList
-                    data={messages}
+                    data={chatData.messages}
                     renderItem={renderMessage}
                     ref={messageListRef}
                     inverted={true}

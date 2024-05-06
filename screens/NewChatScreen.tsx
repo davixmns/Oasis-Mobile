@@ -2,12 +2,38 @@ import {useState} from "react";
 import {FlatList, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, Text, View} from "react-native";
 import ChatInput from "../components/ChatInput";
 import styled from "styled-components/native";
+import {useChatContext} from "../contexts/ChatContext";
+import {OasisChat, OasisMessage} from "../interfaces/interfaces";
+import {useNavigation} from "@react-navigation/native";
 
 export function NewChatScreen() {
+    const {createNewChat} = useChatContext();
     const [userMessage, setUserMessage] = useState('');
+    const navigation = useNavigation();
 
-    async function handleSendMessage() {
-
+    async function handleSendFirsMessage() {
+        const newMessage : OasisMessage = {
+            from: 'User',
+            message: userMessage,
+            oasisChatId: 9,
+            fromThreadId: null,
+            FromMessageId: null,
+            oasisMessageId: 1,
+            createdAt: new Date().toISOString(),
+        }
+        const random = Math.floor(Math.random() * 1000);
+        const newChat : OasisChat = {
+            messages: [newMessage],
+            oasisChatId: random,
+            oasisUserId: 1,
+            chatGptThreadId: "teste",
+            geminiThreadId: "teste",
+            title: "chat novo",
+        }
+        await createNewChat(newChat)
+        // @ts-ignore
+        navigation.navigate(newChat.oasisChatId.toString(), {chatData: newChat});
+        setUserMessage('')
     }
 
     return (
@@ -29,7 +55,7 @@ export function NewChatScreen() {
                         }
                         setUserMessage(text);
                     }}
-                    onPress={handleSendMessage}
+                    onPress={handleSendFirsMessage}
                 />
             </KeyboardAvoidingView>
         </SafeAreaView>
