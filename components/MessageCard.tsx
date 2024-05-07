@@ -24,18 +24,39 @@ export function MessageCard({oasisMessage}: { oasisMessage: OasisMessage }) {
     return (
         <Container from={oasisMessage.from}>
             <Header>
-                {renderProfileImage()}
-                <Text>{oasisMessage.from === 'User' ? 'You' : oasisMessage.from}</Text>
+                {oasisMessage.from === 'User' ? (
+                    <>
+                        <FromName>{oasisMessage.from === 'User' ? 'You' : oasisMessage.from}</FromName>
+                        {renderProfileImage()}
+                    </>
+                ) : (
+                    <>
+                        <FromName>{oasisMessage.from === 'User' ? 'You' : oasisMessage.from}</FromName>
+                        {renderProfileImage()}
+                    </>
+                )}
             </Header>
+            <Content>
+                <Message>{oasisMessage.message}</Message>
+            </Content>
         </Container>
     )
 }
 
 const Container = styled.View<{ from: string }>`
   display: flex;
-  background-color: antiquewhite;
-  width: 90%;
+  //background-color: antiquewhite;
+  gap: 7px;
+  width: 100%;
   align-items: ${props => props.from === 'User' ? 'flex-end' : 'flex-start'};
+  justify-content: flex-end;
+`
+
+const Content = styled.View`
+  max-width: 80%;
+  border: 0.2px solid #dedede;
+  border-radius: 10px;
+  align-items: flex-end;
 `
 
 const Header = styled.View`
@@ -44,6 +65,21 @@ const Header = styled.View`
 `
 
 const FromImage = styled.Image`
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
+  border-radius: 20px;
+`
+
+const FromName = styled.Text`
+  font-size: 16px;
+  font-weight: bold;
+  color: white;
+  margin: 5px;
+  align-self: center;
+`
+
+const Message = styled.Text`
+  font-size: 16px;
+  color: #fff;
+  margin: 10px;
 `

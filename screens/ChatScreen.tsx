@@ -7,10 +7,8 @@ import {
     View,
     SafeAreaView, FlatList, ActivityIndicator
 } from "react-native";
-import styled from "styled-components/native";
 import ChatInput from "../components/ChatInput";
 import {OasisChat, OasisMessage} from "../interfaces/interfaces";
-import LoaderKit from 'react-native-loader-kit'
 import {MessageCard} from "../components/MessageCard";
 
 export function ChatScreen({chatData}: { chatData: OasisChat }) {

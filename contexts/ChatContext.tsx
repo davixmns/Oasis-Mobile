@@ -4,10 +4,12 @@ import {getAllChatsService, sendFirstMessageService} from "../service/apiService
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useAuthContext} from "./AuthContext";
 import {useNavigation} from "@react-navigation/native";
+import {Alert} from "react-native";
 
 interface ChatContextType {
     chats: OasisChat[];
     createNewChat: (fisrtUserMessage: string) => Promise<void>;
+    sendFirstMessage: (userMessage: string, chatbotEnums: number[]) => Promise<void>;
 }
 
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
@@ -72,11 +74,29 @@ export function ChatProvider({children}: ProviderProps) {
         navigation.navigate(newChat.oasisChatId.toString(), {chatData: newChat});
     }
 
+    async function sendFirstMessage(userMessage: string, chatbotEnums: number[]){
+        if (!userMessage || userMessage === '' || chatbotEnums.length !== 2) return;
+        const tokenJwt = await AsyncStorage.getItem('@oasis-accessToken');
+        if (!tokenJwt) return;
+        await sendFirstMessageService(userMessage, chatbotEnums, tokenJwt)
+            .then((response) => {
+                return response.data;
+            })
+            .catch((error) => {
+                if(error.response) {
+                    Alert.alert('Erro ao enviar mensagem', 'Tente novamente mais tarde')
+                    console.log(error?.response)
+                    throw error;
+                }
+            })
+    }
+
     return (
         <ChatContext.Provider
             value={{
                 chats,
-                createNewChat
+                createNewChat,
+                sendFirstMessage
             }}
         >
             {children}

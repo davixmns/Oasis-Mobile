@@ -4,22 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":sparkles: estrutura para criação de chats">
-      <change afterPath="$PROJECT_DIR$/assets/chatGptLogo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/geminiLogo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/components/MessageCard.tsx" afterDir="false" />
+    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":art: iniciando estilização do MessageCard.tsx">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ChatBotSelector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatBotSelector.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/MessageCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/MessageCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contexts/ChatContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/ChatContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/interfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/interfaces.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navigations/MyDrawer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/MyDrawer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/ChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ChatScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/NewChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/NewChatScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/apiService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/service/apiService.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -113,7 +102,7 @@
       <workItem from="1715001324362" duration="6080000" />
       <workItem from="1715013964124" duration="6233000" />
       <workItem from="1715086463784" duration="2370000" />
-      <workItem from="1715091213212" duration="2501000" />
+      <workItem from="1715091213212" duration="5459000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
@@ -259,7 +248,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715007409869</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary=":art: iniciando estilização do MessageCard.tsx">
+      <option name="closed" value="true" />
+      <created>1715093785717</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1715093785717</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -282,6 +279,7 @@
     <MESSAGE value=":art: tela de settings" />
     <MESSAGE value=":sparkles: exibindo conversas salvas do banco" />
     <MESSAGE value=":sparkles: estrutura para criação de chats" />
-    <option name="LAST_COMMIT_MESSAGE" value=":sparkles: estrutura para criação de chats" />
+    <MESSAGE value=":art: iniciando estilização do MessageCard.tsx" />
+    <option name="LAST_COMMIT_MESSAGE" value=":art: iniciando estilização do MessageCard.tsx" />
   </component>
 </project>
