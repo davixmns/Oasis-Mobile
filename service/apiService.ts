@@ -46,6 +46,7 @@ export async function getAllChatsService(tokenJwt: string) {
 }
 
 export async function sendFirstMessageService(userMessage: string, chatbotEnums: number[], tokenJwt: string) {
+
     return await api.post(
         "/Chat/SendFirstMessage",
         {

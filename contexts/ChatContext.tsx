@@ -9,7 +9,9 @@ import {Alert} from "react-native";
 interface ChatContextType {
     chats: OasisChat[];
     createNewChat: (fisrtUserMessage: string) => Promise<void>;
-    sendFirstMessage: (userMessage: string, chatbotEnums: number[]) => Promise<void>;
+    sendFirstMessage: (userMessage: string) => Promise<void>;
+    chatbotEnums: number[];
+    setChatbotEnums: (enums: number[]) => void;
 }
 
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
@@ -21,6 +23,7 @@ export function useChatContext() {
 export function ChatProvider({children}: ProviderProps) {
     const {isAuthenticated} = useAuthContext();
     const [chats, setChats] = useState<OasisChat[]>([]);
+    const [chatbotEnums, setChatbotEnums] = useState<number[]>([1, 1]);
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -74,11 +77,11 @@ export function ChatProvider({children}: ProviderProps) {
         navigation.navigate(newChat.oasisChatId.toString(), {chatData: newChat});
     }
 
-    async function sendFirstMessage(userMessage: string, chatbotEnums: number[]){
-        if (!userMessage || userMessage === '' || chatbotEnums.length !== 2) return;
+    async function sendFirstMessage(userMessage: string){
+        if(userMessage === '') return;
         const tokenJwt = await AsyncStorage.getItem('@oasis-accessToken');
         if (!tokenJwt) return;
-        await sendFirstMessageService(userMessage, chatbotEnums, tokenJwt)
+        return await sendFirstMessageService(userMessage, [1, 1], tokenJwt)
             .then((response) => {
                 return response.data;
             })
@@ -96,7 +99,9 @@ export function ChatProvider({children}: ProviderProps) {
             value={{
                 chats,
                 createNewChat,
-                sendFirstMessage
+                sendFirstMessage,
+                chatbotEnums,
+                setChatbotEnums
             }}
         >
             {children}

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Button, Menu, Switch} from 'react-native-paper';
 import {View, Platform, StyleSheet, Image} from 'react-native';
 import styled from "styled-components/native";
@@ -7,25 +7,50 @@ import styled from "styled-components/native";
 import gptLogo from '../assets/chatGptLogo.png';
 // @ts-ignore
 import geminiLogo from '../assets/geminiLogo.png';
+import {useChatContext} from "../contexts/ChatContext";
 
 export function ChatBotSelector(closeMenu: () => void, menuVisible: boolean, openMenu: () => void) {
+    const {chatbotEnums, setChatbotEnums} = useChatContext();
     const [chatGptEnabled, setChatGptEnabled] = useState(true);
     const [geminiEnabled, setGeminiEnabled] = useState(true);
 
+    useEffect(() => {
+        const newEnums = [];
+        if (chatGptEnabled) newEnums.push(1); // Assumindo que 1 representa ChatGPT
+        if (geminiEnabled) newEnums.push(2); // Assumindo que 2 representa Gemini
+        setChatbotEnums(newEnums);
+    }, [chatGptEnabled, geminiEnabled]);
+
+
 
     const toggleChatGpt = () => {
-        if (!geminiEnabled) {
+        if (chatGptEnabled && !geminiEnabled) {
             setGeminiEnabled(true);
         }
         setChatGptEnabled(!chatGptEnabled);
     };
 
     const toggleGemini = () => {
-        if (!chatGptEnabled) {
+        if (geminiEnabled && !chatGptEnabled) {
             setChatGptEnabled(true);
         }
         setGeminiEnabled(!geminiEnabled);
     };
+
+
+    // const toggleChatGpt = () => {
+    //     if (!geminiEnabled) {
+    //         setGeminiEnabled(true);
+    //     }
+    //     setChatGptEnabled(!chatGptEnabled);
+    // };
+    //
+    // const toggleGemini = () => {
+    //     if (!chatGptEnabled) {
+    //         setChatGptEnabled(true);
+    //     }
+    //     setGeminiEnabled(!geminiEnabled);
+    // };
 
     return (
         <View style={{marginRight: 10}}>

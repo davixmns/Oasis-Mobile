@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":art: iniciando estilização do MessageCard.tsx">
+    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":art: mensagem do usuario estilizada">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MessageCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/MessageCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ChatBotSelector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatBotSelector.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contexts/ChatContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/ChatContext.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/ChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ChatScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/apiService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/service/apiService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -102,7 +103,7 @@
       <workItem from="1715001324362" duration="6080000" />
       <workItem from="1715013964124" duration="6233000" />
       <workItem from="1715086463784" duration="2370000" />
-      <workItem from="1715091213212" duration="5459000" />
+      <workItem from="1715091213212" duration="10761000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
@@ -256,7 +257,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715093785717</updated>
     </task>
-    <option name="localTasksCounter" value="20" />
+    <task id="LOCAL-00020" summary=":art: mensagem do usuario estilizada">
+      <option name="closed" value="true" />
+      <created>1715102391536</created>
+      <option name="number" value="00020" />
+      <option name="presentableId" value="LOCAL-00020" />
+      <option name="project" value="LOCAL" />
+      <updated>1715102391536</updated>
+    </task>
+    <option name="localTasksCounter" value="21" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -280,6 +289,7 @@
     <MESSAGE value=":sparkles: exibindo conversas salvas do banco" />
     <MESSAGE value=":sparkles: estrutura para criação de chats" />
     <MESSAGE value=":art: iniciando estilização do MessageCard.tsx" />
-    <option name="LAST_COMMIT_MESSAGE" value=":art: iniciando estilização do MessageCard.tsx" />
+    <MESSAGE value=":art: mensagem do usuario estilizada" />
+    <option name="LAST_COMMIT_MESSAGE" value=":art: mensagem do usuario estilizada" />
   </component>
 </project>
