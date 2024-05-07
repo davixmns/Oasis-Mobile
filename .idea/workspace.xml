@@ -4,14 +4,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":sparkles: exibindo conversas salvas do banco">
+    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":sparkles: estrutura para criação de chats">
+      <change afterPath="$PROJECT_DIR$/assets/chatGptLogo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/assets/geminiLogo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/MessageCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/ChatBotSelector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatBotSelector.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contexts/ChatContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/ChatContext.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/interfaces/interfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/interfaces.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/navigations/MyDrawer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/MyDrawer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/ChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ChatScreen.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/NewChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/NewChatScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/apiService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/service/apiService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,23 +44,23 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ReactCreateComponentLastSelected": "functionDeclarationComponent",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "git-widget-placeholder": "main",
-    "last_opened_file_path": "/Users/davixmns/projetos/react-native/Oasis/assets",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "yarn",
-    "ts.external.directory.path": "/Users/davixmns/projetos/react-native/Oasis/node_modules/typescript/lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ReactCreateComponentLastSelected&quot;: &quot;functionDeclarationComponent&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/davixmns/projetos/react-native/Oasis/assets&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/davixmns/projetos/react-native/Oasis/node_modules/typescript/lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="ReactDesignerToolWindowState">
     <option name="myId2Visible">
       <map>
@@ -66,6 +74,7 @@
       <recent name="$PROJECT_DIR$/assets" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/assets" />
       <recent name="$PROJECT_DIR$/contexts" />
       <recent name="$PROJECT_DIR$/screens" />
     </key>
@@ -101,7 +110,10 @@
       <workItem from="1714612088714" duration="2591000" />
       <workItem from="1714743393406" duration="4729000" />
       <workItem from="1714877268751" duration="2122000" />
-      <workItem from="1715001324362" duration="5983000" />
+      <workItem from="1715001324362" duration="6080000" />
+      <workItem from="1715013964124" duration="6233000" />
+      <workItem from="1715086463784" duration="2370000" />
+      <workItem from="1715091213212" duration="2501000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
@@ -239,7 +251,15 @@
       <option name="project" value="LOCAL" />
       <updated>1714879381795</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary=":sparkles: estrutura para criação de chats">
+      <option name="closed" value="true" />
+      <created>1715007409869</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1715007409869</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -261,6 +281,7 @@
     <MESSAGE value=":sparkles: customizando conteudo do drawer" />
     <MESSAGE value=":art: tela de settings" />
     <MESSAGE value=":sparkles: exibindo conversas salvas do banco" />
-    <option name="LAST_COMMIT_MESSAGE" value=":sparkles: exibindo conversas salvas do banco" />
+    <MESSAGE value=":sparkles: estrutura para criação de chats" />
+    <option name="LAST_COMMIT_MESSAGE" value=":sparkles: estrutura para criação de chats" />
   </component>
 </project>

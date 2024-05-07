@@ -1,13 +1,13 @@
 import {createContext, useContext, useEffect, useState} from "react";
-import {OasisChat, ProviderProps} from "../interfaces/interfaces";
-import {getAllChatsService} from "../service/apiService";
+import {OasisChat, OasisMessage, ProviderProps} from "../interfaces/interfaces";
+import {getAllChatsService, sendFirstMessageService} from "../service/apiService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useAuthContext} from "./AuthContext";
 import {useNavigation} from "@react-navigation/native";
 
 interface ChatContextType {
     chats: OasisChat[];
-    createNewChat: (newChat: OasisChat) => void;
+    createNewChat: (fisrtUserMessage: string) => Promise<void>;
 }
 
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
@@ -45,8 +45,31 @@ export function ChatProvider({children}: ProviderProps) {
             })
     }
 
-    async function createNewChat(newChat: OasisChat) {
-        setChats(currentChats => [...currentChats, newChat]);
+    async function createNewChat(fisrtUserMessage: string) {
+        const tokenJwt = await AsyncStorage.getItem('@oasis-accessToken');
+        if (!tokenJwt) return;
+        const randomChatId = Math.floor(Math.random() * 1000);
+        const newMessage : OasisMessage = {
+            from: 'User',
+            message: fisrtUserMessage,
+            oasisChatId: randomChatId,
+            fromThreadId: null,
+            FromMessageId: null,
+            oasisMessageId: 1,
+            createdAt: new Date().toISOString(),
+        }
+        const newChat :OasisChat = {
+            messages: [newMessage],
+            oasisChatId: randomChatId,
+            oasisUserId: 1,
+            chatGptThreadId: "teste",
+            geminiThreadId: "teste",
+            title: "new",
+            isNewChat: true,
+        }
+        await setChats(currentChats => [...currentChats, newChat]);
+        // @ts-ignore
+        navigation.navigate(newChat.oasisChatId.toString(), {chatData: newChat});
     }
 
     return (

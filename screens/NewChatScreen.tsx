@@ -9,30 +9,10 @@ import {useNavigation} from "@react-navigation/native";
 export function NewChatScreen() {
     const {createNewChat} = useChatContext();
     const [userMessage, setUserMessage] = useState('');
-    const navigation = useNavigation();
 
     async function handleSendFirsMessage() {
-        const newMessage : OasisMessage = {
-            from: 'User',
-            message: userMessage,
-            oasisChatId: 9,
-            fromThreadId: null,
-            FromMessageId: null,
-            oasisMessageId: 1,
-            createdAt: new Date().toISOString(),
-        }
-        const random = Math.floor(Math.random() * 1000);
-        const newChat : OasisChat = {
-            messages: [newMessage],
-            oasisChatId: random,
-            oasisUserId: 1,
-            chatGptThreadId: "teste",
-            geminiThreadId: "teste",
-            title: "chat novo",
-        }
-        await createNewChat(newChat)
-        // @ts-ignore
-        navigation.navigate(newChat.oasisChatId.toString(), {chatData: newChat});
+        if(userMessage === '') return;
+        await createNewChat(userMessage)
         setUserMessage('')
     }
 

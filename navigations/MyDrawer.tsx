@@ -37,7 +37,7 @@ export function MyDrawer() {
                         <Drawer.Screen
                             key={chat.oasisChatId}
                             name={chat.oasisChatId.toString()}
-                            children={() => <ChatScreen chatData={chat}/>}
+                            children={() => <ChatScreen chatData={chat} isNewChat={false}/>}
                         />
                     ))}
                 </Drawer.Navigator>

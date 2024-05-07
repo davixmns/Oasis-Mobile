@@ -1,29 +1,40 @@
-import {useState, useRef} from "react";
+import {useState, useRef, useEffect} from "react";
 import {
     Keyboard,
     KeyboardAvoidingView,
     Platform,
     Text,
     View,
-    SafeAreaView, FlatList
+    SafeAreaView, FlatList, ActivityIndicator
 } from "react-native";
 import styled from "styled-components/native";
 import ChatInput from "../components/ChatInput";
 import {OasisChat, OasisMessage} from "../interfaces/interfaces";
+import LoaderKit from 'react-native-loader-kit'
+import {MessageCard} from "../components/MessageCard";
 
-export function ChatScreen({chatData}: {chatData: OasisChat}) {
+export function ChatScreen({chatData}: { chatData: OasisChat }) {
+    const [messageIsLoading, setMessageIsLoading] = useState<boolean>(false);
     const [userMessage, setUserMessage] = useState('');
     const messageListRef = useRef<FlatList>(null);
+
+    useEffect(() => {
+        if (chatData.isNewChat === true) {
+            setMessageIsLoading(true);
+            const firstMessage = chatData.messages[0].message;
+            console.log(`First message: ${firstMessage}`)
+            setMessageIsLoading(false);
+        }
+    }, [chatData.isNewChat]);
+
     async function scrollToBottom() {
         if (!messageListRef.current) return;
         messageListRef.current.scrollToOffset({offset: 0, animated: true});
     }
 
-    function renderMessage({item}: any) {
+    function renderMessage({item}: { item: OasisMessage }) {
         return (
-            <View key={item.id} style={{backgroundColor: 'gray', height: 100, marginTop: 20}}>
-                <Text>{item.message}</Text>
-            </View>
+            <MessageCard oasisMessage={item}/>
         );
     }
 
@@ -52,7 +63,7 @@ export function ChatScreen({chatData}: {chatData: OasisChat}) {
                 <ChatInput
                     message={userMessage}
                     setMessage={(text) => {
-                        if(text === '\n') {
+                        if (text === '\n') {
                             Keyboard.dismiss();
                             return;
                         }

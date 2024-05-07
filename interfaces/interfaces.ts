@@ -17,6 +17,7 @@ export interface OasisChat {
     title?: string;
     chatGptThreadId: string;
     geminiThreadId?: string;
+    isNewChat?: boolean;
     messages: OasisMessage[];
 }
 

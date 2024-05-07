@@ -1,7 +1,12 @@
 import React, {useState} from 'react';
 import {Button, Menu, Switch} from 'react-native-paper';
-import {View, Platform, StyleSheet} from 'react-native';
+import {View, Platform, StyleSheet, Image} from 'react-native';
 import styled from "styled-components/native";
+
+// @ts-ignore
+import gptLogo from '../assets/chatGptLogo.png';
+// @ts-ignore
+import geminiLogo from '../assets/geminiLogo.png';
 
 export function ChatBotSelector(closeMenu: () => void, menuVisible: boolean, openMenu: () => void) {
     const [chatGptEnabled, setChatGptEnabled] = useState(true);
@@ -25,26 +30,40 @@ export function ChatBotSelector(closeMenu: () => void, menuVisible: boolean, ope
     return (
         <View style={{marginRight: 10}}>
             <Menu
-                style={{marginTop: 45}}
+                style={{marginTop: 50, paddingRight: 10}}
                 visible={menuVisible}
                 onDismiss={closeMenu}
                 anchor={<Button onPress={openMenu}>Bots</Button>}
                 contentStyle={styles.menu}
             >
-                <Option>
-                    <OptionText>ChatGPT</OptionText>
+                <OptionContainer>
+                    <OptionContent>
+                        <ChatbotLogo
+                            source={gptLogo}
+                        />
+                        <ChatbotText>ChatGPT 3.5 Turbo</ChatbotText>
+                    </OptionContent>
                     <Switch
                         value={chatGptEnabled}
                         onValueChange={toggleChatGpt}
+                        trackColor={{false: '#5a5a5a', true: '#74dc65'}}
+                        ios_backgroundColor={chatGptEnabled ? '#74dc65' : '#5a5a5a'}
                     />
-                </Option>
-                <Option>
-                    <OptionText>Gemini</OptionText>
+                </OptionContainer>
+                <OptionContainer>
+                    <OptionContent>
+                        <ChatbotLogo
+                            source={geminiLogo}
+                        />
+                        <ChatbotText>Gemini 1.5 Pro</ChatbotText>
+                    </OptionContent>
                     <Switch
                         value={geminiEnabled}
                         onValueChange={toggleGemini}
+                        trackColor={{false: '#5a5a5a', true: '#74dc65'}}
+                        ios_backgroundColor={geminiEnabled ? '#74dc65' : '#5a5a5a'}
                     />
-                </Option>
+                </OptionContainer>
             </Menu>
         </View>
     );
@@ -60,7 +79,7 @@ const styles = StyleSheet.create({
     }
 })
 
-const Option = styled.View`
+const OptionContainer = styled.View`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -69,8 +88,21 @@ const Option = styled.View`
   gap: 10px;
 `
 
-const OptionText = styled.Text`
+const OptionContent = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+`
+
+const ChatbotText = styled.Text`
   color: #fff;
   font-size: 16px;
   font-weight: bold;
+`
+
+const ChatbotLogo = styled.Image`
+  height: 30px;
+  width: 30px;
 `
