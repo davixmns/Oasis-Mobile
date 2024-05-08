@@ -1,6 +1,6 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import {OasisChat, OasisMessage, ProviderProps} from "../interfaces/interfaces";
-import {getAllChatsService, sendFirstMessageService} from "../service/apiService";
+import {getAllChatsService, saveChatbotMessageService, sendFirstMessageService} from "../service/apiService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useAuthContext} from "./AuthContext";
 import {useNavigation} from "@react-navigation/native";
@@ -9,9 +9,10 @@ import {Alert} from "react-native";
 interface ChatContextType {
     chats: OasisChat[];
     createNewChat: (fisrtUserMessage: string) => Promise<void>;
-    sendFirstMessage: (userMessage: string) => Promise<void>;
+    sendFirstMessage: (userMessage: string) => Promise<any>;
     chatbotEnums: number[];
-    setChatbotEnums: (enums: number[]) => void;
+    setChatbotEnums: (chatbotEnums: number[]) => void;
+    saveChatbotMessage: (chatbotMessage: OasisMessage) => Promise<void>;
 }
 
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
@@ -94,6 +95,21 @@ export function ChatProvider({children}: ProviderProps) {
             })
     }
 
+    async function saveChatbotMessage(chatbotMessage: OasisMessage) {
+        const tokenJwt = await AsyncStorage.getItem('@oasis-accessToken');
+        if (!tokenJwt) return;
+        await saveChatbotMessageService(chatbotMessage, tokenJwt)
+            .then(() => {
+                console.log("Mensagem do escolhida salva!")
+            })
+            .catch((error) => {
+                if(error.response) {
+                    console.log('erro ao salvar mensagem -> ' + error.response)
+                    throw error;
+                }
+            })
+    }
+
     return (
         <ChatContext.Provider
             value={{
@@ -101,7 +117,8 @@ export function ChatProvider({children}: ProviderProps) {
                 createNewChat,
                 sendFirstMessage,
                 chatbotEnums,
-                setChatbotEnums
+                setChatbotEnums,
+                saveChatbotMessage
             }}
         >
             {children}

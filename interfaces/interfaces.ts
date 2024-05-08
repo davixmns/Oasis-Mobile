@@ -22,12 +22,12 @@ export interface OasisChat {
 }
 
 export interface OasisMessage {
-    oasisMessageId: number;
+    oasisMessageId?: number;
     oasisChatId: number;
     message: string;
     from: string;
     fromThreadId?: string | null;
     FromMessageId?: string | null;
-    createdAt: string;
+    createdAt?: string;
     isSaved?: boolean;
 }
