@@ -63,7 +63,7 @@ export function AuthStack() {
                         component={LoginScreen}
                         options={{
                             headerShown: false,
-                            cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
+                            cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
                         }}
                     />
                 </>

@@ -44,6 +44,8 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                 setChatInfo(responseData.chat)
                 setActualChatGptResponse(responseData?.chatbotMessages[0])
                 setActualGeminiResponse(responseData?.chatbotMessages[1])
+
+                console.log(responseData?.chatbotMessages[0])
                 setUserMessage('')
                 setRenderSwippable(true);
             })

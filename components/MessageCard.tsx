@@ -8,11 +8,13 @@ import chatGgptLogo from '../assets/chatGptLogo.png'
 import userPicture from '../assets/defaultPicture.jpeg'
 //@ts-ignore
 import geminiLogo from '../assets/geminiLogo.png'
+import {useState} from "react";
 
 const { width } = Dimensions.get('window'); // Obter a largura da tela do dispositivo
 
 
 export function MessageCard({oasisMessage}: { oasisMessage: OasisMessage }) {
+    const [isSaved, setIsSaved] = useState<boolean>(oasisMessage.isSaved!)
 
     function renderProfileImage() {
         if (oasisMessage.from === 'User') {
@@ -39,7 +41,7 @@ export function MessageCard({oasisMessage}: { oasisMessage: OasisMessage }) {
                     </>
                 )}
             </Header>
-            <Content from={oasisMessage.from} isSaved={!oasisMessage.isSaved}>
+            <Content from={oasisMessage.from} isSaved={isSaved}>
                 <Message>{oasisMessage.message}</Message>
             </Content>
         </Container>
@@ -59,7 +61,8 @@ const Content = styled.View<{isSaved: boolean, from: string}>`
   max-width: 100%;
   border: ${props => props.from === 'ChatGPT' ? '2px solid #6fa99b' : props.from === 'Gemini' ? '2px solid #3594db' : '0.5px solid #fff'};
   border-radius: 10px;
-  background-color: ${props => props.isSaved === true && props.from !== 'User' ? '#3A3A3A' : '#000'};
+  background-color: ${props => props.isSaved === true ? '#3A3A3A' : '#000'};
+  background-color: ${props => props.isSaved === false && props.from !== 'User' ? '#3A3A3A' : '#000'};
   align-items: flex-end;
 `
 

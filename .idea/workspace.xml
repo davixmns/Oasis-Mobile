@@ -4,14 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":sparkles: salvando respostas dos chatbots">
+    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":bug: carregando conversas no login">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/MessageCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/MessageCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contexts/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/AuthContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contexts/ChatContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/ChatContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/interfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/interfaces.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/navigations/AuthStack.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/AuthStack.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/ChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ChatScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/LoginScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/LoginScreen.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -116,7 +114,7 @@
       <workItem from="1715132442387" duration="91000" />
       <workItem from="1715132540933" duration="284000" />
       <workItem from="1715132832367" duration="2307000" />
-      <workItem from="1715173409827" duration="14280000" />
+      <workItem from="1715173409827" duration="16689000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
@@ -318,7 +316,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715191251304</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary=":bug: carregando conversas no login">
+      <option name="closed" value="true" />
+      <created>1715196773361</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1715196773361</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -346,6 +352,7 @@
     <MESSAGE value=":art: recebendo resposta de mensagem da api" />
     <MESSAGE value=":art: utilizando carrossel" />
     <MESSAGE value=":sparkles: salvando respostas dos chatbots" />
-    <option name="LAST_COMMIT_MESSAGE" value=":sparkles: salvando respostas dos chatbots" />
+    <MESSAGE value=":bug: carregando conversas no login" />
+    <option name="LAST_COMMIT_MESSAGE" value=":bug: carregando conversas no login" />
   </component>
 </project>
