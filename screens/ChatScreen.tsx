@@ -42,10 +42,8 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
             .then((responseData: any) => {
                 chatInfo.isNewChat = false;
                 setChatInfo(responseData.chat)
-
                 setActualChatGptResponse(responseData?.chatbotMessages[0])
                 setActualGeminiResponse(responseData?.chatbotMessages[1])
-
                 setUserMessage('')
                 setRenderSwippable(true);
             })
@@ -84,6 +82,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
             message: chatbotMessage.message,
             FromMessageId: chatbotMessage.FromMessageId,
             fromThreadId: chatbotMessage.fromThreadId,
+            isSaved: true,
         }
         await saveChatbotMessage(formattedMessage)
             .then(() => {
@@ -99,7 +98,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
         return <MessageCard oasisMessage={item}/>
     }
 
-    function renderContent() {
+    function renderBottomContent() {
         if (messageIsLoading && !renderSwippable) {
             return <ActivityIndicator size="large" color="#fff"/>;
         } else {
@@ -121,7 +120,8 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                             }
                             setUserMessage(text);
                         }}
-                        onPress={() => console.log("Send message")} // You can replace with your sendMessage function
+                        onFocus={() => scrollToBottom()}
+                        onPress={() => handleSendMessage()}
                     />
                 );
             }
@@ -138,10 +138,11 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                 <FlatList
                     data={chatMessages}
                     renderItem={renderMessage}
+                    style={{width: '96%', alignSelf: 'center', paddingTop: 12}}
                     keyExtractor={(item, index) => index.toString()}
                     inverted={false}
                     onContentSizeChange={() => messageListRef.current?.scrollToEnd({animated: false})}
-                    ListHeaderComponent={
+                    ListFooterComponent={
                         renderSwippable ? (
                             <FlatList
                                 horizontal
@@ -161,15 +162,15 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                     }
                 />
 
-                <FooterContainer>
-                    {renderContent()}
-                </FooterContainer>
+                <BottomContent>
+                    {renderBottomContent()}
+                </BottomContent>
             </KeyboardAvoidingView>
         </SafeAreaView>
     );
 }
 
-const FooterContainer = styled.View`
+const BottomContent = styled.View`
   height: 50px;
   display: flex;
   margin-top: 10px;

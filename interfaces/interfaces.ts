@@ -29,5 +29,5 @@ export interface OasisMessage {
     fromThreadId?: string | null;
     FromMessageId?: string | null;
     createdAt?: string;
-    isSaved?: boolean;
+    isSaved?: boolean | undefined | null
 }

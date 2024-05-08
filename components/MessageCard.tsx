@@ -25,32 +25,39 @@ export function MessageCard({oasisMessage}: { oasisMessage: OasisMessage }) {
     }
 
     return (
-        <Container>
+        <Container from={oasisMessage.from}>
             <Header>
-                {renderProfileImage()}
-                <FromName>{oasisMessage.from === 'User' ? 'You' : oasisMessage.from}</FromName>
+                {oasisMessage.from === 'User' ? (
+                    <>
+                        <FromName>{oasisMessage.from === 'User' ? 'You' : oasisMessage.from}</FromName>
+                        {renderProfileImage()}
+                    </>
+                ) : (
+                    <>
+                        {renderProfileImage()}
+                        <FromName>{oasisMessage.from === 'User' ? 'You' : oasisMessage.from}</FromName>
+                    </>
+                )}
             </Header>
-            <Content from={oasisMessage.from}>
+            <Content from={oasisMessage.from} isSaved={!oasisMessage.isSaved}>
                 <Message>{oasisMessage.message}</Message>
             </Content>
         </Container>
     )
 }
 
-const Container = styled.View`
+const Container = styled.View<{from: string}>`
   display: flex;
   gap: 7px;
-  align-items: flex-start;
   justify-content: flex-end;
-  padding-left: 10px;
-  padding-top: 10px;
+  align-items: ${props => props.from === 'User' ? 'flex-end' : 'flex-start'};
 `
 
-const Content = styled.View<{from: string}>`
+const Content = styled.View<{isSaved: boolean, from: string}>`
   max-width: 100%;
   border: ${props => props.from === 'ChatGPT' ? '2px solid #6fa99b' : props.from === 'Gemini' ? '2px solid #3594db' : '0.5px solid #fff'};
   border-radius: 10px;
-  background-color: ${props => props.from !== 'User' ? '#3A3A3A' : '#000'};
+  background-color: ${props => props.isSaved === true && props.from !== 'User' ? '#3A3A3A' : '#000'};
   align-items: flex-end;
 `
 
