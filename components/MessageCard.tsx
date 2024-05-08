@@ -24,17 +24,8 @@ export function MessageCard({oasisMessage}: { oasisMessage: OasisMessage }) {
     return (
         <Container from={oasisMessage.from}>
             <Header>
-                {oasisMessage.from === 'User' ? (
-                    <>
-                        <FromName>{oasisMessage.from === 'User' ? 'You' : oasisMessage.from}</FromName>
-                        {renderProfileImage()}
-                    </>
-                ) : (
-                    <>
-                        <FromName>{oasisMessage.from === 'User' ? 'You' : oasisMessage.from}</FromName>
-                        {renderProfileImage()}
-                    </>
-                )}
+                {renderProfileImage()}
+                <FromName>{oasisMessage.from === 'User' ? 'You' : oasisMessage.from}</FromName>
             </Header>
             <Content>
                 <Message>{oasisMessage.message}</Message>
@@ -48,12 +39,14 @@ const Container = styled.View<{ from: string }>`
   //background-color: antiquewhite;
   gap: 7px;
   width: 100%;
-  align-items: ${props => props.from === 'User' ? 'flex-end' : 'flex-start'};
+  align-items: flex-start;
   justify-content: flex-end;
+  padding-left: 10px;
+  padding-top: 10px;
 `
 
 const Content = styled.View`
-  max-width: 80%;
+  max-width: 100%;
   border: 0.2px solid #dedede;
   border-radius: 10px;
   align-items: flex-end;

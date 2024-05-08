@@ -1,38 +1,53 @@
-import {useState, useRef, useEffect} from "react";
+import {useState, useRef, useEffect, forwardRef} from "react";
 import {
     Keyboard,
     KeyboardAvoidingView,
     Platform,
     Text,
     View,
-    SafeAreaView, FlatList, ActivityIndicator
+    SafeAreaView,
+    ActivityIndicator,
+    ScrollView, TouchableOpacity
 } from "react-native";
 import ChatInput from "../components/ChatInput";
 import {OasisChat, OasisMessage} from "../interfaces/interfaces";
 import {MessageCard} from "../components/MessageCard";
 import {useChatContext} from "../contexts/ChatContext";
+import {Swipeable} from "react-native-gesture-handler";
 
 export function ChatScreen({chatData}: { chatData: OasisChat }) {
     const {sendFirstMessage} = useChatContext();
-    const {chatbotEnums} = useChatContext();
     const [messageIsLoading, setMessageIsLoading] = useState<boolean>(false);
     const [userMessage, setUserMessage] = useState('');
-    const messageListRef = useRef<FlatList>(null);
+    const scrollViewRef = useRef<ScrollView>(null);
+    const [chatMessages, setChatMessages] = useState<OasisMessage[]>(chatData.messages);
+    const [renderSwippable, setRenderSwippable] = useState<boolean>(false);
+    const [actualChatGptResponse, setActualChatGptResponse] = useState<OasisMessage | null>(null);
+    const [actualGeminiResponse, setActualGeminiResponse] = useState<OasisMessage | null>(null);
 
     async function handleSendFirstMessage() {
         const firstMessage = chatData.messages[0].message;
         if (firstMessage === '') return;
         setMessageIsLoading(true);
         await sendFirstMessage(firstMessage)
-            .then((responseData) => {
+            .then((responseData: any) => {
                 console.log("Resposta do envio -> ")
-                console.log(responseData);
-                chatData.oasisChatId = responseData.chat.oasisChatId;
                 chatData.isNewChat = false;
+
+                const gptResponse = responseData?.chatbotMessages[0]
+                const geminiResponse = responseData?.chatbotMessages[1]
+
+                console.log('gpt -> ' + gptResponse)
+                console.log('gemini -> '+ geminiResponse)
+
+                setActualChatGptResponse(gptResponse)
+                setActualGeminiResponse(geminiResponse)
+
                 setUserMessage('')
+                setRenderSwippable(true);
             })
             .catch((error) => {
-                console.log("erro ao enviar mensage")
+                console.log("erro ao enviar mensagem -> " + error)
             })
             .finally(() => {
                 setMessageIsLoading(false);
@@ -45,74 +60,13 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                 await handleSendFirstMessage()
             }
         }
+
         init();
     }, [chatData.isNewChat]);
-
-
-    async function scrollToBottom() {
-        if (!messageListRef.current) return;
-        messageListRef.current.scrollToOffset({offset: 0, animated: true});
-    }
-
-    function renderMessage({item}: { item: OasisMessage }) {
-        return (
-            <MessageCard oasisMessage={item}/>
-        );
-    }
 
     function handleSendMessage() {
         // Implement your message sending logic here
     }
-
-    // {
-    //     "chat": {
-    //     "oasisChatId": 10,
-    //         "userId": 2,
-    //         "chatGptThreadId": "thread_3UsDMdjonXFUhtjk6lCoDBHT",
-    //         "geminiThreadId": null,
-    //         "messages": [
-    //         {
-    //             "oasisMessageId": 5,
-    //             "oasisChatId": 10,
-    //             "from": "User",
-    //             "message": "Voce gosta de sorvete?",
-    //             "fromThreadId": null,
-    //             "fromMessageId": null,
-    //             "createdAt": "2024-05-07T14:52:32.471715-03:00"
-    //         }
-    //     ],
-    //         "createdAt": "2024-05-07T17:52:32.407542Z"
-    // },
-    //     "userMessage": {
-    //     "oasisMessageId": 5,
-    //         "oasisChatId": 10,
-    //         "from": "User",
-    //         "message": "Voce gosta de sorvete?",
-    //         "fromThreadId": null,
-    //         "fromMessageId": null,
-    //         "createdAt": "2024-05-07T14:52:32.471715-03:00"
-    // },
-    //     "chatbotMessages": [
-    //     {
-    //         "oasisMessageId": 0,
-    //         "oasisChatId": null,
-    //         "from": "ChatGPT",
-    //         "message": "Sim, eu gosto de sorvete! Sorvete é uma delícia, não é mesmo? Qual é o seu sabor de sorvete favorito?",
-    //         "fromThreadId": "thread_3UsDMdjonXFUhtjk6lCoDBHT",
-    //         "fromMessageId": "msg_CsLx0xeOmvLpaKszOnQpgN8l",
-    //         "createdAt": "2024-05-07T17:52:30"
-    //     },
-    //     {
-    //         "oasisMessageId": 0,
-    //         "oasisChatId": null,
-    //         "from": "Gemini",
-    //         "message": "Sim, eu gosto muito de sorvete! É uma sobremesa deliciosa e refrescante, perfeita para qualquer ocasião. Meu sabor favorito é chocolate, mas também gosto muito de baunilha, morango e cookies 'n' cream. E você, gosta de sorvete?",
-    //         "fromThreadId": null,
-    //         "fromMessageId": null,
-    //         "createdAt": "2024-05-07T14:52:32.406801-03:00"
-    //     }
-    // ]
-    // }
 
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: '#000'}}>
@@ -121,19 +75,30 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                 style={{flex: 1}}
                 keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
             >
-                <FlatList
-                    data={chatData.messages}
-                    renderItem={renderMessage}
-                    ref={messageListRef}
-                    inverted={true}
-                    onContentSizeChange={() => {
-                        if (!messageListRef.current) return
-                        messageListRef.current.scrollToEnd({animated: false});
-                    }}
-                />
+                <ScrollView
+                    ref={scrollViewRef}
+                    onContentSizeChange={() => scrollViewRef.current?.scrollToEnd({animated: true})}
+                >
+                    {chatMessages.slice().reverse().map((message, index) => (
+                        <MessageCard key={index} oasisMessage={message}/>
+                    ))}
+                    {renderSwippable && (
+                        <ScrollView horizontal={true}>
+                            {actualChatGptResponse !== null && (
+                                <TouchableOpacity>
+                                    <MessageCard oasisMessage={actualChatGptResponse}/>
+                                </TouchableOpacity>
+                            )}
+                            {actualGeminiResponse !== null && (
+                                <TouchableOpacity>
+                                    <MessageCard oasisMessage={actualGeminiResponse}/>
+                                </TouchableOpacity>
+                            )}
+                        </ScrollView>
+                    )}
+                </ScrollView>
 
-                {messageIsLoading && <ActivityIndicator size="large" color="#fff"/>}
-
+                {messageIsLoading && <ActivityIndicator size="small" color="#fff" style={{alignSelf: 'flex-start'}}/>}
 
                 <ChatInput
                     message={userMessage}
@@ -145,7 +110,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                         setUserMessage(text);
                     }}
                     onPress={handleSendMessage}
-                    onFocus={scrollToBottom}
+                    onFocus={() => scrollViewRef.current?.scrollToEnd({animated: true})}
                 />
             </KeyboardAvoidingView>
         </SafeAreaView>
