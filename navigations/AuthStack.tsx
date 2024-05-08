@@ -28,8 +28,9 @@ export function AuthStack() {
                     <Stack.Screen
                         name={'MyDrawer'}
                         component={MyDrawer}
+                        //cor de fundo da transicao é preta
                         options={{
-                            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+                            cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
                         }}
                     />
                     <Stack.Screen
@@ -43,7 +44,6 @@ export function AuthStack() {
                             headerStyle: {
                                 backgroundColor: '#212121',
                             },
-                            // headerTransparent: true,
                             headerBackTitleVisible: false,
                             headerLeft: () => <View/>,
                             headerTintColor: '#fff',
@@ -63,7 +63,7 @@ export function AuthStack() {
                         component={LoginScreen}
                         options={{
                             headerShown: false,
-                            cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+                            cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
                         }}
                     />
                 </>

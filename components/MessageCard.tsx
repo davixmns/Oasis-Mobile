@@ -50,6 +50,8 @@ const Container = styled.View<{from: string}>`
   display: flex;
   gap: 7px;
   justify-content: flex-end;
+  margin-left: 12px;
+  margin-right: 12px;
   align-items: ${props => props.from === 'User' ? 'flex-end' : 'flex-start'};
 `
 

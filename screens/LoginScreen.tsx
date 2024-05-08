@@ -161,7 +161,6 @@ export function LoginScreen() {
         // await new Promise(resolve => setTimeout(resolve, 1000))
         await createUser(user)
             .then(() => {
-                Alert.alert('Success', 'User created successfully');
                 setRegisterName('');
                 setRegisterEmail('');
                 setRegisterPassword('');

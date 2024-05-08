@@ -138,7 +138,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                 <FlatList
                     data={chatMessages}
                     renderItem={renderMessage}
-                    style={{width: '96%', alignSelf: 'center', paddingTop: 12}}
+                    style={{paddingTop: 12, paddingBottom: 30}}
                     keyExtractor={(item, index) => index.toString()}
                     inverted={false}
                     onContentSizeChange={() => messageListRef.current?.scrollToEnd({animated: false})}

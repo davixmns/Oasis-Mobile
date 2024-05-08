@@ -38,7 +38,10 @@ export function ChatProvider({children}: ProviderProps) {
 
     async function getAllChats() {
         const tokenjwt = await AsyncStorage.getItem('@oasis-accessToken')
-        if (!tokenjwt) return
+        if (!tokenjwt) {
+            console.log("Token não encontrado")
+            return;
+        }
         await getAllChatsService(tokenjwt)
             .then((response) => {
                 setChats(response.data)

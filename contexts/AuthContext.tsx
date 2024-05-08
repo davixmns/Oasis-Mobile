@@ -33,8 +33,12 @@ export function AuthProvider({children}: ProviderProps) {
 
     async function verifyAccessToken() {
         const accessToken = await AsyncStorage.getItem('@oasis-accessToken')
-        if (!accessToken) return
-
+        if (!accessToken){
+            console.log("No Access Token finded")
+            setIsAuthenticated(false)
+            setIsLoading(false)
+            return
+        }
         await verifyAccessTokenService(accessToken)
             .then((response) => {
                 setIsAuthenticated(true)
@@ -55,7 +59,6 @@ export function AuthProvider({children}: ProviderProps) {
         if (email === '' || password === '') return
         await tryLoginService(email, password)
             .then(async (response) => {
-                setIsAuthenticated(true)
                 const data = response.data.data
                 const accessToken = data.accessToken
                 const refreshToken = data.refreshToken
@@ -66,15 +69,14 @@ export function AuthProvider({children}: ProviderProps) {
                     AsyncStorage.setItem('@oasis-accessToken', accessToken),
                     AsyncStorage.setItem('@oasis-refreshToken', refreshToken)
                 ])
-                //@ts-ignore
-                navigation.navigate('MyDrawer')
+                setIsAuthenticated(true)
             })
     }
 
     async function createUser(user: OasisUser) {
         await createUserService(user)
-            .then(() => {
-                setIsAuthenticated(true)
+            .then(async () => {
+                await tryLogin(user.email, user.password!)
             })
             .catch((error) => {
                 throw error
