@@ -1,6 +1,6 @@
 import axios from "axios";
 import {OASIS_API_URL} from "../config";
-import {OasisUser} from "../interfaces/interfaces";
+import {OasisMessage, OasisUser} from "../interfaces/interfaces";
 
 const api = axios.create({
     baseURL: OASIS_API_URL,
@@ -46,13 +46,24 @@ export async function getAllChatsService(tokenJwt: string) {
 }
 
 export async function sendFirstMessageService(userMessage: string, chatbotEnums: number[], tokenJwt: string) {
-
     return await api.post(
         "/Chat/SendFirstMessage",
         {
             Message: userMessage,
             ChatbotEnums: chatbotEnums
         },
+        {
+            headers: {
+                Authorization: `Bearer ${tokenJwt}`
+            }
+        }
+    )
+}
+
+export async function saveChatbotMessageService(chatbotMessage: OasisMessage, tokenJwt: string) {
+    return await api.post(
+        "/Chat/SaveChatbotMessage",
+        chatbotMessage,
         {
             headers: {
                 Authorization: `Bearer ${tokenJwt}`
