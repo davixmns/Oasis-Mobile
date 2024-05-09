@@ -12,8 +12,9 @@ export function NewChatScreen() {
 
     async function handleSendFirsMessage() {
         if(userMessage === '') return;
-        await createNewChat(userMessage)
+        let msg = userMessage;
         setUserMessage('')
+        await createNewChat(msg)
     }
 
     return (

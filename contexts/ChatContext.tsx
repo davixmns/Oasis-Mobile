@@ -45,8 +45,13 @@ export function ChatProvider({children}: ProviderProps) {
         }
         await getAllChatsService(tokenjwt)
             .then((response) => {
-                setChats(response.data)
-                console.log("Conversas OK!")
+                let i = 1;
+                const chats = response.data;
+                chats.forEach((chat: OasisChat) => {
+                    chat.title = `${i}. ` + chat.title;
+                    i++;
+                })
+                setChats(chats);
             })
             .catch((error) => {
                 if(error.response) {

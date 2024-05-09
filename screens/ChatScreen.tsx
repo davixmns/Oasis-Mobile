@@ -64,14 +64,18 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
         console.log("Enviando primeira mensagem!")
         await sendFirstMessage(firstMessage)
             .then((responseData: any) => {
-                chatData.title = responseData.chat.title;
-                chatInfo.isNewChat = false;
+                const newChatTitle = responseData.chat.title;
+                chatData.title = newChatTitle;
                 setChatInfo(responseData.chat)
-                navigation.setOptions({title: responseData.chat.title})
+
+                navigation.setOptions({title: newChatTitle})
+
                 setActualChatGptResponse(responseData?.chatbotMessages[0])
                 setActualGeminiResponse(responseData?.chatbotMessages[1])
-                setUserMessage('')
+
                 setRenderSwippable(true);
+                setUserMessage('')
+                chatInfo.isNewChat = false;
             })
             .catch((error) => {
                 console.log("erro ao enviar mensagem -> " + error)
@@ -93,7 +97,9 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
 
     async function scrollToBottom() {
         if (!messageListRef.current) return;
-        messageListRef.current.scrollToOffset({offset: 0, animated: true});
+        //esperar o teclado subir
+        await new Promise((resolve) => setTimeout(resolve, 100))
+        await messageListRef.current.scrollToEnd({animated: true});
     }
 
     function handleSendMessage() {
@@ -146,7 +152,10 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                             }
                             setUserMessage(text);
                         }}
-                        onFocus={() => scrollToBottom()}
+                        onFocus={() => {
+                            console.log("Focus")
+                            scrollToBottom()
+                        }}
                         onPress={() => handleSendMessage()}
                     />
                 );
@@ -167,6 +176,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                     style={{paddingBottom: 30}}
                     keyExtractor={(item, index) => index.toString()}
                     inverted={false}
+                    ref={messageListRef}
                     onContentSizeChange={() => messageListRef.current?.scrollToEnd({animated: false})}
                     ListFooterComponent={
                         renderSwippable ? (
