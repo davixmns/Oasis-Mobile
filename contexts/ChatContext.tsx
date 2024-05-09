@@ -69,7 +69,7 @@ export function ChatProvider({children}: ProviderProps) {
             message: fisrtUserMessage,
             oasisChatId: randomChatId,
             fromThreadId: null,
-            FromMessageId: null,
+            fromMessageId: null,
             oasisMessageId: 1,
             createdAt: new Date().toISOString(),
             isSaved: true,
@@ -80,7 +80,7 @@ export function ChatProvider({children}: ProviderProps) {
             oasisUserId: 1,
             chatGptThreadId: "teste",
             geminiThreadId: "teste",
-            title: 'Loading...',
+            title: `${chats.length + 1}. Loading...`,
             isNewChat: true,
         }
         await setChats(currentChats => [...currentChats, newChat]);

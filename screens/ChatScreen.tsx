@@ -40,6 +40,9 @@ import {useNavigation} from "@react-navigation/native";
 //     isSaved: false
 // }
 
+import { CommonActions } from '@react-navigation/native';
+
+
 const width = Dimensions.get('window').width;
 
 export function ChatScreen({chatData}: { chatData: OasisChat }) {
@@ -64,17 +67,18 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
         console.log("Enviando primeira mensagem!")
         await sendFirstMessage(firstMessage)
             .then((responseData: any) => {
-                const newChatTitle = responseData.chat.title;
-                chatData.title = newChatTitle;
                 setChatInfo(responseData.chat)
 
-                navigation.setOptions({title: newChatTitle})
+                const formattedTitle = `${chats.length}. ${responseData.chat.title}`
+                // chatData.title = formattedTitle
+                navigation.setOptions({title: formattedTitle})
 
                 setActualChatGptResponse(responseData?.chatbotMessages[0])
                 setActualGeminiResponse(responseData?.chatbotMessages[1])
 
                 setRenderSwippable(true);
                 setUserMessage('')
+
                 chatInfo.isNewChat = false;
             })
             .catch((error) => {
@@ -107,18 +111,19 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
     }
 
     async function handleSaveChatbotMessage(chatbotMessage: OasisMessage) {
+        console.log(chatbotMessage)
         if (!chatbotMessage) return;
         const formattedMessage: OasisMessage = {
             from: chatbotMessage.from,
             oasisChatId: chatInfo.oasisChatId,
             message: chatbotMessage.message,
-            FromMessageId: chatbotMessage.FromMessageId,
-            fromThreadId: chatbotMessage.fromThreadId,
+            fromMessageId: chatbotMessage?.fromMessageId,
+            fromThreadId: chatbotMessage?.fromThreadId,
             isSaved: true,
         }
         await saveChatbotMessage(formattedMessage)
-            .then(() => {
-                setChatMessages([...chatMessages, formattedMessage])
+            .then(async () => {
+                await setChatMessages([...chatMessages, formattedMessage])
                 setRenderSwippable(false)
             })
             .catch((e) => {
@@ -177,7 +182,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                     keyExtractor={(item, index) => index.toString()}
                     inverted={false}
                     ref={messageListRef}
-                    onContentSizeChange={() => messageListRef.current?.scrollToEnd({animated: false})}
+                    // onContentSizeChange={() => messageListRef.current?.scrollToEnd({animated: false})}
                     ListFooterComponent={
                         renderSwippable ? (
                             <FlatList
@@ -187,7 +192,6 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                                 keyExtractor={(item) => item!.from.toString()}
                                 renderItem={({item}) => (
                                     <TouchableOpacity onPress={() => handleSaveChatbotMessage(item!)}>
-                                        {/*<TouchableOpacity style={{width, justifyContent: 'center', alignItems: 'center'}}>*/}
                                         <MessageCard oasisMessage={item!}/>
                                     </TouchableOpacity>
                                 )}
