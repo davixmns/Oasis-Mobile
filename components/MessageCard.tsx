@@ -1,6 +1,6 @@
 import {OasisMessage} from "../interfaces/interfaces";
 import styled from "styled-components/native";
-import {Dimensions, Text} from "react-native";
+import {Dimensions, ScrollView, Text} from "react-native";
 
 //@ts-ignore
 import chatGgptLogo from '../assets/chatGptLogo.png'
@@ -10,10 +10,12 @@ import userPicture from '../assets/defaultPicture.jpeg'
 import geminiLogo from '../assets/geminiLogo.png'
 import {useState} from "react";
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 
-export function MessageCard({oasisMessage}: { oasisMessage: OasisMessage }) {
+export function MessageCard({oasisMessage}: {
+    oasisMessage: OasisMessage
+}) {
     const [isSaved, setIsSaved] = useState<boolean>(oasisMessage.isSaved!)
 
     function renderProfileImage() {
@@ -48,7 +50,10 @@ export function MessageCard({oasisMessage}: { oasisMessage: OasisMessage }) {
     )
 }
 
-const Container = styled.View<{from: string, isSaved: boolean}>`
+const Container = styled.View<{
+    from: string,
+    isSaved: boolean
+}>`
   display: flex;
   gap: 7px;
   justify-content: flex-end;
@@ -60,14 +65,15 @@ const Container = styled.View<{from: string, isSaved: boolean}>`
   align-items: ${props => props.from === 'User' ? 'flex-end' : 'flex-start'};
 `
 
-const Content = styled.View<{isSaved: boolean, from: string}>`
+const Content = styled.View<{
+    isSaved: boolean,
+    from: string
+}>`
   max-width: 100%;
   border-radius: 10px;
   background-color: black;
   align-items: flex-end;
 `
-  // background-color: ${props => props.isSaved === true ? '#000' : '#3A3A3A'};
-  // border: ${props => props.from === 'ChatGPT' ? '2px solid #6fa99b' : props.from === 'Gemini' ? '2px solid #3594db' : '0.5px solid #fff'};
 
 const Header = styled.View`
   display: flex;
@@ -94,5 +100,5 @@ const Message = styled.Text`
   max-width: ${width * 0.90}px;
   font-weight: 500;
   padding: 10px;
- 
+
 `

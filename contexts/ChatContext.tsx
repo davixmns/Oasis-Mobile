@@ -25,7 +25,8 @@ export function useChatContext() {
 export function ChatProvider({children}: ProviderProps) {
     const {isAuthenticated} = useAuthContext();
     const [chats, setChats] = useState<OasisChat[]>([]);
-    const [chatbotEnums, setChatbotEnums] = useState<number[]>([1, 1]);
+    const array = [1, 1];
+    const [chatbotEnums, setChatbotEnums] = useState<number[]>(array);
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -78,8 +79,8 @@ export function ChatProvider({children}: ProviderProps) {
             messages: [newMessage],
             oasisChatId: randomChatId,
             oasisUserId: 1,
-            chatGptThreadId: "teste",
-            geminiThreadId: "teste",
+            chatGptThreadId: "",
+            geminiThreadId: "",
             title: `${chats.length + 1}. Loading...`,
             isNewChat: true,
         }

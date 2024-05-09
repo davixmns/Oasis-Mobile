@@ -6,8 +6,9 @@
   <component name="ChangeListManager">
     <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":bug: lidando com titulos de chats repetidos">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ChatBotSelector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatBotSelector.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/MessageCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/MessageCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contexts/ChatContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/ChatContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/interfaces/interfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/interfaces.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/ChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ChatScreen.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -114,7 +115,7 @@
       <workItem from="1715132540933" duration="284000" />
       <workItem from="1715132832367" duration="2307000" />
       <workItem from="1715173409827" duration="16712000" />
-      <workItem from="1715260146973" duration="13092000" />
+      <workItem from="1715260146973" duration="14877000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
@@ -348,7 +349,15 @@
       <option name="project" value="LOCAL" />
       <updated>1715280737019</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary=":bug: lidando com titulos de chats repetidos">
+      <option name="closed" value="true" />
+      <created>1715283504717</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1715283504717</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

@@ -1,10 +1,8 @@
-import {useState, useRef, useEffect, forwardRef} from "react";
+import {useState, useRef, useEffect} from "react";
 import {
     Keyboard,
     KeyboardAvoidingView,
     Platform,
-    Text,
-    View,
     SafeAreaView,
     ActivityIndicator,
     FlatList,
@@ -20,42 +18,41 @@ import styled from "styled-components/native";
 import {useNavigation} from "@react-navigation/native";
 
 
-// const gptResponseExample : OasisMessage = {
-//     from: 'ChatGPT',
-//     oasisChatId: 1,
-//     message: 'Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?',
-//     // message: 'how can I help you?',
-//     FromMessageId: '1',
-//     fromThreadId: '1',
-//     isSaved: false
-// }
-//
-// const geminiResponseExample : OasisMessage = {
-//     from: 'Gemini',
-//     oasisChatId: 1,
-//     message: 'Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?',
-//     // message: 'how can I help you?',
-//     FromMessageId: '2',
-//     fromThreadId: '2',
-//     isSaved: false
-// }
+const gptResponseExample : OasisMessage = {
+    from: 'ChatGPT',
+    oasisChatId: 1,
+    message: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.\n' +
+        '\n' +
+        'The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.',
+    fromMessageId: '1',
+    fromThreadId: '1',
+    isSaved: false
+}
 
-import { CommonActions } from '@react-navigation/native';
-
+const geminiResponseExample : OasisMessage = {
+    from: 'Gemini',
+    oasisChatId: 1,
+    message: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.\n' +
+        '\n' +
+        'The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.',
+    fromMessageId: '2',
+    fromThreadId: '2',
+    isSaved: false
+}
 
 const width = Dimensions.get('window').width;
 
 export function ChatScreen({chatData}: { chatData: OasisChat }) {
-    const {sendFirstMessage, saveChatbotMessage, chats, setChats} = useChatContext();
+    const {sendFirstMessage, saveChatbotMessage, chats} = useChatContext();
     const [messageIsLoading, setMessageIsLoading] = useState<boolean>(false);
     const [userMessage, setUserMessage] = useState('');
     const [chatInfo, setChatInfo] = useState<OasisChat>(chatData);
     const [chatMessages, setChatMessages] = useState<OasisMessage[]>(chatData.messages);
 
-    const [actualChatGptResponse, setActualChatGptResponse] = useState<OasisMessage | null>(null)
-    const [actualGeminiResponse, setActualGeminiResponse] = useState<OasisMessage | null>(null)
+    const [actualChatGptResponse, setActualChatGptResponse] = useState<OasisMessage | null>(gptResponseExample)
+    const [actualGeminiResponse, setActualGeminiResponse] = useState<OasisMessage | null>(geminiResponseExample)
 
-    const [renderSwippable, setRenderSwippable] = useState<boolean>(false);
+    const [renderSwippable, setRenderSwippable] = useState<boolean>(true)
     const messageListRef = useRef<FlatList>(null);
 
     const navigation = useNavigation();
@@ -94,6 +91,9 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
             if (chatInfo.isNewChat === true) {
                 await handleSendFirstMessage()
             }
+            if(chatMessages){
+                await scrollToBottom()
+            }
         }
 
         init();
@@ -111,7 +111,6 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
     }
 
     async function handleSaveChatbotMessage(chatbotMessage: OasisMessage) {
-        console.log(chatbotMessage)
         if (!chatbotMessage) return;
         const formattedMessage: OasisMessage = {
             from: chatbotMessage.from,

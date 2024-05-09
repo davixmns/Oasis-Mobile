@@ -15,25 +15,27 @@ export function ChatBotSelector(closeMenu: () => void, menuVisible: boolean, ope
     const [geminiEnabled, setGeminiEnabled] = useState(true);
 
     useEffect(() => {
-        const newEnums = [];
-        if (chatGptEnabled) newEnums.push(1); // Assumindo que 1 representa ChatGPT
-        if (geminiEnabled) newEnums.push(2); // Assumindo que 2 representa Gemini
-        setChatbotEnums(newEnums);
+        if (setChatbotEnums) {
+            const newEnums = [];
+            if (chatGptEnabled) newEnums.push(1); // Assumindo que 1 representa ChatGPT
+            if (geminiEnabled) newEnums.push(2); // Assumindo que 2 representa Gemini
+            setChatbotEnums(newEnums);
+        }
     }, [chatGptEnabled, geminiEnabled]);
 
-    const toggleChatGpt = () => {
+    function toggleChatGpt() {
         if (chatGptEnabled && !geminiEnabled) {
             setGeminiEnabled(true);
         }
         setChatGptEnabled(!chatGptEnabled);
-    };
+    }
 
-    const toggleGemini = () => {
+    function toggleGemini() {
         if (geminiEnabled && !chatGptEnabled) {
             setChatGptEnabled(true);
         }
         setGeminiEnabled(!geminiEnabled);
-    };
+    }
 
     return (
         <View style={{marginRight: 10}}>
