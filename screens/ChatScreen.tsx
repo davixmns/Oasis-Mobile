@@ -17,11 +17,33 @@ import {MessageCard} from "../components/MessageCard";
 import {useChatContext} from "../contexts/ChatContext";
 import {FontAwesome6} from "@expo/vector-icons";
 import styled from "styled-components/native";
+import {useNavigation} from "@react-navigation/native";
+
+
+// const gptResponseExample : OasisMessage = {
+//     from: 'ChatGPT',
+//     oasisChatId: 1,
+//     message: 'Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?',
+//     // message: 'how can I help you?',
+//     FromMessageId: '1',
+//     fromThreadId: '1',
+//     isSaved: false
+// }
+//
+// const geminiResponseExample : OasisMessage = {
+//     from: 'Gemini',
+//     oasisChatId: 1,
+//     message: 'Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?Hello, how can I help you?',
+//     // message: 'how can I help you?',
+//     FromMessageId: '2',
+//     fromThreadId: '2',
+//     isSaved: false
+// }
 
 const width = Dimensions.get('window').width;
 
 export function ChatScreen({chatData}: { chatData: OasisChat }) {
-    const {sendFirstMessage, saveChatbotMessage} = useChatContext();
+    const {sendFirstMessage, saveChatbotMessage, chats, setChats} = useChatContext();
     const [messageIsLoading, setMessageIsLoading] = useState<boolean>(false);
     const [userMessage, setUserMessage] = useState('');
     const [chatInfo, setChatInfo] = useState<OasisChat>(chatData);
@@ -33,6 +55,8 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
     const [renderSwippable, setRenderSwippable] = useState<boolean>(false);
     const messageListRef = useRef<FlatList>(null);
 
+    const navigation = useNavigation();
+
     async function handleSendFirstMessage() {
         const firstMessage = chatData.messages[0].message;
         if (firstMessage === '') return;
@@ -40,12 +64,12 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
         console.log("Enviando primeira mensagem!")
         await sendFirstMessage(firstMessage)
             .then((responseData: any) => {
+                chatData.title = responseData.chat.title;
                 chatInfo.isNewChat = false;
                 setChatInfo(responseData.chat)
+                navigation.setOptions({title: responseData.chat.title})
                 setActualChatGptResponse(responseData?.chatbotMessages[0])
                 setActualGeminiResponse(responseData?.chatbotMessages[1])
-
-                console.log(responseData?.chatbotMessages[0])
                 setUserMessage('')
                 setRenderSwippable(true);
             })
@@ -140,7 +164,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                 <FlatList
                     data={chatMessages}
                     renderItem={renderMessage}
-                    style={{paddingTop: 12, paddingBottom: 30}}
+                    style={{paddingBottom: 30}}
                     keyExtractor={(item, index) => index.toString()}
                     inverted={false}
                     onContentSizeChange={() => messageListRef.current?.scrollToEnd({animated: false})}
@@ -148,6 +172,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                         renderSwippable ? (
                             <FlatList
                                 horizontal
+                                style={{paddingBottom: 20}}
                                 data={[actualChatGptResponse, actualGeminiResponse].filter(Boolean)}
                                 keyExtractor={(item) => item!.from.toString()}
                                 renderItem={({item}) => (
@@ -156,7 +181,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                                         <MessageCard oasisMessage={item!}/>
                                     </TouchableOpacity>
                                 )}
-                                snapToInterval={width * 1.1}
+                                snapToInterval={width}
                                 decelerationRate="fast"
                                 showsHorizontalScrollIndicator={false}
                             />

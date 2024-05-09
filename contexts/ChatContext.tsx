@@ -8,6 +8,7 @@ import {Alert} from "react-native";
 
 interface ChatContextType {
     chats: OasisChat[];
+    setChats: (chats: OasisChat[]) => void;
     createNewChat: (fisrtUserMessage: string) => Promise<void>;
     sendFirstMessage: (userMessage: string) => Promise<any>;
     chatbotEnums: number[];
@@ -66,6 +67,7 @@ export function ChatProvider({children}: ProviderProps) {
             FromMessageId: null,
             oasisMessageId: 1,
             createdAt: new Date().toISOString(),
+            isSaved: true,
         }
         const newChat :OasisChat = {
             messages: [newMessage],
@@ -73,12 +75,12 @@ export function ChatProvider({children}: ProviderProps) {
             oasisUserId: 1,
             chatGptThreadId: "teste",
             geminiThreadId: "teste",
-            title: "new",
+            title: 'Loading...',
             isNewChat: true,
         }
         await setChats(currentChats => [...currentChats, newChat]);
         // @ts-ignore
-        navigation.navigate(newChat.oasisChatId.toString(), {chatData: newChat});
+        navigation.navigate(newChat.title, {chatData: newChat});
     }
 
     async function sendFirstMessage(userMessage: string){
@@ -117,6 +119,7 @@ export function ChatProvider({children}: ProviderProps) {
         <ChatContext.Provider
             value={{
                 chats,
+                setChats,
                 createNewChat,
                 sendFirstMessage,
                 chatbotEnums,

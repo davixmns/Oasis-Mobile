@@ -10,7 +10,7 @@ import userPicture from '../assets/defaultPicture.jpeg'
 import geminiLogo from '../assets/geminiLogo.png'
 import {useState} from "react";
 
-const { width } = Dimensions.get('window'); // Obter a largura da tela do dispositivo
+const { width } = Dimensions.get('window');
 
 
 export function MessageCard({oasisMessage}: { oasisMessage: OasisMessage }) {
@@ -27,7 +27,7 @@ export function MessageCard({oasisMessage}: { oasisMessage: OasisMessage }) {
     }
 
     return (
-        <Container from={oasisMessage.from}>
+        <Container from={oasisMessage.from} isSaved={isSaved}>
             <Header>
                 {oasisMessage.from === 'User' ? (
                     <>
@@ -48,23 +48,26 @@ export function MessageCard({oasisMessage}: { oasisMessage: OasisMessage }) {
     )
 }
 
-const Container = styled.View<{from: string}>`
+const Container = styled.View<{from: string, isSaved: boolean}>`
   display: flex;
   gap: 7px;
   justify-content: flex-end;
+  margin-top: 12px;
   margin-left: 12px;
   margin-right: 12px;
+  box-shadow: 0 0 3px ${props => props.from === 'ChatGPT' && props.isSaved === false ?
+          '#6fa99b' : props.from === 'Gemini' && props.isSaved === false ? '#3594db' : null};
   align-items: ${props => props.from === 'User' ? 'flex-end' : 'flex-start'};
 `
 
 const Content = styled.View<{isSaved: boolean, from: string}>`
   max-width: 100%;
-  border: ${props => props.from === 'ChatGPT' ? '2px solid #6fa99b' : props.from === 'Gemini' ? '2px solid #3594db' : '0.5px solid #fff'};
   border-radius: 10px;
-  background-color: ${props => props.isSaved === true ? '#3A3A3A' : '#000'};
-  background-color: ${props => props.isSaved === false && props.from !== 'User' ? '#3A3A3A' : '#000'};
+  background-color: black;
   align-items: flex-end;
 `
+  // background-color: ${props => props.isSaved === true ? '#000' : '#3A3A3A'};
+  // border: ${props => props.from === 'ChatGPT' ? '2px solid #6fa99b' : props.from === 'Gemini' ? '2px solid #3594db' : '0.5px solid #fff'};
 
 const Header = styled.View`
   display: flex;
@@ -88,6 +91,8 @@ const FromName = styled.Text`
 const Message = styled.Text`
   font-size: 16px;
   color: #fff;
-  margin: 10px;
-  max-width: ${width * 0.8}px;
+  max-width: ${width * 0.90}px;
+  font-weight: 500;
+  padding: 10px;
+ 
 `
