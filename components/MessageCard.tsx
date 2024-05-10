@@ -1,6 +1,5 @@
 import {OasisMessage} from "../interfaces/interfaces";
 import styled from "styled-components/native";
-import {Dimensions, ScrollView, Text} from "react-native";
 
 //@ts-ignore
 import chatGgptLogo from '../assets/chatGptLogo.png'
@@ -8,15 +7,28 @@ import chatGgptLogo from '../assets/chatGptLogo.png'
 import userPicture from '../assets/defaultPicture.jpeg'
 //@ts-ignore
 import geminiLogo from '../assets/geminiLogo.png'
-import {useState} from "react";
+
+import {useEffect, useState} from "react";
+
+import {Dimensions, ScrollView, TouchableOpacity} from "react-native";
 
 const {width} = Dimensions.get('window');
 
 
-export function MessageCard({oasisMessage}: {
-    oasisMessage: OasisMessage
+export function MessageCard({oasisMessage, toggle, isActive}: {
+    oasisMessage: OasisMessage,
+    isActive?: boolean,
+    toggle?: () => void
 }) {
     const [isSaved, setIsSaved] = useState<boolean>(oasisMessage.isSaved!)
+    const isChatbotSavedMessage = oasisMessage.from !== 'User' && isSaved
+    const isChabotOptionMessage = oasisMessage.from !== 'User' && !isSaved
+    const isUserMessage = oasisMessage.from === 'User' && isSaved
+
+    const shouldScroll = oasisMessage.isSaved === false && oasisMessage.message.length > 800
+
+
+
 
     function renderProfileImage() {
         if (oasisMessage.from === 'User') {
@@ -28,51 +40,87 @@ export function MessageCard({oasisMessage}: {
         }
     }
 
+    function renderMessage() {
+        if (isChabotOptionMessage) { // Chatbot option message
+            return (
+                <OptionContainer isActive={isActive!}>
+                    <Header>
+                        {renderProfileImage()}
+                        <FromName>{oasisMessage.from}</FromName>
+                    </Header>
+                    <OptionMessageContent shouldScroll={shouldScroll}>
+                        {shouldScroll ? (
+                            <ScrollView
+                                indicatorStyle={'white'}
+                            >
+                                <TouchableOpacity onPress={toggle} activeOpacity={1}>
+                                    <Message>{oasisMessage.message}</Message>
+                                </TouchableOpacity>
+                            </ScrollView>
+                        ) : (
+                            <TouchableOpacity onPress={toggle} activeOpacity={1}>
+                                <Message>{oasisMessage.message}</Message>
+                            </TouchableOpacity>
+                        )}
+                    </OptionMessageContent>
+                </OptionContainer>
+            )
+        } else if (isUserMessage) { // User message
+            return (
+                <UserMessageContainer>
+                    <Header>
+                        <FromName>You</FromName>
+                        {renderProfileImage()}
+                    </Header>
+                    <UserMessageContent shouldScroll={shouldScroll}>
+                        <Message>{oasisMessage.message}</Message>
+                    </UserMessageContent>
+                </UserMessageContainer>
+            )
+        }
+    }
+
     return (
-        <Container from={oasisMessage.from} isSaved={isSaved}>
-            <Header>
-                {oasisMessage.from === 'User' ? (
-                    <>
-                        <FromName>{oasisMessage.from === 'User' ? 'You' : oasisMessage.from}</FromName>
-                        {renderProfileImage()}
-                    </>
-                ) : (
-                    <>
-                        {renderProfileImage()}
-                        <FromName>{oasisMessage.from === 'User' ? 'You' : oasisMessage.from}</FromName>
-                    </>
-                )}
-            </Header>
-            <Content from={oasisMessage.from} isSaved={isSaved}>
-                <Message>{oasisMessage.message}</Message>
-            </Content>
-        </Container>
+        <>
+            {renderMessage()}
+        </>
     )
 }
 
-const Container = styled.View<{
-    from: string,
-    isSaved: boolean
-}>`
+const UserMessageContainer = styled.TouchableOpacity`
   display: flex;
   gap: 7px;
-  justify-content: flex-end;
-  margin-top: 12px;
-  margin-left: 12px;
-  margin-right: 12px;
-  box-shadow: 0 0 3px ${props => props.from === 'ChatGPT' && props.isSaved === false ?
-          '#6fa99b' : props.from === 'Gemini' && props.isSaved === false ? '#3594db' : null};
-  align-items: ${props => props.from === 'User' ? 'flex-end' : 'flex-start'};
+  width: ${width * 0.90}px;
+  align-items: flex-end;
+  border-radius: 10px;
+  align-self: flex-end;
+  padding: 10px;
 `
 
-const Content = styled.View<{
-    isSaved: boolean,
-    from: string
-}>`
-  max-width: 100%;
+const OptionContainer = styled.View<{ isActive: boolean }>`
+  display: flex;
+  gap: 7px;
+  justify-content: flex-start;
+  margin-top: 12px;
+  margin-right: 12px;
+  width: ${width * 0.90}px;
+  align-items: flex-start;
+  background-color: #212121;
   border-radius: 10px;
-  background-color: black;
-  align-items: flex-end;
+  padding: 10px;
+  border: 2px solid ${props => props.isActive ? 'gray' : null};
+`
+
+const OptionMessageContent = styled.View <{ shouldScroll: boolean }>`
+  border-radius: 10px;
+  margin-left: 3px;
+  margin-top: 3px;
+  max-height: ${props => props.shouldScroll ? '450px' : 'auto'};
+`
+
+const UserMessageContent = styled.View <{ shouldScroll: boolean }>`
+  border-radius: 10px;
+  margin-right: 3px;
 `
 
 const Header = styled.View`
@@ -97,8 +145,5 @@ const FromName = styled.Text`
 const Message = styled.Text`
   font-size: 16px;
   color: #fff;
-  max-width: ${width * 0.90}px;
   font-weight: 500;
-  padding: 10px;
-
 `

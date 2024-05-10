@@ -17,24 +17,22 @@ import {FontAwesome6} from "@expo/vector-icons";
 import styled from "styled-components/native";
 import {useNavigation} from "@react-navigation/native";
 
+import * as Animatable from 'react-native-animatable';
 
-const gptResponseExample : OasisMessage = {
+const gptResponseExample: OasisMessage = {
     from: 'ChatGPT',
     oasisChatId: 1,
-    message: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.\n' +
-        '\n' +
+    message: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.' +
         'The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.',
     fromMessageId: '1',
     fromThreadId: '1',
     isSaved: false
 }
 
-const geminiResponseExample : OasisMessage = {
+const geminiResponseExample: OasisMessage = {
     from: 'Gemini',
     oasisChatId: 1,
-    message: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.\n' +
-        '\n' +
-        'The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.',
+    message: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.\n',
     fromMessageId: '2',
     fromThreadId: '2',
     isSaved: false
@@ -48,13 +46,12 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
     const [userMessage, setUserMessage] = useState('');
     const [chatInfo, setChatInfo] = useState<OasisChat>(chatData);
     const [chatMessages, setChatMessages] = useState<OasisMessage[]>(chatData.messages);
-
     const [actualChatGptResponse, setActualChatGptResponse] = useState<OasisMessage | null>(gptResponseExample)
     const [actualGeminiResponse, setActualGeminiResponse] = useState<OasisMessage | null>(geminiResponseExample)
-
+    const [gptOptionIsActive, setGptOptionIsActive] = useState<boolean>(false)
+    const [geminiOptionIsActive, setGeminiOptionIsActive] = useState<boolean>(false)
     const [renderSwippable, setRenderSwippable] = useState<boolean>(true)
     const messageListRef = useRef<FlatList>(null);
-
     const navigation = useNavigation();
 
     async function handleSendFirstMessage() {
@@ -65,17 +62,12 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
         await sendFirstMessage(firstMessage)
             .then((responseData: any) => {
                 setChatInfo(responseData.chat)
-
                 const formattedTitle = `${chats.length}. ${responseData.chat.title}`
-                // chatData.title = formattedTitle
                 navigation.setOptions({title: formattedTitle})
-
                 setActualChatGptResponse(responseData?.chatbotMessages[0])
                 setActualGeminiResponse(responseData?.chatbotMessages[1])
-
                 setRenderSwippable(true);
                 setUserMessage('')
-
                 chatInfo.isNewChat = false;
             })
             .catch((error) => {
@@ -91,19 +83,41 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
             if (chatInfo.isNewChat === true) {
                 await handleSendFirstMessage()
             }
-            if(chatMessages){
-                await scrollToBottom()
+            if (chatMessages) {
+                await scrollToBottom(false);
             }
         }
 
         init();
     }, [chatInfo]);
 
-    async function scrollToBottom() {
+    useEffect(() => {
+        if (gptOptionIsActive && geminiOptionIsActive) {
+            if (actualChatGptResponse) {
+                setGptOptionIsActive(false)
+            } else {
+                setGeminiOptionIsActive(false)
+            }
+        }
+    }, [gptOptionIsActive, geminiOptionIsActive]);
+
+    function toggleChatGpt() {
+        if (gptOptionIsActive) return
+        setGptOptionIsActive(!gptOptionIsActive)
+        gptOptionIsActive ? setGptOptionIsActive(false) : setGeminiOptionIsActive(false)
+    }
+
+    function toggleGemini() {
+        if (geminiOptionIsActive) return
+        setGeminiOptionIsActive(!geminiOptionIsActive)
+        gptOptionIsActive ? setGptOptionIsActive(false) : setGeminiOptionIsActive(false)
+    }
+
+    async function scrollToBottom(animated: boolean) {
         if (!messageListRef.current) return;
         //esperar o teclado subir
         await new Promise((resolve) => setTimeout(resolve, 100))
-        await messageListRef.current.scrollToEnd({animated: true});
+        await messageListRef.current.scrollToEnd({animated: animated});
     }
 
     function handleSendMessage() {
@@ -158,7 +172,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                         }}
                         onFocus={() => {
                             console.log("Focus")
-                            scrollToBottom()
+                            scrollToBottom(true)
                         }}
                         onPress={() => handleSendMessage()}
                     />
@@ -177,27 +191,37 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                 <FlatList
                     data={chatMessages}
                     renderItem={renderMessage}
-                    style={{paddingBottom: 30}}
+                    style={{paddingVertical: 10}}
                     keyExtractor={(item, index) => index.toString()}
                     inverted={false}
                     ref={messageListRef}
-                    // onContentSizeChange={() => messageListRef.current?.scrollToEnd({animated: false})}
                     ListFooterComponent={
                         renderSwippable ? (
-                            <FlatList
-                                horizontal
-                                style={{paddingBottom: 20}}
-                                data={[actualChatGptResponse, actualGeminiResponse].filter(Boolean)}
-                                keyExtractor={(item) => item!.from.toString()}
-                                renderItem={({item}) => (
-                                    <TouchableOpacity onPress={() => handleSaveChatbotMessage(item!)}>
-                                        <MessageCard oasisMessage={item!}/>
-                                    </TouchableOpacity>
-                                )}
-                                snapToInterval={width}
-                                decelerationRate="fast"
-                                showsHorizontalScrollIndicator={false}
-                            />
+                            <Animatable.View animation={'fadeIn'} duration={1000}>
+                                <FlatList
+                                    horizontal
+                                    style={{paddingBottom: 20}}
+                                    contentContainerStyle={{alignItems: 'flex-start'}}
+                                    data={[actualChatGptResponse, actualGeminiResponse].filter(Boolean)}
+                                    keyExtractor={(item) => item!.from.toString()}
+                                    renderItem={({item}) => (
+                                        <MessageCard
+                                            oasisMessage={item!}
+                                            toggle={() => {
+                                                if (item!.from === 'ChatGPT') {
+                                                    toggleChatGpt()
+                                                } else {
+                                                    toggleGemini()
+                                                }
+                                            }}
+                                            isActive={item!.from === 'ChatGPT' ? gptOptionIsActive : geminiOptionIsActive}
+                                        />
+                                    )}
+                                    snapToInterval={width}
+                                    decelerationRate={'fast'}
+                                    showsHorizontalScrollIndicator={false}
+                                />
+                            </Animatable.View>
                         ) : null
                     }
                 />
