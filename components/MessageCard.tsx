@@ -1,5 +1,7 @@
+import {ActivityIndicator, Dimensions, ScrollView, TouchableOpacity} from "react-native";
 import {OasisMessage} from "../interfaces/interfaces";
 import styled from "styled-components/native";
+import {useState} from "react";
 
 //@ts-ignore
 import chatGgptLogo from '../assets/chatGptLogo.png'
@@ -8,12 +10,7 @@ import userPicture from '../assets/defaultPicture.jpeg'
 //@ts-ignore
 import geminiLogo from '../assets/geminiLogo.png'
 
-import {useEffect, useState} from "react";
-
-import {ActivityIndicator, Dimensions, ScrollView, TouchableOpacity} from "react-native";
-
 const {width} = Dimensions.get('window');
-
 
 export function MessageCard({oasisMessage, toggle, isActive, isLoading}: {
     oasisMessage: OasisMessage,
