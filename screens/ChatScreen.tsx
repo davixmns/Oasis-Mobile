@@ -1,4 +1,3 @@
-import {useState, useRef, useEffect} from "react";
 import {
     Keyboard,
     KeyboardAvoidingView,
@@ -6,37 +5,18 @@ import {
     SafeAreaView,
     ActivityIndicator,
     FlatList,
-    TouchableOpacity,
     Dimensions, Alert
 } from "react-native";
+import {useState, useRef, useEffect} from "react";
 import ChatInput from "../components/ChatInput";
 import {OasisChat, OasisMessage} from "../interfaces/interfaces";
 import {MessageCard} from "../components/MessageCard";
 import {useChatContext} from "../contexts/ChatContext";
+import {useNavigation} from "@react-navigation/native";
+import {ChatbotSkeleton} from "../components/ChatbotSkeleton";
 import {FontAwesome6} from "@expo/vector-icons";
 import styled from "styled-components/native";
-import {useNavigation} from "@react-navigation/native";
-
 import * as Animatable from 'react-native-animatable';
-
-const gptResponseExample: OasisMessage = {
-    from: 'ChatGPT',
-    oasisChatId: 1,
-    message: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.' +
-        'The standard chunk of Lorem Ipsum used since the 1500s is reproduced below for those interested. Sections 1.10.32 and 1.10.33 from "de Finibus Bonorum et Malorum" by Cicero are also reproduced in their exact original form, accompanied by English versions from the 1914 translation by H. Rackham.',
-    fromMessageId: '1',
-    fromThreadId: '1',
-    isSaved: false
-}
-
-const geminiResponseExample: OasisMessage = {
-    from: 'Gemini',
-    oasisChatId: 1,
-    message: 'Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of classical Latin literature from 45 BC, making it over 2000 years old. Richard McClintock, a Latin professor at Hampden-Sydney College in Virginia, looked up one of the more obscure Latin words, consectetur, from a Lorem Ipsum passage, and going through the cites of the word in classical literature, discovered the undoubtable source. Lorem Ipsum comes from sections 1.10.32 and 1.10.33 of "de Finibus Bonorum et Malorum" (The Extremes of Good and Evil) by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, "Lorem ipsum dolor sit amet..", comes from a line in section 1.10.32.\n',
-    fromMessageId: '2',
-    fromThreadId: '2',
-    isSaved: false
-}
 
 const width = Dimensions.get('window').width;
 
@@ -46,13 +26,23 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
     const [userMessage, setUserMessage] = useState('');
     const [chatInfo, setChatInfo] = useState<OasisChat>(chatData);
     const [chatMessages, setChatMessages] = useState<OasisMessage[]>(chatData.messages);
-    const [actualChatGptResponse, setActualChatGptResponse] = useState<OasisMessage | null>(gptResponseExample)
-    const [actualGeminiResponse, setActualGeminiResponse] = useState<OasisMessage | null>(geminiResponseExample)
+    const [actualChatGptResponse, setActualChatGptResponse] = useState<OasisMessage | null>(null)
+    const [actualGeminiResponse, setActualGeminiResponse] = useState<OasisMessage | null>(null)
+    const [renderSwippable, setRenderSwippable] = useState<boolean>(false)
     const [gptOptionIsActive, setGptOptionIsActive] = useState<boolean>(false)
     const [geminiOptionIsActive, setGeminiOptionIsActive] = useState<boolean>(false)
-    const [renderSwippable, setRenderSwippable] = useState<boolean>(true)
     const messageListRef = useRef<FlatList>(null);
     const navigation = useNavigation();
+
+    useEffect(() => {
+        async function init() {
+            if (chatInfo.isNewChat === true) await handleSendFirstMessage()
+            if (chatMessages) await scrollToBottom(false);
+        }
+
+        init();
+    }, [chatInfo]);
+
 
     async function handleSendFirstMessage() {
         const firstMessage = chatData.messages[0].message;
@@ -78,39 +68,18 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
             })
     }
 
-    useEffect(() => {
-        async function init() {
-            if (chatInfo.isNewChat === true) {
-                await handleSendFirstMessage()
-            }
-            if (chatMessages) {
-                await scrollToBottom(false);
-            }
-        }
-
-        init();
-    }, [chatInfo]);
-
-    useEffect(() => {
-        if (gptOptionIsActive && geminiOptionIsActive) {
-            if (actualChatGptResponse) {
-                setGptOptionIsActive(false)
-            } else {
-                setGeminiOptionIsActive(false)
-            }
-        }
-    }, [gptOptionIsActive, geminiOptionIsActive]);
-
     function toggleChatGpt() {
-        if (gptOptionIsActive) return
-        setGptOptionIsActive(!gptOptionIsActive)
-        gptOptionIsActive ? setGptOptionIsActive(false) : setGeminiOptionIsActive(false)
+        if (!gptOptionIsActive) {
+            setGptOptionIsActive(true);
+            setGeminiOptionIsActive(false);
+        }
     }
 
     function toggleGemini() {
-        if (geminiOptionIsActive) return
-        setGeminiOptionIsActive(!geminiOptionIsActive)
-        gptOptionIsActive ? setGptOptionIsActive(false) : setGeminiOptionIsActive(false)
+        if (!geminiOptionIsActive) {
+            setGeminiOptionIsActive(true);
+            setGptOptionIsActive(false);
+        }
     }
 
     async function scrollToBottom(animated: boolean) {
@@ -124,14 +93,15 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
         // Implement your message sending logic here
     }
 
-    async function handleSaveChatbotMessage(chatbotMessage: OasisMessage) {
-        if (!chatbotMessage) return;
+    async function handleSaveChatbotMessage() {
+        const selectedMessage = gptOptionIsActive ? actualChatGptResponse : actualGeminiResponse
+        if (!selectedMessage) return;
         const formattedMessage: OasisMessage = {
-            from: chatbotMessage.from,
+            from: selectedMessage.from,
             oasisChatId: chatInfo.oasisChatId,
-            message: chatbotMessage.message,
-            fromMessageId: chatbotMessage?.fromMessageId,
-            fromThreadId: chatbotMessage?.fromThreadId,
+            message: selectedMessage.message,
+            fromMessageId: selectedMessage?.fromMessageId,
+            fromThreadId: selectedMessage?.fromThreadId,
             isSaved: true,
         }
         await saveChatbotMessage(formattedMessage)
@@ -144,42 +114,64 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
             })
     }
 
+    function handleCancelSelection() {
+        setRenderSwippable(false)
+        setGptOptionIsActive(false)
+        setGeminiOptionIsActive(false)
+        setActualChatGptResponse(null)
+        setActualGeminiResponse(null)
+    }
+
     function renderMessage({item}: { item: OasisMessage }) {
         return <MessageCard oasisMessage={item}/>
     }
 
     function renderBottomContent() {
         if (messageIsLoading && !renderSwippable) {
-            return <ActivityIndicator size="large" color="#fff"/>;
-        } else {
-            if (renderSwippable) {
-                return (
-                    <ChooseContainer>
-                        <FontAwesome6 name={'circle-up'} size={25} color={'#fff'}/>
-                        <ChooseText>Choose a message</ChooseText>
-                    </ChooseContainer>
-                );
-            } else {
-                return (
-                    <ChatInput
-                        message={userMessage}
-                        setMessage={(text) => {
-                            if (text === '\n') {
-                                Keyboard.dismiss();
-                                return;
-                            }
-                            setUserMessage(text);
-                        }}
-                        onFocus={() => {
-                            console.log("Focus")
-                            scrollToBottom(true)
-                        }}
-                        onPress={() => handleSendMessage()}
-                    />
-                );
-            }
+            return (
+                <ActivityIndicator size="large" color="#fff"/>
+            )
         }
+        if (renderSwippable && (gptOptionIsActive || geminiOptionIsActive)) {
+            return (
+                <ChooseContainer>
+                    <SaveButton onPress={handleSaveChatbotMessage}>
+                        <SaveText>Save Message</SaveText>
+                    </SaveButton>
+                    <CancelButton onPress={handleCancelSelection}>
+                        <SaveText style={{color: '#fff'}}>Cancel</SaveText>
+                    </CancelButton>
+                </ChooseContainer>
+            )
+        }
+        if (!messageIsLoading && !gptOptionIsActive && !geminiOptionIsActive && renderSwippable) {
+            return (
+                // @ts-ignore
+                <ChooseContainer style={{width: 'unset', gap: 10,}}>
+                    <ChooseText>Choose a message</ChooseText>
+                    <FontAwesome6 name={'circle-up'} size={30} color={'#fff'}/>
+                </ChooseContainer>
+            )
+        }
+        return (
+            <ChatInput
+                message={userMessage}
+                setMessage={(text) => {
+                    if (text === '\n') {
+                        Keyboard.dismiss();
+                        return;
+                    }
+                    setUserMessage(text);
+                }}
+                onFocus={() => {
+                    scrollToBottom(true)
+                }}
+                onPress={() => handleSendMessage()}
+            />
+        )
     }
+
+    const optionRef = useRef<FlatList>(null);
 
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: '#000'}}>
@@ -196,33 +188,32 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                     inverted={false}
                     ref={messageListRef}
                     ListFooterComponent={
-                        renderSwippable ? (
-                            <Animatable.View animation={'fadeIn'} duration={1000}>
-                                <FlatList
-                                    horizontal
-                                    style={{paddingBottom: 20}}
-                                    contentContainerStyle={{alignItems: 'flex-start'}}
-                                    data={[actualChatGptResponse, actualGeminiResponse].filter(Boolean)}
-                                    keyExtractor={(item) => item!.from.toString()}
-                                    renderItem={({item}) => (
-                                        <MessageCard
-                                            oasisMessage={item!}
-                                            toggle={() => {
-                                                if (item!.from === 'ChatGPT') {
-                                                    toggleChatGpt()
-                                                } else {
-                                                    toggleGemini()
-                                                }
-                                            }}
-                                            isActive={item!.from === 'ChatGPT' ? gptOptionIsActive : geminiOptionIsActive}
-                                        />
-                                    )}
-                                    snapToInterval={width}
-                                    decelerationRate={'fast'}
-                                    showsHorizontalScrollIndicator={false}
-                                />
-                            </Animatable.View>
-                        ) : null
+                        <>
+                            {renderSwippable && !messageIsLoading && (
+                                <Animatable.View animation={'fadeIn'} duration={1000}>
+                                    <FlatList
+                                        horizontal
+                                        ref={optionRef}
+                                        style={{paddingBottom: 20}}
+                                        contentContainerStyle={{alignItems: 'flex-start'}}
+                                        data={[actualChatGptResponse, actualGeminiResponse].filter(Boolean)}
+                                        keyExtractor={(item) => item!.from.toString()}
+                                        renderItem={({item}) => (
+                                            <MessageCard
+                                                oasisMessage={item!}
+                                                toggle={() => item!.from === 'ChatGPT' ? toggleChatGpt() : toggleGemini()}
+                                                isActive={item!.from === 'ChatGPT' ? gptOptionIsActive : geminiOptionIsActive}
+                                                isLoading={messageIsLoading}
+                                            />
+                                        )}
+                                        snapToInterval={width}
+                                        decelerationRate={'fast'}
+                                        showsHorizontalScrollIndicator={false}
+                                    />
+                                </Animatable.View>
+                            )}
+                            {messageIsLoading && <ChatbotSkeleton/>}
+                        </>
                     }
                 />
 
@@ -250,8 +241,34 @@ const ChooseText = styled.Text`
 
 const ChooseContainer = styled.View`
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   flex-direction: row;
-  gap: 10px;
+  align-items: center;
+  width: 95%;
+`
+
+const SaveButton = styled.TouchableOpacity`
+  background-color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
   padding: 10px;
+  width: 60%;
+`
+
+const CancelButton = styled.TouchableOpacity`
+  border: white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 10px;
+  padding: 10px;
+  width: 35%;
+`
+
+const SaveText = styled.Text`
+  font-size: 16px;
+  font-weight: bold;
+  color: black;
 `

@@ -10,15 +10,16 @@ import geminiLogo from '../assets/geminiLogo.png'
 
 import {useEffect, useState} from "react";
 
-import {Dimensions, ScrollView, TouchableOpacity} from "react-native";
+import {ActivityIndicator, Dimensions, ScrollView, TouchableOpacity} from "react-native";
 
 const {width} = Dimensions.get('window');
 
 
-export function MessageCard({oasisMessage, toggle, isActive}: {
+export function MessageCard({oasisMessage, toggle, isActive, isLoading}: {
     oasisMessage: OasisMessage,
     isActive?: boolean,
-    toggle?: () => void
+    toggle?: () => void,
+    isLoading?: boolean
 }) {
     const [isSaved, setIsSaved] = useState<boolean>(oasisMessage.isSaved!)
     const isChatbotSavedMessage = oasisMessage.from !== 'User' && isSaved
@@ -26,8 +27,6 @@ export function MessageCard({oasisMessage, toggle, isActive}: {
     const isUserMessage = oasisMessage.from === 'User' && isSaved
 
     const shouldScroll = oasisMessage.isSaved === false && oasisMessage.message.length > 800
-
-
 
 
     function renderProfileImage() {
@@ -41,7 +40,7 @@ export function MessageCard({oasisMessage, toggle, isActive}: {
     }
 
     function renderMessage() {
-        if (isChabotOptionMessage) { // Chatbot option message
+        if (isChabotOptionMessage) {
             return (
                 <OptionContainer isActive={isActive!}>
                     <Header>
@@ -49,23 +48,30 @@ export function MessageCard({oasisMessage, toggle, isActive}: {
                         <FromName>{oasisMessage.from}</FromName>
                     </Header>
                     <OptionMessageContent shouldScroll={shouldScroll}>
-                        {shouldScroll ? (
-                            <ScrollView
-                                indicatorStyle={'white'}
-                            >
-                                <TouchableOpacity onPress={toggle} activeOpacity={1}>
-                                    <Message>{oasisMessage.message}</Message>
-                                </TouchableOpacity>
-                            </ScrollView>
+                        {isLoading ? (
+                            <ActivityIndicator size="large" color="#fff"/>
                         ) : (
-                            <TouchableOpacity onPress={toggle} activeOpacity={1}>
-                                <Message>{oasisMessage.message}</Message>
-                            </TouchableOpacity>
+                            <>
+                                {shouldScroll ? (
+                                    <ScrollView
+                                        indicatorStyle={'white'}
+                                        showsVerticalScrollIndicator={true}
+                                    >
+                                        <TouchableOpacity onPress={toggle} activeOpacity={1}>
+                                            <Message>{oasisMessage.message}</Message>
+                                        </TouchableOpacity>
+                                    </ScrollView>
+                                ) : (
+                                    <TouchableOpacity onPress={toggle} activeOpacity={1}>
+                                        <Message>{oasisMessage.message}</Message>
+                                    </TouchableOpacity>
+                                )}
+                            </>
                         )}
                     </OptionMessageContent>
                 </OptionContainer>
             )
-        } else if (isUserMessage) { // User message
+        } else if (isUserMessage) {
             return (
                 <UserMessageContainer>
                     <Header>
@@ -76,6 +82,18 @@ export function MessageCard({oasisMessage, toggle, isActive}: {
                         <Message>{oasisMessage.message}</Message>
                     </UserMessageContent>
                 </UserMessageContainer>
+            )
+        } else if(isChatbotSavedMessage){
+            return (
+                <ChatbotMessageContainer>
+                    <Header>
+                        {renderProfileImage()}
+                        <FromName>{oasisMessage.from}</FromName>
+                    </Header>
+                    <UserMessageContent shouldScroll={shouldScroll}>
+                        <Message>{oasisMessage.message}</Message>
+                    </UserMessageContent>
+                </ChatbotMessageContainer>
             )
         }
     }
@@ -88,12 +106,18 @@ export function MessageCard({oasisMessage, toggle, isActive}: {
 }
 
 const UserMessageContainer = styled.TouchableOpacity`
-  display: flex;
   gap: 7px;
   width: ${width * 0.90}px;
   align-items: flex-end;
-  border-radius: 10px;
   align-self: flex-end;
+  padding: 10px;
+`
+
+const ChatbotMessageContainer = styled.View`
+  gap: 7px;
+  width: ${width * 0.90}px;
+  align-items: flex-start;
+  align-self: flex-start;
   padding: 10px;
 `
 
@@ -105,7 +129,7 @@ const OptionContainer = styled.View<{ isActive: boolean }>`
   margin-right: 12px;
   width: ${width * 0.90}px;
   align-items: flex-start;
-  background-color: #212121;
+  background-color: ${props => props.isActive ? '#303030' : '#212121'};
   border-radius: 10px;
   padding: 10px;
   border: 2px solid ${props => props.isActive ? 'gray' : null};
