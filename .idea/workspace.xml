@@ -4,14 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":art: estilizando mensagens dos chatbots">
-      <change afterPath="$PROJECT_DIR$/components/ChatbotSkeleton.tsx" afterDir="false" />
+    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":sparkles: save e cancel no chat">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/MessageCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/MessageCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contexts/ChatContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/ChatContext.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/ChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ChatScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/apiService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/service/apiService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -59,6 +58,7 @@
       <map>
         <entry key="com.haulmont.rcb.reactComponents" value="false" />
         <entry key="com.haulmont.rcb.reactInspector" value="false" />
+        <entry key="com.haulmont.rcb.storybook" value="false" />
       </map>
     </option>
   </component>
@@ -119,7 +119,9 @@
       <workItem from="1715173409827" duration="16712000" />
       <workItem from="1715260146973" duration="14914000" />
       <workItem from="1715346038544" duration="19234000" />
-      <workItem from="1715375712062" duration="11694000" />
+      <workItem from="1715375712062" duration="12496000" />
+      <workItem from="1715482176885" duration="1985000" />
+      <workItem from="1715605128048" duration="8961000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
@@ -377,14 +379,29 @@
       <option name="project" value="LOCAL" />
       <updated>1715371803990</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary=":sparkles: save e cancel no chat">
+      <option name="closed" value="true" />
+      <created>1715388951879</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1715388951879</updated>
+    </task>
+    <task id="LOCAL-00034" summary=":sparkles: save e cancel no chat">
+      <option name="closed" value="true" />
+      <created>1715389010851</created>
+      <option name="number" value="00034" />
+      <option name="presentableId" value="LOCAL-00034" />
+      <option name="project" value="LOCAL" />
+      <updated>1715389010851</updated>
+    </task>
+    <option name="localTasksCounter" value="35" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value=":tada: first" />
     <MESSAGE value=":sparkles: estrutura da tela de login" />
     <MESSAGE value=":art: registro e cadastro na mesma tela" />
     <MESSAGE value=":art: cadastro e login na mesma tela" />
@@ -409,6 +426,7 @@
     <MESSAGE value=":sparkles: exibindo titulos das conversas" />
     <MESSAGE value=":bug: lidando com titulos de chats repetidos" />
     <MESSAGE value=":art: estilizando mensagens dos chatbots" />
-    <option name="LAST_COMMIT_MESSAGE" value=":art: estilizando mensagens dos chatbots" />
+    <MESSAGE value=":sparkles: save e cancel no chat" />
+    <option name="LAST_COMMIT_MESSAGE" value=":sparkles: save e cancel no chat" />
   </component>
 </project>

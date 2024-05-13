@@ -1,6 +1,11 @@
 import {createContext, useContext, useEffect, useState} from "react";
 import {OasisChat, OasisMessage, ProviderProps} from "../interfaces/interfaces";
-import {getAllChatsService, saveChatbotMessageService, sendFirstMessageService} from "../service/apiService";
+import {
+    getAllChatsService,
+    saveChatbotMessageService,
+    sendFirstMessageService,
+    sendMessageToChatService
+} from "../service/apiService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useAuthContext} from "./AuthContext";
 import {useNavigation} from "@react-navigation/native";
@@ -14,6 +19,7 @@ interface ChatContextType {
     chatbotEnums: number[];
     setChatbotEnums: (chatbotEnums: number[]) => void;
     saveChatbotMessage: (chatbotMessage: OasisMessage) => Promise<void>;
+    sendMessageToChat: (oasisChatId: number, chatbotEnums: number[], message: string) => Promise<any>;
 }
 
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
@@ -33,6 +39,7 @@ export function ChatProvider({children}: ProviderProps) {
         async function fetchData() {
             await getAllChats();
         }
+
         if (isAuthenticated) {
             fetchData();
         }
@@ -55,7 +62,7 @@ export function ChatProvider({children}: ProviderProps) {
                 setChats(chats);
             })
             .catch((error) => {
-                if(error.response) {
+                if (error.response) {
                     console.log(`Status ${error.response.status} ao buscar chats`)
                 }
             })
@@ -65,7 +72,7 @@ export function ChatProvider({children}: ProviderProps) {
         const tokenJwt = await AsyncStorage.getItem('@oasis-accessToken');
         if (!tokenJwt) return;
         const randomChatId = Math.floor(Math.random() * 1000);
-        const newMessage : OasisMessage = {
+        const newMessage: OasisMessage = {
             from: 'User',
             message: fisrtUserMessage,
             oasisChatId: randomChatId,
@@ -75,7 +82,7 @@ export function ChatProvider({children}: ProviderProps) {
             createdAt: new Date().toISOString(),
             isSaved: true,
         }
-        const newChat :OasisChat = {
+        const newChat: OasisChat = {
             messages: [newMessage],
             oasisChatId: randomChatId,
             oasisUserId: 1,
@@ -89,8 +96,8 @@ export function ChatProvider({children}: ProviderProps) {
         navigation.navigate(newChat.title, {chatData: newChat});
     }
 
-    async function sendFirstMessage(userMessage: string){
-        if(userMessage === '') return;
+    async function sendFirstMessage(userMessage: string) {
+        if (userMessage === '') return;
         const tokenJwt = await AsyncStorage.getItem('@oasis-accessToken');
         if (!tokenJwt) return;
         return await sendFirstMessageService(userMessage, [1, 1], tokenJwt)
@@ -98,9 +105,8 @@ export function ChatProvider({children}: ProviderProps) {
                 return response.data;
             })
             .catch((error) => {
-                if(error.response) {
-                    Alert.alert('Erro ao enviar mensagem', 'Tente novamente mais tarde')
-                    console.log(error?.response)
+                if (error.response) {
+                    console.log("Erro ao enviar primeira mensagem -> " + error.response)
                     throw error;
                 }
             })
@@ -114,9 +120,24 @@ export function ChatProvider({children}: ProviderProps) {
                 console.log("Mensagem do escolhida salva!")
             })
             .catch((error) => {
-                if(error.response) {
+                if (error.response) {
                     console.log('erro ao salvar mensagem -> ' + error.response)
                     throw error;
+                }
+            })
+    }
+
+    async function sendMessageToChat(oasisChatId: number, chatbotEnums: number[], message: string){
+        const tokenJwt = await AsyncStorage.getItem('@oasis-accessToken')
+        if(!tokenJwt || !oasisChatId || !message || !chatbotEnums) return
+        return await sendMessageToChatService(oasisChatId, message, chatbotEnums, tokenJwt)
+            .then((response) => {
+                return response.data
+            })
+            .catch((error) => {
+                if(error.response){
+                    console.log('Erro ao enviar mensagem -> ' + error.response)
+                    throw error
                 }
             })
     }
@@ -130,7 +151,8 @@ export function ChatProvider({children}: ProviderProps) {
                 sendFirstMessage,
                 chatbotEnums,
                 setChatbotEnums,
-                saveChatbotMessage
+                saveChatbotMessage,
+                sendMessageToChat
             }}
         >
             {children}

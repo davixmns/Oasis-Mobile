@@ -1,27 +1,23 @@
 import {
-    Keyboard,
-    KeyboardAvoidingView,
-    Platform,
-    SafeAreaView,
-    ActivityIndicator,
-    FlatList,
-    Dimensions, Alert
+    Keyboard, KeyboardAvoidingView, Platform, SafeAreaView,
+    ActivityIndicator, FlatList, Dimensions, Alert
 } from "react-native";
+import {useNavigation} from "@react-navigation/native";
+import {FontAwesome6} from "@expo/vector-icons";
+import styled from "styled-components/native";
+import * as Animatable from 'react-native-animatable';
 import {useState, useRef, useEffect} from "react";
+
 import ChatInput from "../components/ChatInput";
 import {OasisChat, OasisMessage} from "../interfaces/interfaces";
 import {MessageCard} from "../components/MessageCard";
 import {useChatContext} from "../contexts/ChatContext";
-import {useNavigation} from "@react-navigation/native";
 import {ChatbotSkeleton} from "../components/ChatbotSkeleton";
-import {FontAwesome6} from "@expo/vector-icons";
-import styled from "styled-components/native";
-import * as Animatable from 'react-native-animatable';
 
 const width = Dimensions.get('window').width;
 
 export function ChatScreen({chatData}: { chatData: OasisChat }) {
-    const {sendFirstMessage, saveChatbotMessage, chats} = useChatContext();
+    const {chats, sendFirstMessage, saveChatbotMessage, sendMessageToChat} = useChatContext();
     const [messageIsLoading, setMessageIsLoading] = useState<boolean>(false);
     const [userMessage, setUserMessage] = useState('');
     const [chatInfo, setChatInfo] = useState<OasisChat>(chatData);
@@ -36,10 +32,11 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
 
     useEffect(() => {
         async function init() {
-            if (chatInfo.isNewChat === true) await handleSendFirstMessage()
-            if (chatMessages) await scrollToBottom(false);
+            if (chatInfo.isNewChat) {
+                await handleSendFirstMessage()
+            }
+            await scrollToBottom(false);
         }
-
         init();
     }, [chatInfo]);
 
@@ -48,7 +45,6 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
         const firstMessage = chatData.messages[0].message;
         if (firstMessage === '') return;
         setMessageIsLoading(true);
-        console.log("Enviando primeira mensagem!")
         await sendFirstMessage(firstMessage)
             .then((responseData: any) => {
                 setChatInfo(responseData.chat)
@@ -61,10 +57,44 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                 chatInfo.isNewChat = false;
             })
             .catch((error) => {
-                console.log("erro ao enviar mensagem -> " + error)
+                Alert.alert('Erro ao enviar mensagem', error.response.status)
             })
             .finally(() => {
                 setMessageIsLoading(false);
+            })
+    }
+
+    async function handleSendMessageToChat() {
+        if (userMessage == '') return
+        setMessageIsLoading(true)
+
+        const formattedMessage: OasisMessage = {
+            from: 'User',
+            message: userMessage,
+            oasisChatId: chatInfo.oasisChatId,
+            isSaved: true,
+            createdAt: new Date().toISOString()
+        }
+
+        setChatMessages([...chatMessages, formattedMessage])
+
+        await sendMessageToChat(chatInfo.oasisChatId, [0, 1], userMessage)
+            .then((responseData: any) => {
+                const gptMessage: OasisMessage = responseData[0]
+                const geminiMessage: OasisMessage = responseData[1]
+
+                setActualChatGptResponse(gptMessage)
+                setActualGeminiResponse(geminiMessage)
+
+                setRenderSwippable(true)
+
+                setUserMessage('')
+            })
+            .catch((error) => {
+                Alert.alert('Erro ao enviar mensagem', error.response.status)
+            })
+            .finally(() => {
+                setMessageIsLoading(false)
             })
     }
 
@@ -89,20 +119,13 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
         await messageListRef.current.scrollToEnd({animated: animated});
     }
 
-    function handleSendMessage() {
-        // Implement your message sending logic here
-    }
-
     async function handleSaveChatbotMessage() {
         const selectedMessage = gptOptionIsActive ? actualChatGptResponse : actualGeminiResponse
         if (!selectedMessage) return;
         const formattedMessage: OasisMessage = {
-            from: selectedMessage.from,
-            oasisChatId: chatInfo.oasisChatId,
-            message: selectedMessage.message,
-            fromMessageId: selectedMessage?.fromMessageId,
-            fromThreadId: selectedMessage?.fromThreadId,
+            ...selectedMessage,
             isSaved: true,
+            oasisChatId: chatInfo.oasisChatId
         }
         await saveChatbotMessage(formattedMessage)
             .then(async () => {
@@ -153,6 +176,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                 </ChooseContainer>
             )
         }
+
         return (
             <ChatInput
                 message={userMessage}
@@ -166,7 +190,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                 onFocus={() => {
                     scrollToBottom(true)
                 }}
-                onPress={() => handleSendMessage()}
+                onPress={handleSendMessageToChat}
             />
         )
     }
@@ -183,7 +207,6 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                 <FlatList
                     data={chatMessages}
                     renderItem={renderMessage}
-                    style={{paddingVertical: 10}}
                     keyExtractor={(item, index) => index.toString()}
                     inverted={false}
                     ref={messageListRef}
@@ -208,6 +231,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                                         )}
                                         snapToInterval={width}
                                         decelerationRate={'fast'}
+                                        onContentSizeChange={() => scrollToBottom(true)}
                                         showsHorizontalScrollIndicator={false}
                                     />
                                 </Animatable.View>

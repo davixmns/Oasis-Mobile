@@ -71,3 +71,18 @@ export async function saveChatbotMessageService(chatbotMessage: OasisMessage, to
         }
     )
 }
+
+export async function sendMessageToChatService(oasisChatId: number, message: string, chatbotEnums: number[], tokenJwt: string) {
+    return await api.post(
+        "/Chat/SendMessage/" + oasisChatId,
+        {
+            Message: message,
+            ChatbotEnums: chatbotEnums
+        },
+        {
+            headers: {
+                Authorization: `Bearer ${tokenJwt}`
+            }
+        }
+    )
+}

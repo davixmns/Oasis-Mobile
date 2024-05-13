@@ -1,7 +1,7 @@
+import {useEffect, useState} from "react";
 import {ActivityIndicator, Dimensions, ScrollView, TouchableOpacity} from "react-native";
-import {OasisMessage} from "../interfaces/interfaces";
 import styled from "styled-components/native";
-import {useState} from "react";
+import {OasisMessage} from "../interfaces/interfaces";
 
 //@ts-ignore
 import chatGgptLogo from '../assets/chatGptLogo.png'
@@ -22,8 +22,7 @@ export function MessageCard({oasisMessage, toggle, isActive, isLoading}: {
     const isChatbotSavedMessage = oasisMessage.from !== 'User' && isSaved
     const isChabotOptionMessage = oasisMessage.from !== 'User' && !isSaved
     const isUserMessage = oasisMessage.from === 'User' && isSaved
-
-    const shouldScroll = oasisMessage.isSaved === false && oasisMessage.message.length > 800
+    const shouldScroll = !oasisMessage.isSaved && oasisMessage.message.length > 700
 
 
     function renderProfileImage() {
@@ -75,21 +74,17 @@ export function MessageCard({oasisMessage, toggle, isActive, isLoading}: {
                         <FromName>You</FromName>
                         {renderProfileImage()}
                     </Header>
-                    <UserMessageContent shouldScroll={shouldScroll}>
-                        <Message>{oasisMessage.message}</Message>
-                    </UserMessageContent>
+                    <Message>{oasisMessage.message}</Message>
                 </UserMessageContainer>
             )
-        } else if(isChatbotSavedMessage){
+        } else if (isChatbotSavedMessage) {
             return (
                 <ChatbotMessageContainer>
                     <Header>
                         {renderProfileImage()}
                         <FromName>{oasisMessage.from}</FromName>
                     </Header>
-                    <UserMessageContent shouldScroll={shouldScroll}>
-                        <Message>{oasisMessage.message}</Message>
-                    </UserMessageContent>
+                    <Message>{oasisMessage.message}</Message>
                 </ChatbotMessageContainer>
             )
         }
@@ -102,7 +97,7 @@ export function MessageCard({oasisMessage, toggle, isActive, isLoading}: {
     )
 }
 
-const UserMessageContainer = styled.TouchableOpacity`
+const UserMessageContainer = styled.View`
   gap: 7px;
   width: ${width * 0.90}px;
   align-items: flex-end;
