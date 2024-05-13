@@ -110,19 +110,17 @@ export function LoginScreen() {
     }
 
     async function handleTryLogin() {
-        if (!verifyEmail(signInEmail)){
+        if (!verifyEmail(signInEmail)) {
             setSignInEmailIsCorrect(false)
             return
         }
+        snapToIndex(0)
         setRequestIsLoading(true)
         setRequestIsLoading(true)
         await new Promise(resolve => setTimeout(resolve, 1000))
         await tryLogin(signInEmail, signInPassword)
             .catch((error) => {
-                if (error.response) {
-                    console.log(error.response.data.message)
-                    Alert.alert('Error', error.response.data.message);
-                }
+                Alert.alert(error.response.data.message);
             })
             .finally(() => {
                 setRequestIsLoading(false)
@@ -132,15 +130,15 @@ export function LoginScreen() {
     function validateRegisterFields(user: OasisUser) {
         const validatedFields = verifyUser(user)
         let fieldsOk = true
-        if(validatedFields[0] === false){
+        if (validatedFields[0] === false) {
             setRegisterNameIsCorret(false)
             fieldsOk = false
         }
-        if(validatedFields[1] === false){
+        if (validatedFields[1] === false) {
             setRegisterEmailIsCorrect(false)
             fieldsOk = false
         }
-        if(validatedFields[2] === false){
+        if (validatedFields[2] === false) {
             setRegisterPasswordIsCorrect(false)
             fieldsOk = false
         }
@@ -155,7 +153,7 @@ export function LoginScreen() {
             password: registerPassword
         };
 
-        if(!validateRegisterFields(user)) return
+        if (!validateRegisterFields(user)) return
 
         setRequestIsLoading(true)
         // await new Promise(resolve => setTimeout(resolve, 1000))

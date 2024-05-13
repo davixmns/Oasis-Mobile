@@ -47,12 +47,10 @@ export function ChatProvider({children}: ProviderProps) {
 
     async function getAllChats() {
         const tokenjwt = await AsyncStorage.getItem('@oasis-accessToken')
-        if (!tokenjwt) {
-            console.log("Token não encontrado")
-            return;
-        }
+        if(!tokenjwt) return;
         await getAllChatsService(tokenjwt)
             .then((response) => {
+                console.log("✅ Chats carregados")
                 let i = 1;
                 const chats = response.data;
                 chats.forEach((chat: OasisChat) => {
@@ -63,7 +61,7 @@ export function ChatProvider({children}: ProviderProps) {
             })
             .catch((error) => {
                 if (error.response) {
-                    console.log(`Status ${error.response.status} ao buscar chats`)
+                    console.log("❌ Erro ao buscar chats -> " + error.response)
                 }
             })
     }
@@ -102,11 +100,12 @@ export function ChatProvider({children}: ProviderProps) {
         if (!tokenJwt) return;
         return await sendFirstMessageService(userMessage, [1, 1], tokenJwt)
             .then((response) => {
+                console.log("✅ Respostas recebidas")
                 return response.data;
             })
             .catch((error) => {
                 if (error.response) {
-                    console.log("Erro ao enviar primeira mensagem -> " + error.response)
+                    console.log("❌ Erro ao enviar primeira mensagem -> " + error.response)
                     throw error;
                 }
             })
@@ -117,7 +116,7 @@ export function ChatProvider({children}: ProviderProps) {
         if (!tokenJwt) return;
         await saveChatbotMessageService(chatbotMessage, tokenJwt)
             .then(() => {
-                console.log("Mensagem do escolhida salva!")
+                console.log("✅ Mensagem do escolhida salva")
             })
             .catch((error) => {
                 if (error.response) {
@@ -132,11 +131,12 @@ export function ChatProvider({children}: ProviderProps) {
         if(!tokenJwt || !oasisChatId || !message || !chatbotEnums) return
         return await sendMessageToChatService(oasisChatId, message, chatbotEnums, tokenJwt)
             .then((response) => {
+                console.log('✅ Respostas recebidas')
                 return response.data
             })
             .catch((error) => {
                 if(error.response){
-                    console.log('Erro ao enviar mensagem -> ' + error.response)
+                    console.log('❌ Erro ao enviar mensagem -> ' + error.response)
                     throw error
                 }
             })

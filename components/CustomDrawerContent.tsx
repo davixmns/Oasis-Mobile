@@ -16,7 +16,7 @@ export default function CustomDrawerContent(props: any) {
     return (
         <View style={{flex: 1}}>
             <DrawerContentScrollView {...props}>
-                <DrawerItemList {...props} />
+                <DrawerItemList {...props}/>
             </DrawerContentScrollView>
             <View style={styles.profileContainer}>
                 <DrawerItem
@@ -76,5 +76,9 @@ const styles = StyleSheet.create({
     },
     drawerItemStyle: {
         borderRadius: 12,
+    },
+    chatList: {
+        borderTopWidth: 1,
+        borderTopColor: '#fff',
     }
 });

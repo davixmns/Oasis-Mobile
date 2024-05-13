@@ -34,19 +34,20 @@ export function AuthProvider({children}: ProviderProps) {
     async function verifyAccessToken() {
         const accessToken = await AsyncStorage.getItem('@oasis-accessToken')
         if (!accessToken){
-            console.log("No Access Token finded")
+            console.log("❌ Token não encontrado")
             setIsAuthenticated(false)
             setIsLoading(false)
             return
         }
         await verifyAccessTokenService(accessToken)
             .then((response) => {
+                console.log("✅ Token valido")
                 setIsAuthenticated(true)
                 const responseUser = response.data.data
                 setUser(responseUser)
             })
             .catch(() => {
-                console.log("Access Token expired")
+                console.log("⚠️ Token invalido")
                 setIsAuthenticated(false)
             })
             .finally(async () => {
@@ -59,6 +60,7 @@ export function AuthProvider({children}: ProviderProps) {
         if (email === '' || password === '') return
         await tryLoginService(email, password)
             .then(async (response) => {
+                console.log("✅ Login efetuado")
                 const data = response.data.data
                 const accessToken = data.accessToken
                 const refreshToken = data.refreshToken
@@ -71,15 +73,25 @@ export function AuthProvider({children}: ProviderProps) {
                 ])
                 setIsAuthenticated(true)
             })
+            .catch((error) => {
+                if (error.response) {
+                    console.log("❌ Erro ao logar -> " + error.response.data.message)
+                    throw error
+                }
+            })
     }
 
     async function createUser(user: OasisUser) {
         await createUserService(user)
             .then(async () => {
+                console.log("✅ Usuario criado")
                 await tryLogin(user.email, user.password!)
             })
             .catch((error) => {
-                throw error
+                if (error.response) {
+                    console.log("❌ Erro ao criar usuario -> " + error.response.data.message)
+                    throw error
+                }
             })
     }
 

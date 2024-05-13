@@ -32,7 +32,12 @@ export function MyDrawer() {
                         headerRight: () => ChatBotSelector(closeMenu, menuVisible, openMenu),
                     }}
                 >
-                    <Drawer.Screen name="New Chat" component={NewChatScreen}/>
+                    <Drawer.Screen name="New Chat" component={NewChatScreen} options={{
+                        drawerItemStyle: {
+                            borderBottomWidth: 1,
+                            borderBottomColor: 'rgba(255, 255, 255, 0.3)',
+                        }
+                    }}/>
                     {chats.map(chat => (
                         <Drawer.Screen
                             key={chat.oasisChatId}
