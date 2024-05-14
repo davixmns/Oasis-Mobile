@@ -30,7 +30,7 @@ export function AuthStack() {
                         component={MyDrawer}
                         //cor de fundo da transicao é preta
                         options={{
-                            cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+                            cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
                         }}
                     />
                     <Stack.Screen
@@ -63,7 +63,7 @@ export function AuthStack() {
                         component={LoginScreen}
                         options={{
                             headerShown: false,
-                            cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
+                            cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
                         }}
                     />
                 </>

@@ -120,7 +120,7 @@ export function LoginScreen() {
         await new Promise(resolve => setTimeout(resolve, 1000))
         await tryLogin(signInEmail, signInPassword)
             .catch((error) => {
-                Alert.alert(error.response.data.message);
+                Alert.alert(error.response.data);
             })
             .finally(() => {
                 setRequestIsLoading(false)
