@@ -61,7 +61,7 @@ export function AuthProvider({children}: ProviderProps) {
         await tryLoginService(email, password)
             .then(async (response) => {
                 console.log("✅ Login efetuado")
-                const data = response.data.data
+                const data = response.data
                 const accessToken = data.accessToken
                 const refreshToken = data.refreshToken
                 const user: OasisUser = data.oasisUser
@@ -75,7 +75,7 @@ export function AuthProvider({children}: ProviderProps) {
             })
             .catch((error) => {
                 if (error.response) {
-                    console.log("❌ Erro ao logar -> " + error.response.data.message)
+                    console.log("❌ Erro ao logar -> " + error.response.data)
                     throw error
                 }
             })

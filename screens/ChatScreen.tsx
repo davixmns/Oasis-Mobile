@@ -7,12 +7,13 @@ import {FontAwesome6} from "@expo/vector-icons";
 import styled from "styled-components/native";
 import * as Animatable from 'react-native-animatable';
 import {useState, useRef, useEffect} from "react";
-
 import ChatInput from "../components/ChatInput";
 import {OasisChat, OasisMessage} from "../interfaces/interfaces";
-import {MessageCard} from "../components/MessageCard";
 import {useChatContext} from "../contexts/ChatContext";
 import {ChatbotSkeleton} from "../components/ChatbotSkeleton";
+import {UserMessageCard} from "../components/UserMessageCard";
+import {ChatbotMessageCard} from "../components/ChatbotMessageCard";
+import {ChatbotOptionCard} from "../components/ChatbotOptionCard";
 
 const width = Dimensions.get('window').width;
 
@@ -37,6 +38,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
             }
             await scrollToBottom(false);
         }
+
         init();
     }, [chatInfo]);
 
@@ -146,7 +148,20 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
     }
 
     function renderMessage({item}: { item: OasisMessage }) {
-        return <MessageCard oasisMessage={item}/>
+        const isChatbotSavedMessage = item.from !== 'User' && item.isSaved
+        const isChabotOptionMessage = item.from !== 'User' && !item.isSaved
+        const isUserMessage = item.from === 'User'
+
+        if (isUserMessage) return <UserMessageCard oasisMessage={item}/>
+        if (isChatbotSavedMessage) return <ChatbotMessageCard oasisMessage={item}/>
+        // if (isChabotOptionMessage) return (
+        //     <ChatbotOptionCard
+        //         oasisMessage={item}
+        //         toggle={() => item.from === 'ChatGPT' ? toggleChatGpt() : toggleGemini()}
+        //         isActive={item.from === 'ChatGPT' ? gptOptionIsActive : geminiOptionIsActive}
+        //     />
+        // )
+        return <></>
     }
 
     function renderBottomContent() {
@@ -219,14 +234,13 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                                         ref={optionRef}
                                         style={{paddingBottom: 20}}
                                         contentContainerStyle={{alignItems: 'flex-start'}}
-                                        data={[actualChatGptResponse, actualGeminiResponse].filter(Boolean)}
+                                        data={[actualChatGptResponse!, actualGeminiResponse!].filter(Boolean)}
                                         keyExtractor={(item) => item!.from.toString()}
                                         renderItem={({item}) => (
-                                            <MessageCard
-                                                oasisMessage={item!}
-                                                toggle={() => item!.from === 'ChatGPT' ? toggleChatGpt() : toggleGemini()}
-                                                isActive={item!.from === 'ChatGPT' ? gptOptionIsActive : geminiOptionIsActive}
-                                                isLoading={messageIsLoading}
+                                            <ChatbotOptionCard
+                                                oasisMessage={item}
+                                                toggle={() => item.from === 'ChatGPT' ? toggleChatGpt() : toggleGemini()}
+                                                isActive={item.from === 'ChatGPT' ? gptOptionIsActive : geminiOptionIsActive}
                                             />
                                         )}
                                         snapToInterval={width}

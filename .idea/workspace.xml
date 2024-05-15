@@ -4,13 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":sparkles: enviando mensagens para chats existestes">
+    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":zap: ajustes de mensagens de erro">
+      <change afterPath="$PROJECT_DIR$/components/ChatbotMessageCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/ChatbotOptionCard.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/UserMessageCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/CustomDrawerContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/CustomDrawerContent.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/MessageCard.tsx" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/config.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contexts/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/AuthContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contexts/ChatContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/ChatContext.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navigations/MyDrawer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/MyDrawer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/navigations/AuthStack.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/AuthStack.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/ChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ChatScreen.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/LoginScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/LoginScreen.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -122,7 +125,10 @@
       <workItem from="1715346038544" duration="19234000" />
       <workItem from="1715375712062" duration="12496000" />
       <workItem from="1715482176885" duration="1985000" />
-      <workItem from="1715605128048" duration="12047000" />
+      <workItem from="1715605128048" duration="12136000" />
+      <workItem from="1715649940304" duration="616000" />
+      <workItem from="1715713700434" duration="665000" />
+      <workItem from="1715726224099" duration="2861000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
@@ -404,14 +410,21 @@
       <option name="project" value="LOCAL" />
       <updated>1715625601835</updated>
     </task>
-    <option name="localTasksCounter" value="36" />
+    <task id="LOCAL-00036" summary=":zap: ajustes de mensagens de erro">
+      <option name="closed" value="true" />
+      <created>1715628730429</created>
+      <option name="number" value="00036" />
+      <option name="presentableId" value="LOCAL-00036" />
+      <option name="project" value="LOCAL" />
+      <updated>1715628730429</updated>
+    </task>
+    <option name="localTasksCounter" value="37" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value=":art: registro e cadastro na mesma tela" />
     <MESSAGE value=":art: cadastro e login na mesma tela" />
     <MESSAGE value=":rocket: tela login e cadastro ok" />
     <MESSAGE value=":art: animação no login e registro" />
@@ -436,6 +449,7 @@
     <MESSAGE value=":art: estilizando mensagens dos chatbots" />
     <MESSAGE value=":sparkles: save e cancel no chat" />
     <MESSAGE value=":sparkles: enviando mensagens para chats existestes" />
-    <option name="LAST_COMMIT_MESSAGE" value=":sparkles: enviando mensagens para chats existestes" />
+    <MESSAGE value=":zap: ajustes de mensagens de erro" />
+    <option name="LAST_COMMIT_MESSAGE" value=":zap: ajustes de mensagens de erro" />
   </component>
 </project>
