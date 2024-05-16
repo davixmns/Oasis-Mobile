@@ -1,6 +1,6 @@
 import {
     Keyboard, KeyboardAvoidingView, Platform, SafeAreaView,
-    ActivityIndicator, FlatList, Dimensions, Alert
+    ActivityIndicator, FlatList, Dimensions, Alert, View
 } from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import {FontAwesome6} from "@expo/vector-icons";
@@ -132,14 +132,14 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
         await saveChatbotMessage(formattedMessage)
             .then(async () => {
                 await setChatMessages([...chatMessages, formattedMessage])
-                setRenderSwippable(false)
+                handleCloseSelection()
             })
             .catch((e) => {
                 Alert.alert('Erro ao salvar mensagem', e.response)
             })
     }
 
-    function handleCancelSelection() {
+    function handleCloseSelection() {
         setRenderSwippable(false)
         setGptOptionIsActive(false)
         setGeminiOptionIsActive(false)
@@ -149,18 +149,15 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
 
     function renderMessage({item}: { item: OasisMessage }) {
         const isChatbotSavedMessage = item.from !== 'User' && item.isSaved
-        const isChabotOptionMessage = item.from !== 'User' && !item.isSaved
         const isUserMessage = item.from === 'User'
 
-        if (isUserMessage) return <UserMessageCard oasisMessage={item}/>
-        if (isChatbotSavedMessage) return <ChatbotMessageCard oasisMessage={item}/>
-        // if (isChabotOptionMessage) return (
-        //     <ChatbotOptionCard
-        //         oasisMessage={item}
-        //         toggle={() => item.from === 'ChatGPT' ? toggleChatGpt() : toggleGemini()}
-        //         isActive={item.from === 'ChatGPT' ? gptOptionIsActive : geminiOptionIsActive}
-        //     />
-        // )
+        if (isUserMessage) return (
+                <UserMessageCard oasisMessage={item}/>
+        )
+        if (isChatbotSavedMessage) return (
+                <ChatbotMessageCard oasisMessage={item}/>
+        )
+
         return <></>
     }
 
@@ -176,7 +173,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                     <SaveButton onPress={handleSaveChatbotMessage}>
                         <SaveText>Save Message</SaveText>
                     </SaveButton>
-                    <CancelButton onPress={handleCancelSelection}>
+                    <CancelButton onPress={handleCloseSelection}>
                         <SaveText style={{color: '#fff'}}>Cancel</SaveText>
                     </CancelButton>
                 </ChooseContainer>
@@ -310,3 +307,4 @@ const SaveText = styled.Text`
   font-weight: bold;
   color: black;
 `
+

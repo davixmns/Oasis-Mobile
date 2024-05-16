@@ -13,13 +13,13 @@ export default function ChatInput({message, setMessage, onPress, onFocus, ...pro
     const [height, setHeight] = useState(40);
 
     const handleContentSizeChange = (event: any) => {
-        setHeight(event.nativeEvent.contentSize.height);
+        setHeight(event.nativeEvent.contentSize.height + 15);
     };
 
     return (
         <Container>
             <Content style={{
-                height: Math.min(120, Math.max(40, height)),
+                height: Math.min(100, Math.max(40, height)),
             }}>
                 <Input
                     onFocus={onFocus}
@@ -29,12 +29,15 @@ export default function ChatInput({message, setMessage, onPress, onFocus, ...pro
                     onChangeText={setMessage}
                     onContentSizeChange={handleContentSizeChange}
                     placeholderTextColor={'gray'}
+                    style={{ width: '80%'}}
                     {...props}
                 />
+                {message !== '' && (
+                    <IconContainer onPress={onPress}>
+                        <FontAwesome6 name={'arrow-up'} size={20} color={'#000'}/>
+                    </IconContainer>
+                )}
             </Content>
-            <IconContainer onPress={onPress}>
-                <FontAwesome6 name={'paper-plane'} size={23} color={'#3797EF'}/>
-            </IconContainer>
         </Container>
     );
 }
@@ -45,18 +48,20 @@ const Container = styled.View`
   justify-content: center;
   flex-direction: row;
   width: 98%;
-  background-color: black;
   padding-bottom: 10px;
   padding-top: 10px;
+  background-color: black;
 `;
 
 const Content = styled.View`
   flex-direction: row;
-  width: 86%;
+  width: 95%;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  padding-left: 18px;
   border: 1px solid gray;
   border-radius: 20px;
+  position: relative;
   height: 40px;
 `;
 
@@ -69,9 +74,12 @@ const Input = styled.TextInput`
 `;
 
 const IconContainer = styled.TouchableOpacity`
-  height: 40px;
-  width: 40px;
+  height: 30px;
+  width: 30px;
   align-items: center;
   justify-content: center;
-  padding-left: 10px;
+  position: absolute;
+  right: 20px;
+  background-color: white;
+  border-radius: 20px;
 `;

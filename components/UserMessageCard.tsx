@@ -1,14 +1,15 @@
 import styled from "styled-components/native";
 import {OasisMessage} from "../interfaces/interfaces";
 
-
-export function UserMessageCard({oasisMessage}: { oasisMessage: OasisMessage}) {
+export function UserMessageCard({oasisMessage}: { oasisMessage: OasisMessage }) {
     return (
         <UserMessageContainer>
             <Header>
                 <FromName>You</FromName>
             </Header>
-            <Message>{oasisMessage.message}</Message>
+            <MessageBubble>
+                <Message>{oasisMessage.message}</Message>
+            </MessageBubble>
         </UserMessageContainer>
     )
 }
@@ -18,6 +19,8 @@ const UserMessageContainer = styled.View`
   align-items: flex-end;
   align-self: flex-end;
   padding: 10px;
+  width: 90%;
+  margin-right: 5px;
 `
 
 const Header = styled.View`
@@ -35,6 +38,11 @@ const FromName = styled.Text`
   font-size: 16px;
   font-weight: bold;
   color: white;
-  margin: 5px;
   align-self: center;
+`
+
+const MessageBubble = styled.View`
+  background-color: #222222;
+  padding: 10px;
+  border-radius: 10px 0 10px 10px;
 `

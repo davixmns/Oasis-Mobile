@@ -28,6 +28,7 @@ const ChatbotMessageContainer = styled.View`
   gap: 7px;
   align-items: flex-start;
   align-self: flex-start;
+  width: 90%;
   padding: 10px;
 `
 
