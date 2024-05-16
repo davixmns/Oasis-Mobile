@@ -4,12 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":zap: ajustes de mensagens de erro">
+    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":art: ajustes nos baloes e caixa de texto">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/ChatInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatInput.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ChatbotMessageCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatbotMessageCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/UserMessageCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/UserMessageCard.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/config.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/ChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ChatScreen.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
@@ -28,6 +25,9 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 0
@@ -127,7 +127,8 @@
       <workItem from="1715649940304" duration="616000" />
       <workItem from="1715713700434" duration="665000" />
       <workItem from="1715726224099" duration="2861000" />
-      <workItem from="1715868029245" duration="3325000" />
+      <workItem from="1715868029245" duration="7488000" />
+      <workItem from="1715881462128" duration="578000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
@@ -417,14 +418,21 @@
       <option name="project" value="LOCAL" />
       <updated>1715628730429</updated>
     </task>
-    <option name="localTasksCounter" value="37" />
+    <task id="LOCAL-00037" summary=":art: ajustes nos baloes e caixa de texto">
+      <option name="closed" value="true" />
+      <created>1715871553409</created>
+      <option name="number" value="00037" />
+      <option name="presentableId" value="LOCAL-00037" />
+      <option name="project" value="LOCAL" />
+      <updated>1715871553409</updated>
+    </task>
+    <option name="localTasksCounter" value="38" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value=":art: cadastro e login na mesma tela" />
     <MESSAGE value=":rocket: tela login e cadastro ok" />
     <MESSAGE value=":art: animação no login e registro" />
     <MESSAGE value=":sparkles: AuthContext.tsx" />
@@ -449,6 +457,7 @@
     <MESSAGE value=":sparkles: save e cancel no chat" />
     <MESSAGE value=":sparkles: enviando mensagens para chats existestes" />
     <MESSAGE value=":zap: ajustes de mensagens de erro" />
-    <option name="LAST_COMMIT_MESSAGE" value=":zap: ajustes de mensagens de erro" />
+    <MESSAGE value=":art: ajustes nos baloes e caixa de texto" />
+    <option name="LAST_COMMIT_MESSAGE" value=":art: ajustes nos baloes e caixa de texto" />
   </component>
 </project>

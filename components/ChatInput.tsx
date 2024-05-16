@@ -29,7 +29,7 @@ export default function ChatInput({message, setMessage, onPress, onFocus, ...pro
                     onChangeText={setMessage}
                     onContentSizeChange={handleContentSizeChange}
                     placeholderTextColor={'gray'}
-                    style={{ width: '80%'}}
+                    style={{ width: '84.5%'}}
                     {...props}
                 />
                 {message !== '' && (
@@ -68,7 +68,6 @@ const Content = styled.View`
 const Input = styled.TextInput`
   display: flex;
   font-size: 16px;
-  width: 90%;
   height: 80%;
   color: white;
 `;
@@ -79,7 +78,7 @@ const IconContainer = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   position: absolute;
-  right: 20px;
+  right: 12px;
   background-color: white;
   border-radius: 20px;
 `;

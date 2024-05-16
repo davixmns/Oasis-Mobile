@@ -152,10 +152,10 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
         const isUserMessage = item.from === 'User'
 
         if (isUserMessage) return (
-                <UserMessageCard oasisMessage={item}/>
+            <UserMessageCard oasisMessage={item}/>
         )
         if (isChatbotSavedMessage) return (
-                <ChatbotMessageCard oasisMessage={item}/>
+            <ChatbotMessageCard oasisMessage={item}/>
         )
 
         return <></>
@@ -197,6 +197,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                         Keyboard.dismiss();
                         return;
                     }
+                    scrollToBottom(true)
                     setUserMessage(text);
                 }}
                 onFocus={() => {
@@ -221,6 +222,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                     renderItem={renderMessage}
                     keyExtractor={(item, index) => index.toString()}
                     inverted={false}
+                    style={{marginBottom: 8}}
                     ref={messageListRef}
                     ListFooterComponent={
                         <>
@@ -252,9 +254,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                     }
                 />
 
-                <BottomContent>
-                    {renderBottomContent()}
-                </BottomContent>
+                {renderBottomContent()}
             </KeyboardAvoidingView>
         </SafeAreaView>
     );
@@ -276,9 +276,9 @@ const ChooseText = styled.Text`
 
 const ChooseContainer = styled.View`
   display: flex;
-  justify-content: space-between;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   width: 95%;
 `
 
