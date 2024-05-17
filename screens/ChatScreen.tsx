@@ -10,12 +10,35 @@ import {useState, useRef, useEffect} from "react";
 import ChatInput from "../components/ChatInput";
 import {OasisChat, OasisMessage} from "../interfaces/interfaces";
 import {useChatContext} from "../contexts/ChatContext";
-import {ChatbotSkeleton} from "../components/ChatbotSkeleton";
+import {MessageSkeleton} from "../components/MessageSkeleton";
 import {UserMessageCard} from "../components/UserMessageCard";
 import {ChatbotMessageCard} from "../components/ChatbotMessageCard";
 import {ChatbotOptionCard} from "../components/ChatbotOptionCard";
+import {lowVibration, mediumVibration} from "../utils/utils";
 
 const width = Dimensions.get('window').width;
+
+const gptMessageExample = {
+    from: 'ChatGPT',
+    message: 'Hello, how can I help you?Lorem ipsum dolor sit amet. Ut molestiae nisi hic ipsa quia qui accusantium corrupti. Ut nostrum impedit vel quidem mollitia ab nisi tenetur id dolorem nisi 33 corrupti velit et cupiditate sequi. In quasi repudiandae qui ipsa voluptatem sed voluptates quia et doloribus reprehenderit.\n' +
+        '\n' +
+        'Ex quod illum sit atque repellat aut eaque accusamus non quidem omnis sit fugiat optio! Aut sapiente officia aut deserunt atque nam dolor placeat.\n' +
+        '\n' +
+        'Non suscipit iure ut optio cumque qui inventore repellat? In cupiditate mollitia et blanditiis eius ut rerum Quis cum dicta consequatur.',
+    oasisChatId: 1,
+    isSaved: false
+}
+
+const geminiMessageExample = {
+    from: 'Gemini',
+    message: 'Hello, how can I help you?Lorem ipsum dolor sit amet. Ut molestiae nisi hic ipsa quia qui accusantium corrupti. Ut nostrum impedit vel quidem mollitia ab nisi tenetur id dolorem nisi 33 corrupti velit et cupiditate sequi. In quasi repudiandae qui ipsa voluptatem sed voluptates quia et doloribus reprehenderit.\n' +
+        '\n' +
+        'Ex quod illum sit atque repellat aut eaque accusamus non quidem omnis sit fugiat optio! Aut sapiente officia aut deserunt atque nam dolor placeat.\n' +
+        '\n' +
+        'Non suscipit iure ut optio cumque qui inventore repellat? In cupiditate mollitia et blanditiis eius ut rerum Quis cum dicta consequatur.',
+    oasisChatId: 1,
+    isSaved: false
+}
 
 export function ChatScreen({chatData}: { chatData: OasisChat }) {
     const {chats, sendFirstMessage, saveChatbotMessage, sendMessageToChat} = useChatContext();
@@ -36,7 +59,6 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
             if (chatInfo.isNewChat) {
                 await handleSendFirstMessage()
             }
-            await scrollToBottom(false);
         }
 
         init();
@@ -70,15 +92,16 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
         if (userMessage == '') return
         setMessageIsLoading(true)
 
+        scrollToStart()
+
         const formattedMessage: OasisMessage = {
             from: 'User',
             message: userMessage,
             oasisChatId: chatInfo.oasisChatId,
             isSaved: true,
-            createdAt: new Date().toISOString()
         }
 
-        setChatMessages([...chatMessages, formattedMessage])
+        setChatMessages([formattedMessage, ...chatMessages])
 
         await sendMessageToChat(chatInfo.oasisChatId, [0, 1], userMessage)
             .then((responseData: any) => {
@@ -100,25 +123,20 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
             })
     }
 
-    function toggleChatGpt() {
+    async function toggleChatGpt() {
         if (!gptOptionIsActive) {
+            lowVibration()
             setGptOptionIsActive(true);
             setGeminiOptionIsActive(false);
         }
     }
 
-    function toggleGemini() {
+    async function toggleGemini() {
         if (!geminiOptionIsActive) {
+            lowVibration()
             setGeminiOptionIsActive(true);
             setGptOptionIsActive(false);
         }
-    }
-
-    async function scrollToBottom(animated: boolean) {
-        if (!messageListRef.current) return;
-        //esperar o teclado subir
-        await new Promise((resolve) => setTimeout(resolve, 100))
-        await messageListRef.current.scrollToEnd({animated: animated});
     }
 
     async function handleSaveChatbotMessage() {
@@ -131,12 +149,17 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
         }
         await saveChatbotMessage(formattedMessage)
             .then(async () => {
-                await setChatMessages([...chatMessages, formattedMessage])
+                mediumVibration()
+                await setChatMessages([formattedMessage, ...chatMessages])
                 handleCloseSelection()
             })
             .catch((e) => {
                 Alert.alert('Erro ao salvar mensagem', e.response)
             })
+    }
+
+    function scrollToStart() {
+        messageListRef.current?.scrollToOffset({offset: 0, animated: true})
     }
 
     function handleCloseSelection() {
@@ -150,33 +173,24 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
     function renderMessage({item}: { item: OasisMessage }) {
         const isChatbotSavedMessage = item.from !== 'User' && item.isSaved
         const isUserMessage = item.from === 'User'
-
-        if (isUserMessage) return (
-            <UserMessageCard oasisMessage={item}/>
-        )
-        if (isChatbotSavedMessage) return (
-            <ChatbotMessageCard oasisMessage={item}/>
-        )
-
+        if (isUserMessage) return <UserMessageCard oasisMessage={item}/>
+        if (isChatbotSavedMessage) return <ChatbotMessageCard oasisMessage={item}/>
         return <></>
     }
 
     function renderBottomContent() {
-        if (messageIsLoading && !renderSwippable) {
-            return (
-                <ActivityIndicator size="large" color="#fff"/>
-            )
-        }
         if (renderSwippable && (gptOptionIsActive || geminiOptionIsActive)) {
             return (
-                <ChooseContainer>
-                    <SaveButton onPress={handleSaveChatbotMessage}>
-                        <SaveText>Save Message</SaveText>
-                    </SaveButton>
-                    <CancelButton onPress={handleCloseSelection}>
-                        <SaveText style={{color: '#fff'}}>Cancel</SaveText>
-                    </CancelButton>
-                </ChooseContainer>
+                <Animatable.View animation={'fadeIn'} duration={1000}>
+                    <ChooseContainer>
+                        <SaveButton onPress={handleSaveChatbotMessage}>
+                            <SaveText>Save Message</SaveText>
+                        </SaveButton>
+                        <CancelButton onPress={handleCloseSelection}>
+                            <SaveText style={{color: '#fff'}}>Cancel</SaveText>
+                        </CancelButton>
+                    </ChooseContainer>
+                </Animatable.View>
             )
         }
         if (!messageIsLoading && !gptOptionIsActive && !geminiOptionIsActive && renderSwippable) {
@@ -197,13 +211,10 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                         Keyboard.dismiss();
                         return;
                     }
-                    scrollToBottom(true)
                     setUserMessage(text);
                 }}
-                onFocus={() => {
-                    scrollToBottom(true)
-                }}
                 onPress={handleSendMessageToChat}
+                isLoading={false}
             />
         )
     }
@@ -221,10 +232,10 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                     data={chatMessages}
                     renderItem={renderMessage}
                     keyExtractor={(item, index) => index.toString()}
-                    inverted={false}
+                    inverted={true}
                     style={{marginBottom: 8}}
                     ref={messageListRef}
-                    ListFooterComponent={
+                    ListHeaderComponent={
                         <>
                             {renderSwippable && !messageIsLoading && (
                                 <Animatable.View animation={'fadeIn'} duration={1000}>
@@ -236,20 +247,21 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                                         data={[actualChatGptResponse!, actualGeminiResponse!].filter(Boolean)}
                                         keyExtractor={(item) => item!.from.toString()}
                                         renderItem={({item}) => (
-                                            <ChatbotOptionCard
-                                                oasisMessage={item}
-                                                toggle={() => item.from === 'ChatGPT' ? toggleChatGpt() : toggleGemini()}
-                                                isActive={item.from === 'ChatGPT' ? gptOptionIsActive : geminiOptionIsActive}
-                                            />
+                                            <Animatable.View animation={'fadeInUp'} duration={1000}>
+                                                <ChatbotOptionCard
+                                                    oasisMessage={item}
+                                                    toggle={() => item.from === 'ChatGPT' ? toggleChatGpt() : toggleGemini()}
+                                                    isActive={item.from === 'ChatGPT' ? gptOptionIsActive : geminiOptionIsActive}
+                                                />
+                                            </Animatable.View>
                                         )}
                                         snapToInterval={width}
                                         decelerationRate={'fast'}
-                                        onContentSizeChange={() => scrollToBottom(true)}
                                         showsHorizontalScrollIndicator={false}
                                     />
                                 </Animatable.View>
                             )}
-                            {messageIsLoading && <ChatbotSkeleton/>}
+                            {messageIsLoading && <MessageSkeleton/>}
                         </>
                     }
                 />
@@ -259,14 +271,6 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
         </SafeAreaView>
     );
 }
-
-const BottomContent = styled.View`
-  height: 50px;
-  display: flex;
-  margin-top: 10px;
-  align-items: center;
-  justify-content: center;
-`
 
 const ChooseText = styled.Text`
   font-size: 20px;
@@ -278,7 +282,9 @@ const ChooseContainer = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
+  height: 45px;
+  align-self: center;
   width: 95%;
 `
 

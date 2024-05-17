@@ -114,6 +114,7 @@ export function LoginScreen() {
             setSignInEmailIsCorrect(false)
             return
         }
+        Keyboard.dismiss()
         snapToIndex(0)
         setRequestIsLoading(true)
         setRequestIsLoading(true)

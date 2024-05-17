@@ -3118,6 +3118,11 @@ expo-font@~12.0.4:
   dependencies:
     fontfaceobserver "^2.1.0"
 
+expo-haptics@~13.0.1:
+  version "13.0.1"
+  resolved "https://registry.yarnpkg.com/expo-haptics/-/expo-haptics-13.0.1.tgz#35679c7fde4ae1c21ae3bc2d2cb34c266049dc2c"
+  integrity sha512-qG0EOLDE4bROVT3DtUSyV9g3iB3YFu9j3711X7SNNEnBDXc+2/p3wGDPTnJvPW0ao6HG3/McAOrBQA5hVSdWng==
+
 expo-keep-awake@~13.0.1:
   version "13.0.1"
   resolved "https://registry.yarnpkg.com/expo-keep-awake/-/expo-keep-awake-13.0.1.tgz#6c0a0d1fe388fe5a63e2089ade66798eba23f089"
@@ -3155,6 +3160,11 @@ expo-react-native-skeleton-placeholder@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/expo-react-native-skeleton-placeholder/-/expo-react-native-skeleton-placeholder-0.0.1.tgz#9dff386acdddfd9f27bdb9f7fdb72e4b1e0e73ef"
   integrity sha512-SbP0rlSoF26O+Bktd+AkELxwm9iMLztnetxegAIbEZi4g86RdDJhs9VTpPaggxuLWWaMa5pdRkC1tec6y2nacg==
+
+expo-speech@~12.0.2:
+  version "12.0.2"
+  resolved "https://registry.yarnpkg.com/expo-speech/-/expo-speech-12.0.2.tgz#d6d8d1daf6c40eda4eb8358ec221e5283d768c40"
+  integrity sha512-voWNz69hvtLEA2jipAbM5XJBIbKCusQsDZ/G/vAKKkP5AUTzAmcdRDWGcmESPRKK0JUtQZ8WetujgLCn2kl83w==
 
 expo-status-bar@~1.12.1:
   version "1.12.1"

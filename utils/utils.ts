@@ -1,5 +1,5 @@
 import {OasisUser} from "../interfaces/interfaces";
-
+import * as Haptics from 'expo-haptics';
 export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
 export const backgroundColors = [
@@ -48,4 +48,12 @@ export function verifyUser(user: OasisUser) {
     verifyEmail(user.email) ? array.push(true) : array.push(false)
     user.password?.length! > 7  ? array.push(true) : array.push(false)
     return array;
+}
+
+export function lowVibration() {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+}
+
+export function mediumVibration() {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
 }

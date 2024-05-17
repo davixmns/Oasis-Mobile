@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import {useState} from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {StatusBar} from 'expo-status-bar';
 import {Provider as PaperProvider} from 'react-native-paper';
@@ -6,10 +6,7 @@ import {ChatScreen} from '../screens/ChatScreen';
 import {ChatBotSelector} from "../components/ChatBotSelector";
 import CustomDrawerContent from "../components/CustomDrawerContent";
 import {useChatContext} from "../contexts/ChatContext";
-import styled from "styled-components/native";
 import {NewChatScreen} from "../screens/NewChatScreen";
-import {log} from "expo/build/devtools/logger";
-import {OasisChat} from "../interfaces/interfaces";
 
 const Drawer = createDrawerNavigator();
 
@@ -54,6 +51,9 @@ export function MyDrawer() {
 export const drawerScreenOptions = {
     headerStyle: {
         backgroundColor: '#000',
+        borderBottomWidth: 0,
+        elevation: 0,
+        shadowOpacity: 0,
     },
     drawerStyle: {
         backgroundColor: '#000',

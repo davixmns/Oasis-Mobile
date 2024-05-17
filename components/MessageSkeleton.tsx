@@ -3,7 +3,7 @@ import {Dimensions, View} from "react-native";
 
 const {width} = Dimensions.get('window');
 
-export function ChatbotSkeleton() {
+export function MessageSkeleton() {
     return (
 
             <SkeletonPlaceholder
@@ -11,7 +11,7 @@ export function ChatbotSkeleton() {
                 highlightColor="#333333"  // Cor da animação
                 speed={1000}
             >
-                <SkeletonPlaceholder.Item flexDirection={'column'} alignItems={'flex-start'}  paddingLeft={10} marginTop={15}>
+                <SkeletonPlaceholder.Item flexDirection={'column'} alignItems={'flex-start'}  paddingLeft={10} marginTop={15} marginBottom={20}>
                     <SkeletonPlaceholder.Item flexDirection="row" alignItems="center" paddingBottom={10} alignSelf={'flex-start'}>
                         <SkeletonPlaceholder.Item width={30} height={30} borderRadius={25}/>
                         <SkeletonPlaceholder.Item width={120} height={20} marginLeft={10} borderRadius={20}/>
