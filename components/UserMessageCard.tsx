@@ -20,7 +20,7 @@ const UserMessageContainer = styled.View`
   align-self: flex-end;
   padding: 10px;
   width: 90%;
-  margin-right: 5px;
+  margin-right: 3px;
 `
 
 const Header = styled.View`

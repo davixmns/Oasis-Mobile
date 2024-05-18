@@ -4,17 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":art: ajustes nos baloes e caixa de texto">
+    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":art: ajustes no chat">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/ChatInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatInput.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ChatbotSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/MessageSkeleton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.ts" beforeDir="false" afterPath="$PROJECT_DIR$/config.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navigations/MyDrawer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/MyDrawer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ChatbotMessageCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatbotMessageCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/UserMessageCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/UserMessageCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/ChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ChatScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/LoginScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/LoginScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -135,7 +130,9 @@
       <workItem from="1715868029245" duration="7488000" />
       <workItem from="1715881462128" duration="616000" />
       <workItem from="1715897969539" duration="3469000" />
-      <workItem from="1715911773285" duration="4656000" />
+      <workItem from="1715911773285" duration="4942000" />
+      <workItem from="1715951708883" duration="1815000" />
+      <workItem from="1715990809501" duration="5332000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
@@ -441,14 +438,21 @@
       <option name="project" value="LOCAL" />
       <updated>1715882065111</updated>
     </task>
-    <option name="localTasksCounter" value="39" />
+    <task id="LOCAL-00039" summary=":art: ajustes no chat">
+      <option name="closed" value="true" />
+      <created>1715916583130</created>
+      <option name="number" value="00039" />
+      <option name="presentableId" value="LOCAL-00039" />
+      <option name="project" value="LOCAL" />
+      <updated>1715916583130</updated>
+    </task>
+    <option name="localTasksCounter" value="40" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value=":rocket: tela login e cadastro ok" />
     <MESSAGE value=":art: animação no login e registro" />
     <MESSAGE value=":sparkles: AuthContext.tsx" />
     <MESSAGE value="iniciando registro" />
@@ -473,6 +477,7 @@
     <MESSAGE value=":sparkles: enviando mensagens para chats existestes" />
     <MESSAGE value=":zap: ajustes de mensagens de erro" />
     <MESSAGE value=":art: ajustes nos baloes e caixa de texto" />
-    <option name="LAST_COMMIT_MESSAGE" value=":art: ajustes nos baloes e caixa de texto" />
+    <MESSAGE value=":art: ajustes no chat" />
+    <option name="LAST_COMMIT_MESSAGE" value=":art: ajustes no chat" />
   </component>
 </project>

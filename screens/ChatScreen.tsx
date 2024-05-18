@@ -52,12 +52,13 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
     const [gptOptionIsActive, setGptOptionIsActive] = useState<boolean>(false)
     const [geminiOptionIsActive, setGeminiOptionIsActive] = useState<boolean>(false)
     const messageListRef = useRef<FlatList>(null);
+    const optionListRef = useRef<FlatList>(null);
     const navigation = useNavigation();
 
     useEffect(() => {
         async function init() {
             if (chatInfo.isNewChat) {
-                await handleSendFirstMessage()
+                await handleSendFirstMessageToChat()
             }
         }
 
@@ -65,7 +66,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
     }, [chatInfo]);
 
 
-    async function handleSendFirstMessage() {
+    async function handleSendFirstMessageToChat() {
         const firstMessage = chatData.messages[0].message;
         if (firstMessage === '') return;
         setMessageIsLoading(true);
@@ -90,29 +91,22 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
 
     async function handleSendMessageToChat() {
         if (userMessage == '') return
-        setMessageIsLoading(true)
-
-        scrollToStart()
-
         const formattedMessage: OasisMessage = {
             from: 'User',
             message: userMessage,
             oasisChatId: chatInfo.oasisChatId,
             isSaved: true,
         }
-
+        Keyboard.dismiss()
+        setUserMessage('')
         setChatMessages([formattedMessage, ...chatMessages])
-
+        scrollToStart()
+        setMessageIsLoading(true)
         await sendMessageToChat(chatInfo.oasisChatId, [0, 1], userMessage)
             .then((responseData: any) => {
-                const gptMessage: OasisMessage = responseData[0]
-                const geminiMessage: OasisMessage = responseData[1]
-
-                setActualChatGptResponse(gptMessage)
-                setActualGeminiResponse(geminiMessage)
-
+                setActualChatGptResponse(responseData[0])
+                setActualGeminiResponse(responseData[1])
                 setRenderSwippable(true)
-
                 setUserMessage('')
             })
             .catch((error) => {
@@ -123,25 +117,10 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
             })
     }
 
-    async function toggleChatGpt() {
-        if (!gptOptionIsActive) {
-            lowVibration()
-            setGptOptionIsActive(true);
-            setGeminiOptionIsActive(false);
-        }
-    }
-
-    async function toggleGemini() {
-        if (!geminiOptionIsActive) {
-            lowVibration()
-            setGeminiOptionIsActive(true);
-            setGptOptionIsActive(false);
-        }
-    }
-
     async function handleSaveChatbotMessage() {
         const selectedMessage = gptOptionIsActive ? actualChatGptResponse : actualGeminiResponse
         if (!selectedMessage) return;
+        mediumVibration()
         const formattedMessage: OasisMessage = {
             ...selectedMessage,
             isSaved: true,
@@ -149,25 +128,12 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
         }
         await saveChatbotMessage(formattedMessage)
             .then(async () => {
-                mediumVibration()
                 await setChatMessages([formattedMessage, ...chatMessages])
-                handleCloseSelection()
+                closeChatbotSelection()
             })
             .catch((e) => {
                 Alert.alert('Erro ao salvar mensagem', e.response)
             })
-    }
-
-    function scrollToStart() {
-        messageListRef.current?.scrollToOffset({offset: 0, animated: true})
-    }
-
-    function handleCloseSelection() {
-        setRenderSwippable(false)
-        setGptOptionIsActive(false)
-        setGeminiOptionIsActive(false)
-        setActualChatGptResponse(null)
-        setActualGeminiResponse(null)
     }
 
     function renderMessage({item}: { item: OasisMessage }) {
@@ -186,7 +152,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                         <SaveButton onPress={handleSaveChatbotMessage}>
                             <SaveText>Save Message</SaveText>
                         </SaveButton>
-                        <CancelButton onPress={handleCloseSelection}>
+                        <CancelButton onPress={closeChatbotSelection}>
                             <SaveText style={{color: '#fff'}}>Cancel</SaveText>
                         </CancelButton>
                     </ChooseContainer>
@@ -196,13 +162,12 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
         if (!messageIsLoading && !gptOptionIsActive && !geminiOptionIsActive && renderSwippable) {
             return (
                 // @ts-ignore
-                <ChooseContainer style={{width: 'unset', gap: 10,}}>
+                <ChooseContainer style={{width: 'unset', gap: 10}}>
                     <ChooseText>Choose a message</ChooseText>
                     <FontAwesome6 name={'circle-up'} size={30} color={'#fff'}/>
                 </ChooseContainer>
             )
         }
-
         return (
             <ChatInput
                 message={userMessage}
@@ -214,12 +179,38 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                     setUserMessage(text);
                 }}
                 onPress={handleSendMessageToChat}
-                isLoading={false}
+                isLoading={messageIsLoading}
             />
         )
     }
 
-    const optionRef = useRef<FlatList>(null);
+    function scrollToStart() {
+        messageListRef.current?.scrollToOffset({offset: 0, animated: true})
+    }
+
+    function closeChatbotSelection() {
+        setRenderSwippable(false)
+        setGptOptionIsActive(false)
+        setGeminiOptionIsActive(false)
+        setActualChatGptResponse(null)
+        setActualGeminiResponse(null)
+    }
+
+    async function toggleChatGpt() {
+        if (!gptOptionIsActive) {
+            lowVibration()
+            setGptOptionIsActive(true);
+            setGeminiOptionIsActive(false);
+        }
+    }
+
+    async function toggleGemini() {
+        if (!geminiOptionIsActive) {
+            lowVibration()
+            setGeminiOptionIsActive(true);
+            setGptOptionIsActive(false);
+        }
+    }
 
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: '#000'}}>
@@ -238,28 +229,26 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                     ListHeaderComponent={
                         <>
                             {renderSwippable && !messageIsLoading && (
-                                <Animatable.View animation={'fadeIn'} duration={1000}>
-                                    <FlatList
-                                        horizontal
-                                        ref={optionRef}
-                                        style={{paddingBottom: 20}}
-                                        contentContainerStyle={{alignItems: 'flex-start'}}
-                                        data={[actualChatGptResponse!, actualGeminiResponse!].filter(Boolean)}
-                                        keyExtractor={(item) => item!.from.toString()}
-                                        renderItem={({item}) => (
-                                            <Animatable.View animation={'fadeInUp'} duration={1000}>
-                                                <ChatbotOptionCard
-                                                    oasisMessage={item}
-                                                    toggle={() => item.from === 'ChatGPT' ? toggleChatGpt() : toggleGemini()}
-                                                    isActive={item.from === 'ChatGPT' ? gptOptionIsActive : geminiOptionIsActive}
-                                                />
-                                            </Animatable.View>
-                                        )}
-                                        snapToInterval={width}
-                                        decelerationRate={'fast'}
-                                        showsHorizontalScrollIndicator={false}
-                                    />
-                                </Animatable.View>
+                                <FlatList
+                                    horizontal
+                                    ref={optionListRef}
+                                    style={{paddingBottom: 20}}
+                                    contentContainerStyle={{alignItems: 'flex-start'}}
+                                    data={[actualChatGptResponse!, actualGeminiResponse!].filter(Boolean)}
+                                    keyExtractor={(item) => item!.from.toString()}
+                                    renderItem={({item}) => (
+                                        <Animatable.View animation={'fadeInUp'} duration={1000}>
+                                            <ChatbotOptionCard
+                                                oasisMessage={item}
+                                                toggle={() => item.from === 'ChatGPT' ? toggleChatGpt() : toggleGemini()}
+                                                isActive={item.from === 'ChatGPT' ? gptOptionIsActive : geminiOptionIsActive}
+                                            />
+                                        </Animatable.View>
+                                    )}
+                                    snapToInterval={width}
+                                    decelerationRate={'fast'}
+                                    showsHorizontalScrollIndicator={false}
+                                />
                             )}
                             {messageIsLoading && <MessageSkeleton/>}
                         </>
