@@ -18,7 +18,9 @@ const UserMessageContainer = styled.View`
   gap: 7px;
   align-items: flex-end;
   align-self: flex-end;
-  padding: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
   width: 90%;
   margin-right: 3px;
 `

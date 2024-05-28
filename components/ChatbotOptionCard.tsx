@@ -54,7 +54,6 @@ const OptionContainer = styled.View<{ isActive: boolean }>`
   width: ${width * 0.9}px;
   gap: 7px;
   justify-content: flex-start;
-  margin-top: 12px;
   margin-right: 12px;
   align-items: flex-start;
   background-color: ${props => props.isActive ? '#303030' : '#212121'};

@@ -148,39 +148,41 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
         if (renderSwippable && (gptOptionIsActive || geminiOptionIsActive)) {
             return (
                 <Animatable.View animation={'fadeIn'} duration={1000}>
-                    <ChooseContainer>
+                    <BottomContent style={{paddingHorizontal: 12}}>
                         <SaveButton onPress={handleSaveChatbotMessage}>
                             <SaveText>Save Message</SaveText>
                         </SaveButton>
                         <CancelButton onPress={closeChatbotSelection}>
                             <SaveText style={{color: '#fff'}}>Cancel</SaveText>
                         </CancelButton>
-                    </ChooseContainer>
+                    </BottomContent>
                 </Animatable.View>
             )
         }
         if (!messageIsLoading && !gptOptionIsActive && !geminiOptionIsActive && renderSwippable) {
             return (
                 // @ts-ignore
-                <ChooseContainer style={{width: 'unset', gap: 10}}>
+                <BottomContent style={{width: 'unset', gap: 10}}>
                     <ChooseText>Choose a message</ChooseText>
                     <FontAwesome6 name={'circle-up'} size={30} color={'#fff'}/>
-                </ChooseContainer>
+                </BottomContent>
             )
         }
         return (
-            <ChatInput
-                message={userMessage}
-                setMessage={(text) => {
-                    if (text === '\n') {
-                        Keyboard.dismiss();
-                        return;
-                    }
-                    setUserMessage(text);
-                }}
-                onPress={handleSendMessageToChat}
-                isLoading={messageIsLoading}
-            />
+            <BottomContent>
+                <ChatInput
+                    message={userMessage}
+                    setMessage={(text) => {
+                        if (text === '\n') {
+                            Keyboard.dismiss();
+                            return;
+                        }
+                        setUserMessage(text);
+                    }}
+                    onPress={handleSendMessageToChat}
+                    isLoading={messageIsLoading}
+                />
+            </BottomContent>
         )
     }
 
@@ -224,7 +226,10 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                     renderItem={renderMessage}
                     keyExtractor={(item, index) => index.toString()}
                     inverted={true}
-                    style={{marginBottom: 8}}
+                    style={{
+                        marginBottom: 8,
+                        // backgroundColor: 'blue'
+                    }}
                     ref={messageListRef}
                     ListHeaderComponent={
                         <>
@@ -232,7 +237,12 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                                 <FlatList
                                     horizontal
                                     ref={optionListRef}
-                                    style={{paddingBottom: 20}}
+                                    style={{
+                                        paddingLeft: 5,
+                                        paddingBottom: 20,
+                                        marginTop: 12,
+                                        // backgroundColor: 'red'
+                                    }}
                                     contentContainerStyle={{alignItems: 'flex-start'}}
                                     data={[actualChatGptResponse!, actualGeminiResponse!].filter(Boolean)}
                                     keyExtractor={(item) => item!.from.toString()}
@@ -261,20 +271,23 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
     );
 }
 
+
 const ChooseText = styled.Text`
   font-size: 20px;
   font-weight: 500;
   color: white;
 `
 
-const ChooseContainer = styled.View`
+const BottomContent = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  height: 45px;
+  height: 50px;
+  margin-bottom: 5px;
+  gap: 10px;
   align-self: center;
-  width: 95%;
+  //width: 95%;
 `
 
 const SaveButton = styled.TouchableOpacity`
