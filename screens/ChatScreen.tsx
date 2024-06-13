@@ -18,28 +18,6 @@ import {lowVibration, mediumVibration} from "../utils/utils";
 
 const width = Dimensions.get('window').width;
 
-const gptMessageExample = {
-    from: 'ChatGPT',
-    message: 'Hello, how can I help you?Lorem ipsum dolor sit amet. Ut molestiae nisi hic ipsa quia qui accusantium corrupti. Ut nostrum impedit vel quidem mollitia ab nisi tenetur id dolorem nisi 33 corrupti velit et cupiditate sequi. In quasi repudiandae qui ipsa voluptatem sed voluptates quia et doloribus reprehenderit.\n' +
-        '\n' +
-        'Ex quod illum sit atque repellat aut eaque accusamus non quidem omnis sit fugiat optio! Aut sapiente officia aut deserunt atque nam dolor placeat.\n' +
-        '\n' +
-        'Non suscipit iure ut optio cumque qui inventore repellat? In cupiditate mollitia et blanditiis eius ut rerum Quis cum dicta consequatur.',
-    oasisChatId: 1,
-    isSaved: false
-}
-
-const geminiMessageExample = {
-    from: 'Gemini',
-    message: 'Hello, how can I help you?Lorem ipsum dolor sit amet. Ut molestiae nisi hic ipsa quia qui accusantium corrupti. Ut nostrum impedit vel quidem mollitia ab nisi tenetur id dolorem nisi 33 corrupti velit et cupiditate sequi. In quasi repudiandae qui ipsa voluptatem sed voluptates quia et doloribus reprehenderit.\n' +
-        '\n' +
-        'Ex quod illum sit atque repellat aut eaque accusamus non quidem omnis sit fugiat optio! Aut sapiente officia aut deserunt atque nam dolor placeat.\n' +
-        '\n' +
-        'Non suscipit iure ut optio cumque qui inventore repellat? In cupiditate mollitia et blanditiis eius ut rerum Quis cum dicta consequatur.',
-    oasisChatId: 1,
-    isSaved: false
-}
-
 export function ChatScreen({chatData}: { chatData: OasisChat }) {
     const {chats, sendFirstMessage, saveChatbotMessage, sendMessageToChat} = useChatContext();
     const [messageIsLoading, setMessageIsLoading] = useState<boolean>(false);
@@ -244,7 +222,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                                         // backgroundColor: 'red'
                                     }}
                                     contentContainerStyle={{alignItems: 'flex-start'}}
-                                    data={[actualChatGptResponse!, actualGeminiResponse!].filter(Boolean)}
+                                    data={[actualChatGptResponse, actualGeminiResponse].filter(Boolean)}
                                     keyExtractor={(item) => item!.from.toString()}
                                     renderItem={({item}) => (
                                         <Animatable.View animation={'fadeInUp'} duration={1000}>
