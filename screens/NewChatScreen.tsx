@@ -1,5 +1,5 @@
 import {useState} from "react";
-import {FlatList, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, Text, View} from "react-native";
+import {FlatList, Image, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, Text, View} from "react-native";
 import ChatInput from "../components/ChatInput";
 import styled from "styled-components/native";
 import {useChatContext} from "../contexts/ChatContext";
@@ -25,6 +25,10 @@ export function NewChatScreen() {
                 keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
             >
                 <ChatContent>
+                    <Image
+                        source={require('../assets/oasis_icon.png')}
+                        style={{width: 100, height: 50}}
+                    />
                     <Title>Send your First Message</Title>
                 </ChatContent>
                 <ChatInput
@@ -46,7 +50,7 @@ export function NewChatScreen() {
 const Title = styled.Text`
     font-size: 20px;
     color: #fff;
-    margin: 20px;
+    margin: 10px;
 `
 
 const ChatContent = styled.View`

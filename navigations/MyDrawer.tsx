@@ -7,6 +7,9 @@ import {ChatBotSelector} from "../components/ChatBotSelector";
 import CustomDrawerContent from "../components/CustomDrawerContent";
 import {useChatContext} from "../contexts/ChatContext";
 import {NewChatScreen} from "../screens/NewChatScreen";
+import {Image} from "react-native";
+// @ts-ignore
+import OasisIcon from '../assets/oasis_icon.png';
 
 const Drawer = createDrawerNavigator();
 
@@ -29,11 +32,25 @@ export function MyDrawer() {
                         headerRight: () => ChatBotSelector(closeMenu, menuVisible, openMenu),
                     }}
                 >
-                    <Drawer.Screen name="New Chat" component={NewChatScreen} options={{
+                    <Drawer.Screen name="Oasis" component={NewChatScreen} options={{
                         drawerItemStyle: {
                             borderBottomWidth: 1,
                             borderBottomColor: 'rgba(255, 255, 255, 0.3)',
-                        }
+                        },
+                        drawerLabelStyle: {
+                            fontSize: 20,
+                        },
+                        drawerIcon: () => (
+                            <Image
+                                source={OasisIcon}
+                                style={{
+                                    width: 40,
+                                    height: 30,
+                                    marginRight: -25,
+                                }}
+                            />
+                        ),
+                        drawerActiveBackgroundColor: '#000',
                     }}/>
                     {chats.map(chat => (
                         <Drawer.Screen

@@ -1,6 +1,6 @@
 import {
-    Keyboard, KeyboardAvoidingView, Platform, SafeAreaView,
-    ActivityIndicator, FlatList, Dimensions, Alert, View
+    Keyboard, KeyboardAvoidingView, Platform,
+    SafeAreaView, FlatList, Dimensions, Alert
 } from "react-native";
 import {useNavigation} from "@react-navigation/native";
 import {FontAwesome6} from "@expo/vector-icons";

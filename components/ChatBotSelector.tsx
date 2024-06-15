@@ -51,7 +51,7 @@ export function ChatBotSelector(closeMenu: () => void, menuVisible: boolean, ope
                         <ChatbotLogo
                             source={gptLogo}
                         />
-                        <ChatbotText>ChatGPT 3.5 Turbo</ChatbotText>
+                        <ChatbotText>ChatGPT 4o</ChatbotText>
                     </OptionContent>
                     <Switch
                         value={chatGptEnabled}
@@ -65,7 +65,7 @@ export function ChatBotSelector(closeMenu: () => void, menuVisible: boolean, ope
                         <ChatbotLogo
                             source={geminiLogo}
                         />
-                        <ChatbotText>Gemini 1.5 Pro</ChatbotText>
+                        <ChatbotText>Gemini 1.0 Pro</ChatbotText>
                     </OptionContent>
                     <Switch
                         value={geminiEnabled}

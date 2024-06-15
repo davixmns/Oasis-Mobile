@@ -249,7 +249,7 @@ export function LoginScreen() {
                                                         style={{paddingTop: 10}}
                                                     />
                                                 ) : (
-                                                    'Login'
+                                                    'Sign In'
                                                 )}
                                             </MyButton>
                                         </ButtonBox>
