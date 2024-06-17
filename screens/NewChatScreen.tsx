@@ -17,6 +17,7 @@ export function NewChatScreen() {
         await createNewChat(msg)
     }
 
+
     return (
         <SafeAreaView style={{flex: 1, backgroundColor: '#000'}}>
             <KeyboardAvoidingView
