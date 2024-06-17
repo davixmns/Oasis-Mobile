@@ -4,14 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":art: ajustes na api">
-      <change afterPath="$PROJECT_DIR$/assets/oasis_icon.png" afterDir="false" />
+    <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":art: colocando logo">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ChatBotSelector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatBotSelector.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navigations/MyDrawer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/MyDrawer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/ChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ChatScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/LoginScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/LoginScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/NewChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/NewChatScreen.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -140,7 +134,8 @@
       <workItem from="1716916291590" duration="3577000" />
       <workItem from="1718025881351" duration="14000" />
       <workItem from="1718295451950" duration="809000" />
-      <workItem from="1718467387407" duration="1904000" />
+      <workItem from="1718467387407" duration="2042000" />
+      <workItem from="1718594635307" duration="37000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
@@ -478,14 +473,21 @@
       <option name="project" value="LOCAL" />
       <updated>1718296131164</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary=":art: colocando logo">
+      <option name="closed" value="true" />
+      <created>1718469748959</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1718469748959</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value=":sparkles: AuthContext.tsx" />
     <MESSAGE value="iniciando registro" />
     <MESSAGE value=":sparkles: realizando cadastro" />
     <MESSAGE value=":art: validando campos de texto" />
@@ -510,6 +512,7 @@
     <MESSAGE value=":art: ajustes nos baloes e caixa de texto" />
     <MESSAGE value=":art: ajustes no chat" />
     <MESSAGE value=":art: ajustes na api" />
-    <option name="LAST_COMMIT_MESSAGE" value=":art: ajustes na api" />
+    <MESSAGE value=":art: colocando logo" />
+    <option name="LAST_COMMIT_MESSAGE" value=":art: colocando logo" />
   </component>
 </project>

@@ -8,6 +8,8 @@ node_modules/
 dist/
 web-build/
 
+.idea/
+workspace.xml
 # Native
 *.orig.*
 *.jks
