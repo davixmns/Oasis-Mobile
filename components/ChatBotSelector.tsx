@@ -17,8 +17,8 @@ export function ChatBotSelector(closeMenu: () => void, menuVisible: boolean, ope
     useEffect(() => {
         if (setChatbotEnums) {
             const newEnums = [];
-            if (chatGptEnabled) newEnums.push(1); // Assumindo que 1 representa ChatGPT
-            if (geminiEnabled) newEnums.push(2); // Assumindo que 2 representa Gemini
+            if (chatGptEnabled) newEnums.push(0); // Assumindo que 0 representa ChatGPT
+            if (geminiEnabled) newEnums.push(1); // Assumindo que 1 representa Gemini
             setChatbotEnums(newEnums);
         }
     }, [chatGptEnabled, geminiEnabled]);
@@ -38,7 +38,7 @@ export function ChatBotSelector(closeMenu: () => void, menuVisible: boolean, ope
     }
 
     return (
-        <View style={{marginRight: 10}}>
+        <View style={{marginRight: 10, zIndex: 9999}}>
             <Menu
                 style={{marginTop: 50, paddingRight: 10}}
                 visible={menuVisible}

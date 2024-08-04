@@ -33,7 +33,7 @@ export function AuthProvider({children}: ProviderProps) {
 
     async function verifyAccessToken() {
         const accessToken = await AsyncStorage.getItem('@oasis-accessToken')
-        if (!accessToken){
+        if (!accessToken) {
             console.log("❌ Token não encontrado")
             setIsAuthenticated(false)
             setIsLoading(false)
@@ -56,26 +56,25 @@ export function AuthProvider({children}: ProviderProps) {
             })
     }
 
+    useEffect(() => {
+        console.log("isAuthenticated: " + isAuthenticated)
+    }, [isAuthenticated]);
+
     async function tryLogin(email: string, password: string) {
         if (email === '' || password === '') return
         await tryLoginService(email, password)
             .then(async (response) => {
                 console.log("✅ Login efetuado")
-                const data = response.data
-                const accessToken = data.accessToken
-                const refreshToken = data.refreshToken
-                const user: OasisUser = data.oasisUser
-                setUser(user)
-                await Promise.all([
-                    AsyncStorage.setItem('@oasis-user', JSON.stringify(user)),
-                    AsyncStorage.setItem('@oasis-accessToken', accessToken),
-                    AsyncStorage.setItem('@oasis-refreshToken', refreshToken)
-                ])
+                const data = response.data.data;
+                setUser(data.refreshToken)
+                await AsyncStorage.setItem('@oasis-user', JSON.stringify(user))
+                await AsyncStorage.setItem('@oasis-accessToken', data.accessToken)
+                await AsyncStorage.setItem('@oasis-refreshToken', data.refreshToken)
                 setIsAuthenticated(true)
             })
             .catch((error) => {
                 if (error.response) {
-                    console.log("❌ Erro ao logar -> " + error.response.data)
+                    console.log("❌ Erro ao logar -> " + error.response.data.message)
                     throw error
                 }
             })

@@ -30,7 +30,7 @@ export function AuthStack() {
                         component={MyDrawer}
                         //cor de fundo da transicao é preta
                         options={{
-                            cardStyleInterpolator: CardStyleInterpolators.forFadeFromCenter,
+                            cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,
                         }}
                     />
                     <Stack.Screen

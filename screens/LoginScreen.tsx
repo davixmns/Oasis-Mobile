@@ -1,20 +1,13 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
-    Animated,
-    View,
-    TouchableWithoutFeedback,
-    Keyboard,
-    TextInput,
-    StyleSheet,
-    Alert,
-    ActivityIndicator
+    Animated, View, TouchableWithoutFeedback, Keyboard,
+    TextInput, StyleSheet, Alert, ActivityIndicator
 } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import styled from 'styled-components/native';
 import {MyTextField} from "../components/MyTextField";
 import {MyButton} from "../components/MyButton";
 import {backgroundColors, textColors, verifyEmail, verifyUser} from "../utils/utils";
-import {useNavigation} from "@react-navigation/native";
 import {Container, Content, ScreenTitle} from "./Styles";
 import {FontAwesome6} from "@expo/vector-icons";
 import * as Animatable from 'react-native-animatable';
@@ -117,11 +110,9 @@ export function LoginScreen() {
         Keyboard.dismiss()
         snapToIndex(0)
         setRequestIsLoading(true)
-        setRequestIsLoading(true)
-        await new Promise(resolve => setTimeout(resolve, 1000))
         await tryLogin(signInEmail, signInPassword)
             .catch((error) => {
-                Alert.alert(error.response.data);
+                Alert.alert(error.response.data.message);
             })
             .finally(() => {
                 setRequestIsLoading(false)
@@ -275,7 +266,7 @@ export function LoginScreen() {
                                         <TextContainer>
                                             <ScreenTitle>Sign Up</ScreenTitle>
                                             <Xbutton onPress={() => setActiveScreen('Sign In')}>
-                                                <FontAwesome6 name={'x'} size={30} color={'white'}/>
+                                                <FontAwesome6 name={'x'} size={20} color={'white'}/>
                                             </Xbutton>
                                         </TextContainer>
                                         <TextContainer>
@@ -377,7 +368,7 @@ const InputsContainer = styled.View`
   width: 100%;
   align-items: center;
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 10px;
 `
 
 const ButtonsContainer = styled.View`
@@ -393,6 +384,7 @@ const Descriptions = styled.Text`
   font-size: 16px;
   font-weight: 600;
   color: white;
+  margin-top: 5px;
 `
 
 const ButtonBox = styled.View`
