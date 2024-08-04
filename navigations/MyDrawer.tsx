@@ -7,7 +7,7 @@ import {ChatBotSelector} from "../components/ChatBotSelector";
 import CustomDrawerContent from "../components/CustomDrawerContent";
 import {useChatContext} from "../contexts/ChatContext";
 import {NewChatScreen} from "../screens/NewChatScreen";
-import {Image} from "react-native";
+import {Image, View} from "react-native";
 // @ts-ignore
 import OasisIcon from '../assets/oasis_icon.png';
 
@@ -16,9 +16,6 @@ const Drawer = createDrawerNavigator();
 export function MyDrawer() {
     const {chats} = useChatContext();
     const [menuVisible, setMenuVisible] = useState(false);
-
-    const openMenu = () => setMenuVisible(true);
-    const closeMenu = () => setMenuVisible(false);
 
     return (
         <PaperProvider>
@@ -29,7 +26,12 @@ export function MyDrawer() {
                     // @ts-ignore
                     screenOptions={{
                         ...drawerScreenOptions,
-                        headerRight: () => ChatBotSelector(closeMenu, menuVisible, openMenu),
+                        headerRight: () => (
+                            <ChatBotSelector
+                                menuVisible={menuVisible}
+                                setMenuVisible={setMenuVisible}
+                            />
+                        ),
                     }}
                 >
                     <Drawer.Screen name="Oasis" component={NewChatScreen} options={{

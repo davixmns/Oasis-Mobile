@@ -80,7 +80,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
         setChatMessages([formattedMessage, ...chatMessages])
         scrollToStart()
         setMessageIsLoading(true)
-        await sendMessageToChat(chatInfo.oasisChatId, [0, 1], userMessage)
+        await sendMessageToChat(chatInfo.oasisChatId, userMessage)
             .then((responseData: any) => {
                 setActualChatGptResponse(responseData[0])
                 setActualGeminiResponse(responseData[1])
@@ -88,7 +88,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                 setUserMessage('')
             })
             .catch((error) => {
-                Alert.alert('Erro ao enviar mensagem', error.response.status)
+                Alert.alert('Erro ao enviar mensagem')
             })
             .finally(() => {
                 setMessageIsLoading(false)

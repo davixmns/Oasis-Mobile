@@ -9,7 +9,7 @@ import gptLogo from '../assets/chatGptLogo.png';
 import geminiLogo from '../assets/geminiLogo.png';
 import {useChatContext} from "../contexts/ChatContext";
 
-export function ChatBotSelector(closeMenu: () => void, menuVisible: boolean, openMenu: () => void) {
+export function ChatBotSelector({menuVisible, setMenuVisible}: any) {
     const {setChatbotEnums} = useChatContext();
     const [chatGptEnabled, setChatGptEnabled] = useState(true);
     const [geminiEnabled, setGeminiEnabled] = useState(true);
@@ -37,10 +37,17 @@ export function ChatBotSelector(closeMenu: () => void, menuVisible: boolean, ope
         setGeminiEnabled(!geminiEnabled);
     }
 
+    function openMenu() {
+        setMenuVisible(true);
+    }
+
+    function closeMenu() {
+        setMenuVisible(false);
+    }
+
     return (
-        <View style={{marginRight: 10, zIndex: 9999}}>
+        <View>
             <Menu
-                style={{marginTop: 50, paddingRight: 10}}
                 visible={menuVisible}
                 onDismiss={closeMenu}
                 anchor={<Button onPress={openMenu}>Bots</Button>}
@@ -51,7 +58,7 @@ export function ChatBotSelector(closeMenu: () => void, menuVisible: boolean, ope
                         <ChatbotLogo
                             source={gptLogo}
                         />
-                        <ChatbotText>ChatGPT 4o</ChatbotText>
+                        <ChatbotText>ChatGPT 4.0</ChatbotText>
                     </OptionContent>
                     <Switch
                         value={chatGptEnabled}
@@ -86,8 +93,11 @@ const styles = StyleSheet.create({
         borderWidth: 0.2,
         borderColor: '#fff',
         borderRadius: 12,
+        marginTop: 45,
+        marginRight: 10,
+        zIndex: 1000,
     }
-})
+});
 
 const OptionContainer = styled.View`
   display: flex;
@@ -96,7 +106,7 @@ const OptionContainer = styled.View`
   align-items: center;
   padding: 10px;
   gap: 10px;
-`
+`;
 
 const OptionContent = styled.View`
   display: flex;
@@ -104,15 +114,15 @@ const OptionContent = styled.View`
   justify-content: space-between;
   align-items: center;
   gap: 10px;
-`
+`;
 
 const ChatbotText = styled.Text`
   color: #fff;
   font-size: 16px;
   font-weight: bold;
-`
+`;
 
 const ChatbotLogo = styled.Image`
   height: 30px;
   width: 30px;
-`
+`;

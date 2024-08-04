@@ -19,7 +19,7 @@ interface ChatContextType {
     chatbotEnums: number[];
     setChatbotEnums: (chatbotEnums: number[]) => void;
     saveChatbotMessage: (chatbotMessage: OasisMessage) => Promise<void>;
-    sendMessageToChat: (oasisChatId: number, chatbotEnums: number[], message: string) => Promise<any>;
+    sendMessageToChat: (oasisChatId: number, message: string) => Promise<any>;
 }
 
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
@@ -52,7 +52,7 @@ export function ChatProvider({children}: ProviderProps) {
             .then((response) => {
                 console.log("✅ Chats carregados")
                 let i = 1;
-                const chats = response.data;
+                const chats = response.data.data;
                 chats.forEach((chat: OasisChat) => {
                     chat.title = `${i}. ` + chat.title;
                     i++;
@@ -98,10 +98,10 @@ export function ChatProvider({children}: ProviderProps) {
         if (userMessage === '') return;
         const tokenJwt = await AsyncStorage.getItem('@oasis-accessToken');
         if (!tokenJwt) return;
-        return await sendFirstMessageService(userMessage, [1, 1], tokenJwt)
+        return await sendFirstMessageService(userMessage, chatbotEnums, tokenJwt)
             .then((response) => {
                 console.log("✅ Respostas recebidas")
-                return response.data;
+                return response.data.data;
             })
             .catch((error) => {
                 if (error.response) {
@@ -126,13 +126,13 @@ export function ChatProvider({children}: ProviderProps) {
             })
     }
 
-    async function sendMessageToChat(oasisChatId: number, chatbotEnums: number[], message: string){
+    async function sendMessageToChat(oasisChatId: number, message: string){
         const tokenJwt = await AsyncStorage.getItem('@oasis-accessToken')
-        if(!tokenJwt || !oasisChatId || !message || !chatbotEnums) return
+        if(!tokenJwt || !oasisChatId || !message) return
         return await sendMessageToChatService(oasisChatId, message, chatbotEnums, tokenJwt)
             .then((response) => {
                 console.log('✅ Respostas recebidas')
-                return response.data
+                return response.data.data
             })
             .catch((error) => {
                 if(error.response){
