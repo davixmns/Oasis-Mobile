@@ -26,8 +26,8 @@ export function LoginScreen() {
     const [activeScreen, setActiveScreen] = useState('Sign In');
 
     //Sign In
-    const [signInEmail, setSignInEmail] = useState('');
-    const [signInPassword, setSignInPassword] = useState('');
+    const [signInEmail, setSignInEmail] = useState('daviximenes@unifor.br');
+    const [signInPassword, setSignInPassword] = useState('asdasdasd');
     const [signInEmailIsCorrect, setSignInEmailIsCorrect] = useState<boolean | null>(null);
     const signInPasswordRef = useRef<TextInput>();
 

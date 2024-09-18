@@ -57,3 +57,8 @@ export function lowVibration() {
 export function mediumVibration() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
 }
+
+export enum ChatbotEnum {
+    ChatGPT = 0,
+    Gemini = 1
+}

@@ -8,33 +8,23 @@ import gptLogo from '../assets/chatGptLogo.png';
 // @ts-ignore
 import geminiLogo from '../assets/geminiLogo.png';
 import {useChatContext} from "../contexts/ChatContext";
+import {ChatbotEnum} from "../utils/utils";
 
-export function ChatBotSelector({menuVisible, setMenuVisible}: any) {
-    const {setChatbotEnums} = useChatContext();
-    const [chatGptEnabled, setChatGptEnabled] = useState(true);
-    const [geminiEnabled, setGeminiEnabled] = useState(true);
+export function ChatBotSelector() {
+    const [menuVisible, setMenuVisible] = useState(false);
+    const {selectedChatbots, setSelectedChatbots} = useChatContext();
 
-    useEffect(() => {
-        if (setChatbotEnums) {
-            const newEnums = [];
-            if (chatGptEnabled) newEnums.push(0); // Assumindo que 0 representa ChatGPT
-            if (geminiEnabled) newEnums.push(1); // Assumindo que 1 representa Gemini
-            setChatbotEnums(newEnums);
+    function toggleOption(option: ChatbotEnum) {
+        const selected = selectedChatbots.find(chatbot => chatbot.enum === option);
+        if(selected?.enabled && selectedChatbots.filter(chatbot => chatbot.enabled).length === 1) {
+            return;
         }
-    }, [chatGptEnabled, geminiEnabled]);
-
-    function toggleChatGpt() {
-        if (chatGptEnabled && !geminiEnabled) {
-            setGeminiEnabled(true);
-        }
-        setChatGptEnabled(!chatGptEnabled);
-    }
-
-    function toggleGemini() {
-        if (geminiEnabled && !chatGptEnabled) {
-            setChatGptEnabled(true);
-        }
-        setGeminiEnabled(!geminiEnabled);
+        setSelectedChatbots(selectedChatbots.map(chatbot => {
+            if(chatbot.enum === option) {
+                chatbot.enabled = !chatbot.enabled;
+            }
+            return chatbot;
+        }));
     }
 
     function openMenu() {
@@ -61,10 +51,10 @@ export function ChatBotSelector({menuVisible, setMenuVisible}: any) {
                         <ChatbotText>ChatGPT 4.0</ChatbotText>
                     </OptionContent>
                     <Switch
-                        value={chatGptEnabled}
-                        onValueChange={toggleChatGpt}
+                        value={selectedChatbots[ChatbotEnum.ChatGPT].enabled}
+                        onValueChange={() => toggleOption(ChatbotEnum.ChatGPT)}
                         trackColor={{false: '#5a5a5a', true: '#74dc65'}}
-                        ios_backgroundColor={chatGptEnabled ? '#74dc65' : '#5a5a5a'}
+                        ios_backgroundColor={selectedChatbots[ChatbotEnum.ChatGPT].enabled ? '#74dc65' : '#5a5a5a'}
                     />
                 </OptionContainer>
                 <OptionContainer>
@@ -75,10 +65,10 @@ export function ChatBotSelector({menuVisible, setMenuVisible}: any) {
                         <ChatbotText>Gemini 1.0 Pro</ChatbotText>
                     </OptionContent>
                     <Switch
-                        value={geminiEnabled}
-                        onValueChange={toggleGemini}
+                        value={selectedChatbots[ChatbotEnum.Gemini].enabled}
+                        onValueChange={() => toggleOption(ChatbotEnum.Gemini)}
                         trackColor={{false: '#5a5a5a', true: '#74dc65'}}
-                        ios_backgroundColor={geminiEnabled ? '#74dc65' : '#5a5a5a'}
+                        ios_backgroundColor={selectedChatbots[ChatbotEnum.Gemini].enabled ? '#74dc65' : '#5a5a5a'}
                     />
                 </OptionContainer>
             </Menu>

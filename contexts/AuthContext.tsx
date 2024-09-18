@@ -32,33 +32,22 @@ export function AuthProvider({children}: ProviderProps) {
     }, []);
 
     async function verifyAccessToken() {
-        const accessToken = await AsyncStorage.getItem('@oasis-accessToken')
-        if (!accessToken) {
-            console.log("❌ Token não encontrado")
-            setIsAuthenticated(false)
-            setIsLoading(false)
-            return
-        }
-        await verifyAccessTokenService(accessToken)
+        await verifyAccessTokenService()
             .then((response) => {
                 console.log("✅ Token valido")
                 setIsAuthenticated(true)
-                const responseUser = response.data.data
-                setUser(responseUser)
+                const userData = response.data.data
+                setUser(userData)
             })
             .catch(() => {
                 console.log("⚠️ Token invalido")
                 setIsAuthenticated(false)
             })
             .finally(async () => {
-                await new Promise((resolve) => setTimeout(resolve, 1000))
+                // await new Promise((resolve) => setTimeout(resolve, 1000))
                 setIsLoading(false)
             })
     }
-
-    useEffect(() => {
-        console.log("isAuthenticated: " + isAuthenticated)
-    }, [isAuthenticated]);
 
     async function tryLogin(email: string, password: string) {
         if (email === '' || password === '') return
