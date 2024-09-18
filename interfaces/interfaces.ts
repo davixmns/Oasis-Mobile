@@ -4,30 +4,43 @@ export interface ProviderProps {
     children: ReactNode
 }
 
+export enum ChatbotEnum {
+    User,
+    ChatGPT,
+    Gemini
+}
+
 export interface OasisUser {
-    oasisUserId?: number;
+    id?: number;
     name: string;
     email: string;
     password?: string;
 }
 
 export interface OasisChat {
-    oasisChatId: number;
+    id: number;
     oasisUserId: number;
     title?: string;
     chatGptThreadId: string;
     geminiThreadId?: string;
     isNewChat?: boolean;
     messages: OasisMessage[];
+    chatBots: OasisChatDetails[];
+}
+
+export interface OasisChatDetails {
+    id: number;
+    oasisChatId: number;
+    chatbotEnum: ChatbotEnum;
+    isSelected: boolean;
+    threadId: string;
 }
 
 export interface OasisMessage {
-    oasisMessageId?: number;
+    id?: number;
     oasisChatId: number;
     message: string;
-    from: string;
-    fromThreadId?: string | null;
-    fromMessageId?: string | null;
+    from: ChatbotEnum;
     createdAt?: string;
     isSaved?: boolean;
 }

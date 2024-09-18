@@ -1,8 +1,8 @@
 import {createContext, useContext, useEffect, useState} from "react";
-import {OasisChat, OasisMessage, ProviderProps} from "../interfaces/interfaces";
+import {ChatbotEnum, OasisChat, OasisMessage, ProviderProps} from "../interfaces/interfaces";
 import {useAuthContext} from "./AuthContext";
 import {useNavigation} from "@react-navigation/native";
-import {ChatbotEnum} from "../utils/utils";
+
 import {
     getAllUserChatsService,
     saveChatbotMessageService,
@@ -15,8 +15,6 @@ interface ChatContextType {
     setChats: (chats: OasisChat[]) => void;
     createNewChat: (fisrtUserMessage: string) => Promise<void>;
     sendFirstMessage: (userMessage: string) => Promise<any>;
-    selectedChatbots: {enum: ChatbotEnum, enabled: boolean}[];
-    setSelectedChatbots: (chatbots: {enum: ChatbotEnum, enabled: boolean}[]) => void;
     saveChatbotMessage: (chatbotMessage: OasisMessage) => Promise<void>;
     sendMessageToChat: (oasisChatId: number, message: string) => Promise<any>;
 }
@@ -31,11 +29,6 @@ export function ChatProvider({children}: ProviderProps) {
     const {isAuthenticated} = useAuthContext();
     const [chats, setChats] = useState<OasisChat[]>([]);
     const navigation = useNavigation();
-    const [selectedChatbots, setSelectedChatbots] = useState([
-        {enum: ChatbotEnum.ChatGPT, enabled: true},
-        {enum: ChatbotEnum.Gemini, enabled: true}
-    ]);
-    const chatbotsEnum = selectedChatbots.filter(chatbot => chatbot.enabled).map(chatbot => chatbot.enum);
 
     useEffect(() => {
         async function fetchData() {
@@ -50,15 +43,13 @@ export function ChatProvider({children}: ProviderProps) {
         await getAllUserChatsService()
             .then((response) => {
                 console.log("✅ Chats carregados")
-                // let i = 1;
-                // const chats = response.data.data;
-                // chats.forEach((chat: OasisChat) => {
-                //     chat.title = `${i}. ` + chat.title;
-                //     console.log(chat.title)
-                //     i++;
-                // })
-                // setChats(chats);
-                setChats([])
+                let i = 1;
+                const chats = response.data.data;
+                chats.forEach((chat: OasisChat) => {
+                    chat.title = `${i}. ` + chat.title;
+                    i++;
+                })
+                setChats(chats);
             })
             .catch((error) => {
                 if (error.response) {
@@ -75,18 +66,34 @@ export function ChatProvider({children}: ProviderProps) {
             oasisChatId: randomChatId,
             fromThreadId: null,
             fromMessageId: null,
-            oasisMessageId: 1,
+            id: 1,
             createdAt: new Date().toISOString(),
             isSaved: true,
         }
         const newChat: OasisChat = {
             messages: [newMessage],
-            oasisChatId: randomChatId,
+            id: randomChatId,
             oasisUserId: 1,
             chatGptThreadId: "",
             geminiThreadId: "",
             title: `${chats.length + 1}. Loading...`,
             isNewChat: true,
+            chatBots: [
+                {
+                    id: 1,
+                    oasisChatId: randomChatId,
+                    chatbotEnum: ChatbotEnum.ChatGPT,
+                    isSelected: false,
+                    threadId: ""
+                },
+                {
+                    id: 1,
+                    oasisChatId: randomChatId,
+                    chatbotEnum: ChatbotEnum.Gemini,
+                    isSelected: false,
+                    threadId: ""
+                }
+            ]
         }
         await setChats(currentChats => [...currentChats, newChat]);
         // @ts-ignore
@@ -94,7 +101,7 @@ export function ChatProvider({children}: ProviderProps) {
     }
 
     async function sendFirstMessage(userMessage: string) {
-        return await sendFirstMessageService(userMessage, chatbotsEnum)
+        return await sendFirstMessageService(userMessage, [ChatbotEnum.ChatGPT, ChatbotEnum.Gemini])
             .then((response) => {
                 console.log("✅ Respostas recebidas")
                 return response.data.data;
@@ -122,7 +129,7 @@ export function ChatProvider({children}: ProviderProps) {
 
     async function sendMessageToChat(oasisChatId: number, message: string){
         if(!oasisChatId || !message) return
-        return await sendMessageToChatService(oasisChatId, message, chatbotsEnum)
+        return await sendMessageToChatService(oasisChatId, message, [ChatbotEnum.ChatGPT, ChatbotEnum.Gemini])
             .then((response) => {
                 console.log('✅ Respostas recebidas')
                 return response.data.data
@@ -142,8 +149,6 @@ export function ChatProvider({children}: ProviderProps) {
                 setChats,
                 createNewChat,
                 sendFirstMessage,
-                selectedChatbots,
-                setSelectedChatbots,
                 saveChatbotMessage,
                 sendMessageToChat
             }}

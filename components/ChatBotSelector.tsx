@@ -7,12 +7,15 @@ import styled from "styled-components/native";
 import gptLogo from '../assets/chatGptLogo.png';
 // @ts-ignore
 import geminiLogo from '../assets/geminiLogo.png';
-import {useChatContext} from "../contexts/ChatContext";
-import {ChatbotEnum} from "../utils/utils";
+
+import {ChatbotEnum} from "../interfaces/interfaces";
 
 export function ChatBotSelector() {
     const [menuVisible, setMenuVisible] = useState(false);
-    const {selectedChatbots, setSelectedChatbots} = useChatContext();
+    const [selectedChatbots, setSelectedChatbots] = useState([
+        {enum: ChatbotEnum.ChatGPT, enabled: true},
+        {enum: ChatbotEnum.Gemini, enabled: false},
+    ]);
 
     function toggleOption(option: ChatbotEnum) {
         const selected = selectedChatbots.find(chatbot => chatbot.enum === option);
@@ -51,10 +54,10 @@ export function ChatBotSelector() {
                         <ChatbotText>ChatGPT 4.0</ChatbotText>
                     </OptionContent>
                     <Switch
-                        value={selectedChatbots[ChatbotEnum.ChatGPT].enabled}
+                        value={selectedChatbots[0].enabled}
                         onValueChange={() => toggleOption(ChatbotEnum.ChatGPT)}
                         trackColor={{false: '#5a5a5a', true: '#74dc65'}}
-                        ios_backgroundColor={selectedChatbots[ChatbotEnum.ChatGPT].enabled ? '#74dc65' : '#5a5a5a'}
+                        ios_backgroundColor={selectedChatbots[0].enabled ? '#74dc65' : '#5a5a5a'}
                     />
                 </OptionContainer>
                 <OptionContainer>
@@ -65,10 +68,10 @@ export function ChatBotSelector() {
                         <ChatbotText>Gemini 1.0 Pro</ChatbotText>
                     </OptionContent>
                     <Switch
-                        value={selectedChatbots[ChatbotEnum.Gemini].enabled}
+                        value={selectedChatbots[1].enabled}
                         onValueChange={() => toggleOption(ChatbotEnum.Gemini)}
                         trackColor={{false: '#5a5a5a', true: '#74dc65'}}
-                        ios_backgroundColor={selectedChatbots[ChatbotEnum.Gemini].enabled ? '#74dc65' : '#5a5a5a'}
+                        ios_backgroundColor={selectedChatbots[1].enabled ? '#74dc65' : '#5a5a5a'}
                     />
                 </OptionContainer>
             </Menu>

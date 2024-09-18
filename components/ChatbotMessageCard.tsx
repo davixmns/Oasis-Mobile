@@ -1,4 +1,4 @@
-import {OasisMessage} from "../interfaces/interfaces";
+import {ChatbotEnum, OasisMessage} from "../interfaces/interfaces";
 import styled from "styled-components/native";
 
 //@ts-ignore
@@ -9,8 +9,8 @@ import chatGgptLogo from '../assets/chatGptLogo.png'
 export function ChatbotMessageCard({oasisMessage}: { oasisMessage: OasisMessage }) {
 
     function renderProfileImage() {
-        if (oasisMessage.from === 'ChatGPT') return <FromImage source={chatGgptLogo}/>
-        if (oasisMessage.from === 'Gemini') return <FromImage source={geminiLogo}/>
+        if (oasisMessage.from === ChatbotEnum.ChatGPT) return <FromImage source={chatGgptLogo}/>
+        if (oasisMessage.from === ChatbotEnum.Gemini) return <FromImage source={geminiLogo}/>
     }
 
     return (

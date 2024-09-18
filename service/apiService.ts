@@ -1,5 +1,5 @@
 import axios from "axios";
-import { OasisMessage, OasisUser } from "../interfaces/interfaces";
+import {ChatbotEnum, OasisMessage, OasisUser} from "../interfaces/interfaces";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useNavigation, useRoute} from "@react-navigation/native";
 import {Alert} from "react-native";
@@ -88,6 +88,17 @@ export async function getAllUserChatsService() {
     });
 }
 
+export async function loadChatMessagesService(oasisChatId: number) {
+    const {accessToken, refreshToken} = await getTokens();
+
+    return await api.get(`/Chat/GetChatMessages/${oasisChatId}`, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'X-Refresh-Token': refreshToken
+        }
+    });
+}
+
 export async function sendFirstMessageService(userMessage: string, chatbotEnums: number[]) {
     const {accessToken, refreshToken} = await getTokens();
 
@@ -113,7 +124,7 @@ export async function saveChatbotMessageService(chatbotMessage: OasisMessage) {
     });
 }
 
-export async function sendMessageToChatService(oasisChatId: number, message: string, chatbotEnums: number[]) {
+export async function sendMessageToChatService(oasisChatId: number, message: string, chatbotEnums: ChatbotEnum[]) {
     const {accessToken, refreshToken} = await getTokens();
 
     return await api.post("/Chat/SendMessage/" + oasisChatId, {

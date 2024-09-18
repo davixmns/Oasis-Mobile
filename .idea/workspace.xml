@@ -7,11 +7,11 @@
     <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":wrench: ajustes nas promises">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/ChatBotSelector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatBotSelector.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.ts" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/contexts/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/AuthContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ChatbotMessageCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatbotMessageCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contexts/ChatContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/ChatContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/interfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/interfaces.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/navigations/MyDrawer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/MyDrawer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/LoginScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/LoginScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/ChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ChatScreen.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/service/apiService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/service/apiService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/utils/utils.ts" beforeDir="false" afterPath="$PROJECT_DIR$/utils/utils.ts" afterDir="false" />
     </list>
@@ -164,7 +164,7 @@
       <workItem from="1722865737630" duration="25000" />
       <workItem from="1722876000042" duration="66000" />
       <workItem from="1724071504361" duration="42000" />
-      <workItem from="1726657659421" duration="9348000" />
+      <workItem from="1726657659421" duration="18363000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />

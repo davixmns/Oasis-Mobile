@@ -37,7 +37,7 @@ export function MyDrawer() {
                     />
                     {chats.map(chat => (
                         <Drawer.Screen
-                            key={chat.oasisChatId}
+                            key={chat.id}
                             name={chat.title!.toString()}
                             children={() => <ChatScreen chatData={chat}/>}
                         />
