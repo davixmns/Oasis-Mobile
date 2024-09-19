@@ -2,13 +2,13 @@ import {
     Keyboard, KeyboardAvoidingView, Platform,
     SafeAreaView, FlatList, Dimensions, Alert, ActivityIndicator, Text
 } from "react-native";
-import {useNavigation} from "@react-navigation/native";
+import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {FontAwesome6} from "@expo/vector-icons";
 import styled from "styled-components/native";
 import * as Animatable from 'react-native-animatable';
-import {useState, useRef, useEffect} from "react";
+import {useState, useRef, useEffect, useCallback} from "react";
 import ChatInput from "../components/ChatInput";
-import {ChatbotEnum, OasisChat, OasisMessage} from "../interfaces/interfaces";
+import {ChatbotEnum, OasisChat, OasisChatBotDetails, OasisMessage} from "../interfaces/interfaces";
 import {useChatContext} from "../contexts/ChatContext";
 import {MessageSkeleton} from "../components/MessageSkeleton";
 import {UserMessageCard} from "../components/UserMessageCard";
@@ -19,8 +19,13 @@ import {loadChatMessagesService} from "../service/apiService";
 
 const width = Dimensions.get('window').width;
 
-export function ChatScreen({chatData}: { chatData: OasisChat }) {
-    const {chats, sendFirstMessage, saveChatbotMessage, sendMessageToChat, setCurrentChatId} = useChatContext();
+interface ChatScreenProps {
+    chatData: OasisChat;
+    changeSelectedChatBots: (selectedChatBots: OasisChatBotDetails[]) => void;
+}
+
+export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) {
+    const {chats, sendFirstMessage, saveChatbotMessage, sendMessageToChat} = useChatContext();
 
     const [waitingChatBots, setWaitingChatBots] = useState<boolean>(false);
     const [loadingMessages, setLoadingMessages] = useState<boolean>(true);
@@ -43,7 +48,6 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
 
     useEffect(() => {
         async function init() {
-            setCurrentChatId(chatInfo.id)
             if (chatInfo.isNewChat) {
                 await handleSendFirstMessageToChat()
             } else {
@@ -53,6 +57,12 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
 
         init();
     }, [chatInfo]);
+
+    useFocusEffect(
+        useCallback(() => {
+            changeSelectedChatBots(chatInfo.chatBots);
+        }, [chatInfo.chatBots])
+    );
 
 
     async function handleSendFirstMessageToChat() {

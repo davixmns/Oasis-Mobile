@@ -10,39 +10,21 @@ import geminiLogo from '../assets/geminiLogo.png';
 
 import {ChatbotEnum} from "../interfaces/interfaces";
 import {useChatContext} from "../contexts/ChatContext";
+import {updateChatBotDetailsService} from "../service/apiService";
 
-export function ChatBotSelector({selectedChatbots, setSelectedChatbots}: {
-    selectedChatbots: { enum: ChatbotEnum, enabled: boolean }[],
-    setSelectedChatbots: (selectedChatbots: { enum: ChatbotEnum, enabled: boolean }[]) => void;
-}) {
+interface ChatBotSelectorProps {
+    selectedChatbots: { enum: ChatbotEnum, enabled: boolean, id: number }[];
+    updateChatBotOption: (id: number, isSelected: boolean) => void;
+}
+
+export function ChatBotSelector({selectedChatbots, updateChatBotOption}: ChatBotSelectorProps) {
     const [menuVisible, setMenuVisible] = useState(false);
-
-    function toggleOption(option: ChatbotEnum) {
-        const selected = selectedChatbots.find((chatbot) => chatbot.enum === option);
-        if (selected?.enabled && selectedChatbots.filter(chatbot => chatbot.enabled).length === 1) {
-            return;
-        }
-        setSelectedChatbots(selectedChatbots.map(chatbot => {
-            if (chatbot.enum === option) {
-                chatbot.enabled = !chatbot.enabled;
-            }
-            return chatbot;
-        }));
-    }
-
-    function openMenu() {
-        setMenuVisible(true);
-    }
-
-    function closeMenu() {
-        setMenuVisible(false);
-    }
 
     return (
         <Menu
             visible={menuVisible}
-            onDismiss={closeMenu}
-            anchor={<Button onPress={openMenu}>Bots</Button>}
+            onDismiss={() =>  setMenuVisible(false)}
+            anchor={<Button onPress={() => setMenuVisible(true)}>Bots</Button>}
             contentStyle={styles.menu}
         >
             <OptionContainer>
@@ -54,7 +36,7 @@ export function ChatBotSelector({selectedChatbots, setSelectedChatbots}: {
                 </OptionContent>
                 <Switch
                     value={selectedChatbots[0].enabled}
-                    onValueChange={() => toggleOption(ChatbotEnum.ChatGPT)}
+                    onValueChange={() => updateChatBotOption(selectedChatbots[0].id, !selectedChatbots[0].enabled)}
                     trackColor={{false: '#5a5a5a', true: '#74dc65'}}
                     ios_backgroundColor={selectedChatbots[0].enabled ? '#74dc65' : '#5a5a5a'}
                 />
@@ -68,7 +50,7 @@ export function ChatBotSelector({selectedChatbots, setSelectedChatbots}: {
                 </OptionContent>
                 <Switch
                     value={selectedChatbots[1].enabled}
-                    onValueChange={() => toggleOption(ChatbotEnum.Gemini)}
+                    onValueChange={() => updateChatBotOption(selectedChatbots[1].id, !selectedChatbots[1].enabled)}
                     trackColor={{false: '#5a5a5a', true: '#74dc65'}}
                     ios_backgroundColor={selectedChatbots[1].enabled ? '#74dc65' : '#5a5a5a'}
                 />

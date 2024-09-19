@@ -17,8 +17,6 @@ interface ChatContextType {
     sendFirstMessage: (userMessage: string) => Promise<any>;
     saveChatbotMessage: (chatbotMessage: OasisMessage) => Promise<void>;
     sendMessageToChat: (oasisChatId: number, message: string) => Promise<any>;
-    currentChatId: number;
-    setCurrentChatId: (id: number) => void;
 }
 
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
@@ -30,7 +28,6 @@ export function useChatContext() {
 export function ChatProvider({children}: ProviderProps) {
     const {isAuthenticated} = useAuthContext();
     const [chats, setChats] = useState<OasisChat[]>([]);
-    const [currentChatId, setCurrentChatId] = useState<number>(-1);
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -153,8 +150,6 @@ export function ChatProvider({children}: ProviderProps) {
                 sendFirstMessage,
                 saveChatbotMessage,
                 sendMessageToChat,
-                currentChatId,
-                setCurrentChatId
             }}
         >
             {children}

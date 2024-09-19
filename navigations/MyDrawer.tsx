@@ -7,32 +7,51 @@ import {ChatBotSelector} from "../components/ChatBotSelector";
 import CustomDrawerContent from "../components/CustomDrawerContent";
 import {useChatContext} from "../contexts/ChatContext";
 import {NewChatScreen} from "../screens/NewChatScreen";
-import {Image, View} from "react-native";
+import {Image} from "react-native";
 // @ts-ignore
 import OasisIcon from '../assets/oasis_icon.png';
-import {ChatbotEnum} from "../interfaces/interfaces";
+import {ChatbotEnum, OasisChatBotDetails} from "../interfaces/interfaces";
+import {updateChatBotDetailsService} from "../service/apiService";
 
 const Drawer = createDrawerNavigator();
 
 export function MyDrawer() {
-    const {chats, currentChatId} = useChatContext();
+    const {chats, setChats} = useChatContext();
 
     const [selectedChatbots, setSelectedChatbots] = useState([
-        {enum: ChatbotEnum.ChatGPT, enabled: true},
-        {enum: ChatbotEnum.Gemini, enabled: true},
+        {enum: ChatbotEnum.ChatGPT, enabled: true, id: -1},
+        {enum: ChatbotEnum.Gemini, enabled: true, id: -1},
     ]);
 
-    useEffect(() => {
-        if (currentChatId === -1) {
-            return;
-        }
-        const currentChat = chats.find(chat => chat.id === currentChatId);
-        console.log(currentChat)
-        setSelectedChatbots([
-            {enum: ChatbotEnum.ChatGPT, enabled: true},
-            {enum: ChatbotEnum.Gemini, enabled: true},
-        ]);
-    }, [currentChatId]);
+    function showChatBotStatus(selecteds: OasisChatBotDetails[]) {
+        setSelectedChatbots(selecteds.map(chatbot => {
+            return {
+                enum: chatbot.chatbotEnum,
+                enabled: chatbot.isSelected,
+                id: chatbot.id,
+            }
+        }));
+    }
+
+    async function handleUpdateChatBotOption(id: number, isSelected: boolean) {
+        setChats(chats.map(chat => {
+            chat.chatBots = chat.chatBots.map(chatbot => {
+                if (chatbot.id === id) {
+                    chatbot.isSelected = isSelected;
+                }
+                return chatbot;
+            });
+            return chat;
+        }));
+        await updateChatBotDetailsService(id, isSelected)
+            .then(() => {
+                console.log('✅ Chatbot atualizado');
+            })
+            .catch((error) => {
+                console.log('❌ Erro ao atualizar chatbot -> ' + error.response);
+            })
+    }
+
 
     return (
         <PaperProvider>
@@ -46,7 +65,7 @@ export function MyDrawer() {
                         headerRight: () => (
                             <ChatBotSelector
                                 selectedChatbots={selectedChatbots}
-                                setSelectedChatbots={setSelectedChatbots}
+                                updateChatBotOption={handleUpdateChatBotOption}
                             />
                         ),
                     }}
@@ -60,7 +79,12 @@ export function MyDrawer() {
                         <Drawer.Screen
                             key={chat.id}
                             name={chat.title!.toString()}
-                            children={() => <ChatScreen chatData={chat}/>}
+                            children={() => (
+                                <ChatScreen
+                                    chatData={chat}
+                                    changeSelectedChatBots={showChatBotStatus}
+                                />
+                            )}
                         />
                     ))}
                 </Drawer.Navigator>
