@@ -1,7 +1,7 @@
 import React, {useEffect, useMemo, useRef, useState} from 'react';
 import {
     Animated, View, TouchableWithoutFeedback, Keyboard,
-    TextInput, StyleSheet, Alert, ActivityIndicator
+    TextInput, StyleSheet, Alert, ActivityIndicator, Dimensions
 } from 'react-native';
 import BottomSheet from '@gorhom/bottom-sheet';
 import styled from 'styled-components/native';
@@ -14,6 +14,8 @@ import * as Animatable from 'react-native-animatable';
 import {useAuthContext} from "../contexts/AuthContext";
 import {OasisUser} from "../interfaces/interfaces";
 
+const {height} = Dimensions.get('window');
+
 export function LoginScreen() {
     const {createUser, tryLogin} = useAuthContext()
 
@@ -21,7 +23,7 @@ export function LoginScreen() {
     const animatedColor = useRef(new Animated.Value(0)).current;
 
     //BottomSheet
-    const snapPoints = useMemo(() => ['35%', '50%', '71%', '87%'], []);
+    const snapPoints = useMemo(() => [320, 800, (height / 3) + 330, 600], []); // Alturas em pixels
     const bottomSheetRef = useRef<BottomSheet>(null);
     const [activeScreen, setActiveScreen] = useState('Sign In');
 

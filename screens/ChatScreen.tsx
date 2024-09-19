@@ -1,6 +1,6 @@
 import {
     Keyboard, KeyboardAvoidingView, Platform,
-    SafeAreaView, FlatList, Dimensions, Alert, ActivityIndicator, Text
+    SafeAreaView, FlatList, Dimensions, Alert, ActivityIndicator, Text, View
 } from "react-native";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {FontAwesome6} from "@expo/vector-icons";
@@ -10,14 +10,16 @@ import {useState, useRef, useEffect, useCallback} from "react";
 import ChatInput from "../components/ChatInput";
 import {ChatbotEnum, OasisChat, OasisChatBotDetails, OasisMessage} from "../interfaces/interfaces";
 import {useChatContext} from "../contexts/ChatContext";
-import {MessageSkeleton} from "../components/MessageSkeleton";
+import {WaitingChatBotsSkeleton} from "../components/WaitingChatBotsSkeleton";
 import {UserMessageCard} from "../components/UserMessageCard";
 import {ChatbotMessageCard} from "../components/ChatbotMessageCard";
 import {ChatbotOptionCard} from "../components/ChatbotOptionCard";
 import {lowVibration, mediumVibration} from "../utils/utils";
 import {loadChatMessagesService} from "../service/apiService";
+import {MessagesLoadingSkeleton} from "../components/MessagesLoadingSkeleton";
+import {css} from "styled-components";
 
-const width = Dimensions.get('window').width;
+const {width, height} = Dimensions.get('window');
 
 interface ChatScreenProps {
     chatData: OasisChat;
@@ -233,14 +235,13 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
     return (
         <CustomSafeAreaView>
             {loadingMessages ? (
-                <>
-                    <LoadingMessages/>
-                    <Text style={{color: '#fff'}}>Loading Messages</Text>
-                </>
+                <View style={{height: '100%', width: '100%', justifyContent: 'flex-end'}}>
+                    <MessagesLoadingSkeleton/>
+                </View>
             ) : (
                 <KeyboardAvoidingView
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                    style={{flex: 1}}
+                    style={{flex: 1, backgroundColor: 'green'}}
                     keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
                 >
                     <FlatList
@@ -250,6 +251,7 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
                         inverted={true}
                         style={{
                             marginBottom: 8,
+                            backgroundColor: 'blue'
                             // backgroundColor: 'blue'
                         }}
                         ref={messageListRef}
@@ -283,7 +285,7 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
                                         showsHorizontalScrollIndicator={false}
                                     />
                                 )}
-                                {waitingChatBots && <MessageSkeleton/>}
+                                {waitingChatBots && <WaitingChatBotsSkeleton/>}
                             </>
                         }
                     />
@@ -314,11 +316,11 @@ const BottomContent = styled.View`
     align-items: center;
     justify-content: space-between;
     height: 50px;
+    background-color: red;
     margin-bottom: 5px;
     gap: 10px;
     align-self: center;
-    //width: 95%;
-`
+`;
 
 const SaveButton = styled.TouchableOpacity`
     background-color: #fff;
@@ -345,10 +347,3 @@ const SaveText = styled.Text`
     font-weight: bold;
     color: black;
 `
-
-const LoadingMessages = styled(ActivityIndicator).attrs({
-    size: 'large',
-    color: '#fff'
-})`
-`
-

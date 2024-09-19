@@ -3,7 +3,7 @@ import {Dimensions, View} from "react-native";
 
 const {width} = Dimensions.get('window');
 
-export function MessageSkeleton() {
+export function WaitingChatBotsSkeleton() {
     return (
 
             <SkeletonPlaceholder

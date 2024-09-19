@@ -44,9 +44,6 @@ export function MyDrawer() {
             return chat;
         }));
         await updateChatBotDetailsService(id, isSelected)
-            .then(() => {
-                console.log('✅ Chatbot atualizado');
-            })
             .catch((error) => {
                 console.log('❌ Erro ao atualizar chatbot -> ' + error.response);
             })
