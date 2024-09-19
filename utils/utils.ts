@@ -1,4 +1,4 @@
-import {OasisUser} from "../interfaces/interfaces";
+import {ChatbotEnum, OasisUser} from "../interfaces/interfaces";
 import * as Haptics from 'expo-haptics';
 export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
@@ -57,3 +57,19 @@ export function lowVibration() {
 export function mediumVibration() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
 }
+
+
+export const ChatBotOptions: Record<ChatbotEnum, { name: string, image: any }> = {
+    [ChatbotEnum.User]: {
+        name: 'User',
+        image: require('../assets/chatGptLogo.png'),
+    },
+    [ChatbotEnum.ChatGPT]: {
+        name: 'ChatGPT',
+        image: require('../assets/chatGptLogo.png'),
+    },
+    [ChatbotEnum.Gemini]: {
+        name: 'Gemini',
+        image: require('../assets/geminiLogo.png'),
+    },
+};

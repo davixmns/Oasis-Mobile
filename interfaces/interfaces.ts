@@ -25,10 +25,10 @@ export interface OasisChat {
     geminiThreadId?: string;
     isNewChat?: boolean;
     messages: OasisMessage[];
-    chatBots: OasisChatDetails[];
+    chatBots: OasisChatBotDetails[];
 }
 
-export interface OasisChatDetails {
+export interface OasisChatBotDetails {
     id: number;
     oasisChatId: number;
     chatbotEnum: ChatbotEnum;

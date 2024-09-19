@@ -17,6 +17,8 @@ interface ChatContextType {
     sendFirstMessage: (userMessage: string) => Promise<any>;
     saveChatbotMessage: (chatbotMessage: OasisMessage) => Promise<void>;
     sendMessageToChat: (oasisChatId: number, message: string) => Promise<any>;
+    currentChatId: number;
+    setCurrentChatId: (id: number) => void;
 }
 
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
@@ -28,6 +30,7 @@ export function useChatContext() {
 export function ChatProvider({children}: ProviderProps) {
     const {isAuthenticated} = useAuthContext();
     const [chats, setChats] = useState<OasisChat[]>([]);
+    const [currentChatId, setCurrentChatId] = useState<number>(-1);
     const navigation = useNavigation();
 
     useEffect(() => {
@@ -60,18 +63,17 @@ export function ChatProvider({children}: ProviderProps) {
 
     async function createNewChat(fisrtUserMessage: string) {
         const randomChatId = Math.floor(Math.random() * 1000);
-        const newMessage: OasisMessage = {
-            from: 'User',
-            message: fisrtUserMessage,
-            oasisChatId: randomChatId,
-            fromThreadId: null,
-            fromMessageId: null,
-            id: 1,
-            createdAt: new Date().toISOString(),
-            isSaved: true,
-        }
         const newChat: OasisChat = {
-            messages: [newMessage],
+            messages: [
+                {
+                    from: ChatbotEnum.User,
+                    message: fisrtUserMessage,
+                    oasisChatId: randomChatId,
+                    id: 1,
+                    createdAt: new Date().toISOString(),
+                    isSaved: true,
+                }
+            ],
             id: randomChatId,
             oasisUserId: 1,
             chatGptThreadId: "",
@@ -83,14 +85,14 @@ export function ChatProvider({children}: ProviderProps) {
                     id: 1,
                     oasisChatId: randomChatId,
                     chatbotEnum: ChatbotEnum.ChatGPT,
-                    isSelected: false,
+                    isSelected: true,
                     threadId: ""
                 },
                 {
                     id: 1,
                     oasisChatId: randomChatId,
                     chatbotEnum: ChatbotEnum.Gemini,
-                    isSelected: false,
+                    isSelected: true,
                     threadId: ""
                 }
             ]
@@ -127,15 +129,15 @@ export function ChatProvider({children}: ProviderProps) {
             })
     }
 
-    async function sendMessageToChat(oasisChatId: number, message: string){
-        if(!oasisChatId || !message) return
+    async function sendMessageToChat(oasisChatId: number, message: string) {
+        if (!oasisChatId || !message) return
         return await sendMessageToChatService(oasisChatId, message, [ChatbotEnum.ChatGPT, ChatbotEnum.Gemini])
             .then((response) => {
                 console.log('✅ Respostas recebidas')
                 return response.data.data
             })
             .catch((error) => {
-                if(error.response){
+                if (error.response) {
                     console.log('❌ Erro ao enviar mensagem -> ' + error.response)
                     throw error
                 }
@@ -150,7 +152,9 @@ export function ChatProvider({children}: ProviderProps) {
                 createNewChat,
                 sendFirstMessage,
                 saveChatbotMessage,
-                sendMessageToChat
+                sendMessageToChat,
+                currentChatId,
+                setCurrentChatId
             }}
         >
             {children}

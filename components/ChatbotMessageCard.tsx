@@ -1,23 +1,16 @@
-import {ChatbotEnum, OasisMessage} from "../interfaces/interfaces";
+import {OasisMessage} from "../interfaces/interfaces";
 import styled from "styled-components/native";
-
-//@ts-ignore
-import geminiLogo from '../assets/geminiLogo.png'
-//@ts-ignore
-import chatGgptLogo from '../assets/chatGptLogo.png'
+import {ChatBotOptions} from "../utils/utils";
 
 export function ChatbotMessageCard({oasisMessage}: { oasisMessage: OasisMessage }) {
 
-    function renderProfileImage() {
-        if (oasisMessage.from === ChatbotEnum.ChatGPT) return <FromImage source={chatGgptLogo}/>
-        if (oasisMessage.from === ChatbotEnum.Gemini) return <FromImage source={geminiLogo}/>
-    }
+    const option = ChatBotOptions[oasisMessage.from]
 
     return (
         <ChatbotMessageContainer>
             <Header>
-                {renderProfileImage()}
-                <FromName>{oasisMessage.from}</FromName>
+                <FromImage source={option.image}/>
+                <FromName>{option.name}</FromName>
             </Header>
             <Message>{oasisMessage.message}</Message>
         </ChatbotMessageContainer>

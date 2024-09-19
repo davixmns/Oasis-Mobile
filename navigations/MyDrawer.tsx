@@ -1,4 +1,4 @@
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import {StatusBar} from 'expo-status-bar';
 import {Provider as PaperProvider} from 'react-native-paper';
@@ -7,14 +7,32 @@ import {ChatBotSelector} from "../components/ChatBotSelector";
 import CustomDrawerContent from "../components/CustomDrawerContent";
 import {useChatContext} from "../contexts/ChatContext";
 import {NewChatScreen} from "../screens/NewChatScreen";
-import {Image} from "react-native";
+import {Image, View} from "react-native";
 // @ts-ignore
 import OasisIcon from '../assets/oasis_icon.png';
+import {ChatbotEnum} from "../interfaces/interfaces";
 
 const Drawer = createDrawerNavigator();
 
 export function MyDrawer() {
-    const {chats} = useChatContext();
+    const {chats, currentChatId} = useChatContext();
+
+    const [selectedChatbots, setSelectedChatbots] = useState([
+        {enum: ChatbotEnum.ChatGPT, enabled: true},
+        {enum: ChatbotEnum.Gemini, enabled: true},
+    ]);
+
+    useEffect(() => {
+        if (currentChatId === -1) {
+            return;
+        }
+        const currentChat = chats.find(chat => chat.id === currentChatId);
+        console.log(currentChat)
+        setSelectedChatbots([
+            {enum: ChatbotEnum.ChatGPT, enabled: true},
+            {enum: ChatbotEnum.Gemini, enabled: true},
+        ]);
+    }, [currentChatId]);
 
     return (
         <PaperProvider>
@@ -26,7 +44,10 @@ export function MyDrawer() {
                     screenOptions={{
                         ...drawerScreenOptions,
                         headerRight: () => (
-                            <ChatBotSelector/>
+                            <ChatBotSelector
+                                selectedChatbots={selectedChatbots}
+                                setSelectedChatbots={setSelectedChatbots}
+                            />
                         ),
                     }}
                 >
@@ -58,7 +79,7 @@ export const drawerScreenOptions = {
     drawerStyle: {
         backgroundColor: '#000',
     },
-    headerTintColor: '#fff',
+    headerTintColor: '#fff',  // Cor do texto e dos ícones do header
     overlayColor: 'rgba(123, 123, 123, 0.2)',
     drawerActiveBackgroundColor: 'rgba(123, 123, 123, 0.3)',
     drawerInactiveTintColor: '#fff',
@@ -70,6 +91,7 @@ export const drawerScreenOptions = {
         fontSize: 16,
     },
 };
+
 
 export const newChatScreenOptions = {
     drawerItemStyle: {

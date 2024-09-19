@@ -20,7 +20,7 @@ import {loadChatMessagesService} from "../service/apiService";
 const width = Dimensions.get('window').width;
 
 export function ChatScreen({chatData}: { chatData: OasisChat }) {
-    const {chats, sendFirstMessage, saveChatbotMessage, sendMessageToChat} = useChatContext();
+    const {chats, sendFirstMessage, saveChatbotMessage, sendMessageToChat, setCurrentChatId} = useChatContext();
 
     const [waitingChatBots, setWaitingChatBots] = useState<boolean>(false);
     const [loadingMessages, setLoadingMessages] = useState<boolean>(true);
@@ -43,12 +43,14 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
 
     useEffect(() => {
         async function init() {
+            setCurrentChatId(chatInfo.id)
             if (chatInfo.isNewChat) {
                 await handleSendFirstMessageToChat()
             } else {
                 await handleLoadChatMessages()
             }
         }
+
         init();
     }, [chatInfo]);
 
@@ -139,14 +141,17 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
 
     function renderMessage({item}: { item: OasisMessage }) {
         const isChatbotSavedMessage = item.from !== ChatbotEnum.User
-        const isUserMessage = item.from === ChatbotEnum.User
+        const isUserMessage = !isChatbotSavedMessage
         if (isUserMessage) return <UserMessageCard oasisMessage={item}/>
         if (isChatbotSavedMessage) return <ChatbotMessageCard oasisMessage={item}/>
         return <></>
     }
 
     function renderBottomContent() {
-        if (renderSwippable && (gptOptionIsActive || geminiOptionIsActive)) {
+        const showChooseMessage = !waitingChatBots && !gptOptionIsActive && !geminiOptionIsActive && renderSwippable
+        const showSaveMessage = !waitingChatBots && (gptOptionIsActive || geminiOptionIsActive)
+
+        if (showSaveMessage) {
             return (
                 <Animatable.View animation={'fadeIn'} duration={1000}>
                     <BottomContent style={{paddingHorizontal: 12}}>
@@ -160,7 +165,7 @@ export function ChatScreen({chatData}: { chatData: OasisChat }) {
                 </Animatable.View>
             )
         }
-        if (!waitingChatBots && !gptOptionIsActive && !geminiOptionIsActive && renderSwippable) {
+        if (showChooseMessage) {
             return (
                 // @ts-ignore
                 <BottomContent style={{width: 'unset', gap: 10}}>

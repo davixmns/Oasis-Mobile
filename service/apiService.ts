@@ -137,3 +137,17 @@ export async function sendMessageToChatService(oasisChatId: number, message: str
         }
     });
 }
+
+export async function updateChatBotDetailsService(oasisChatBotDetailsId: number, isActive: boolean) {
+    const {accessToken, refreshToken} = await getTokens();
+
+    return await api.put("/Chat/UpdateChatBotDetails", {
+        isActive: isActive,
+        oasisChatBotDetailsId: oasisChatBotDetailsId
+    }, {
+        headers: {
+            Authorization: `Bearer ${accessToken}`,
+            'X-Refresh-Token': refreshToken
+        }
+    });
+}
