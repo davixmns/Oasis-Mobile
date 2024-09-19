@@ -2,10 +2,7 @@ import {OasisMessage} from "../interfaces/interfaces";
 import {Dimensions, ScrollView, TouchableOpacity} from "react-native";
 import styled from "styled-components/native";
 
-//@ts-ignore
-import chatGgptLogo from "../assets/chatGptLogo.png";
-//@ts-ignore
-import geminiLogo from "../assets/geminiLogo.png";
+import {ChatBotOptions} from "../utils/utils";
 
 interface ChatbotOptionCardProps {
     oasisMessage: OasisMessage
@@ -17,17 +14,13 @@ const width = Dimensions.get('window').width
 
 export function ChatbotOptionCard({oasisMessage, isActive, toggle}: ChatbotOptionCardProps) {
     const shouldScroll = !oasisMessage.isSaved && oasisMessage.message.length > 700
-
-    function renderProfileImage() {
-        if (oasisMessage.from === 'ChatGPT') return <FromImage source={chatGgptLogo}/>
-        if (oasisMessage.from === 'Gemini') return <FromImage source={geminiLogo}/>
-    }
+    const option = ChatBotOptions[oasisMessage.from]
 
     return (
         <OptionContainer isActive={isActive!}>
             <Header>
-                {renderProfileImage()}
-                <FromName>{oasisMessage.from}</FromName>
+                <FromImage source={option.image}/>
+                <FromName>{option.name}</FromName>
             </Header>
             <OptionMessageContent shouldScroll={shouldScroll}>
                 {shouldScroll ? (

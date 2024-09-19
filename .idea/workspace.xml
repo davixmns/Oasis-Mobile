@@ -5,12 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":wrench: ajustes nas promises">
-      <change afterPath="$PROJECT_DIR$/components/MessagesLoadingSkeleton.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MessageSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/WaitingChatBotsSkeleton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navigations/MyDrawer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/MyDrawer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ChatbotOptionCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatbotOptionCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/MessagesLoadingSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/MessagesLoadingSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/interfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/interfaces.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/ChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ChatScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/LoginScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/LoginScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/NewChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/NewChatScreen.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -164,6 +164,7 @@
       <workItem from="1726657659421" duration="21928000" />
       <workItem from="1726704852556" duration="4156000" />
       <workItem from="1726744096606" duration="10728000" />
+      <workItem from="1726782108360" duration="3511000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />

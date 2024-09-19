@@ -1,14 +1,11 @@
-import {
-    Keyboard, KeyboardAvoidingView, Platform,
-    SafeAreaView, FlatList, Dimensions, Alert, ActivityIndicator, Text, View
-} from "react-native";
+import {Alert, Dimensions, FlatList, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, View} from "react-native";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {FontAwesome6} from "@expo/vector-icons";
 import styled from "styled-components/native";
 import * as Animatable from 'react-native-animatable';
-import {useState, useRef, useEffect, useCallback} from "react";
+import {useCallback, useEffect, useRef, useState} from "react";
 import ChatInput from "../components/ChatInput";
-import {ChatbotEnum, OasisChat, OasisChatBotDetails, OasisMessage} from "../interfaces/interfaces";
+import {ChatbotEnum, ChatBotOption, OasisChat, OasisChatBotDetails, OasisMessage} from "../interfaces/interfaces";
 import {useChatContext} from "../contexts/ChatContext";
 import {WaitingChatBotsSkeleton} from "../components/WaitingChatBotsSkeleton";
 import {UserMessageCard} from "../components/UserMessageCard";
@@ -17,7 +14,6 @@ import {ChatbotOptionCard} from "../components/ChatbotOptionCard";
 import {lowVibration, mediumVibration} from "../utils/utils";
 import {loadChatMessagesService} from "../service/apiService";
 import {MessagesLoadingSkeleton} from "../components/MessagesLoadingSkeleton";
-import {css} from "styled-components";
 
 const {width, height} = Dimensions.get('window');
 
@@ -37,12 +33,9 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
     const [chatInfo, setChatInfo] = useState<OasisChat>(chatData);
     const [chatMessages, setChatMessages] = useState<OasisMessage[]>(chatInfo.messages);
 
-    const [actualChatGptResponse, setActualChatGptResponse] = useState<OasisMessage | null>(null)
-    const [actualGeminiResponse, setActualGeminiResponse] = useState<OasisMessage | null>(null)
-    const [renderSwippable, setRenderSwippable] = useState<boolean>(false)
+    const [chatBotResponses, setChatBotResponses] = useState<ChatBotOption[]>();
 
-    const [gptOptionIsActive, setGptOptionIsActive] = useState<boolean>(false)
-    const [geminiOptionIsActive, setGeminiOptionIsActive] = useState<boolean>(false)
+    const [renderSwippable, setRenderSwippable] = useState<boolean>(true)
 
     const messageListRef = useRef<FlatList>(null);
     const optionListRef = useRef<FlatList>(null);
@@ -76,8 +69,9 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
                 setChatInfo(responseData.chat)
                 const formattedTitle = `${chats.length}. ${responseData.chat.title}`
                 navigation.setOptions({title: formattedTitle})
-                setActualChatGptResponse(responseData?.chatbotMessages[0])
-                setActualGeminiResponse(responseData?.chatbotMessages[1])
+                setChatBotResponses(responseData.chatbotMessages.map((message: OasisMessage) => {
+                    return {message, isActive: false}
+                }))
                 setRenderSwippable(true);
                 setUserMessage('')
                 chatInfo.isNewChat = false;
@@ -119,10 +113,9 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
         setWaitingChatBots(true)
         await sendMessageToChat(chatInfo.id, userMessage)
             .then((responseData: any) => {
-                setActualChatGptResponse(responseData[0])
-                setActualGeminiResponse(responseData[1])
-                setRenderSwippable(true)
+                setChatBotResponses(responseData)
                 setUserMessage('')
+                setRenderSwippable(true)
             })
             .catch((error) => {
                 Alert.alert('Erro ao enviar mensagem')
@@ -133,11 +126,11 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
     }
 
     async function handleSaveChatbotMessage() {
-        const selectedMessage = gptOptionIsActive ? actualChatGptResponse : actualGeminiResponse
-        if (!selectedMessage) return;
+        const selectedOptions = chatBotResponses?.filter(option => option.isActive)
+        if (!selectedOptions || selectedOptions.length !== 1) return
         mediumVibration()
         const formattedMessage: OasisMessage = {
-            ...selectedMessage,
+            ...selectedOptions[0].message,
             isSaved: true,
             oasisChatId: chatInfo.id
         }
@@ -160,8 +153,8 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
     }
 
     function renderBottomContent() {
-        const showChooseMessage = !waitingChatBots && !gptOptionIsActive && !geminiOptionIsActive && renderSwippable
-        const showSaveMessage = !waitingChatBots && (gptOptionIsActive || geminiOptionIsActive)
+        const showChooseMessage = !waitingChatBots && renderSwippable
+        const showSaveMessage = !waitingChatBots
 
         if (showSaveMessage) {
             return (
@@ -210,88 +203,70 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
 
     function closeChatbotSelection() {
         setRenderSwippable(false)
-        setGptOptionIsActive(false)
-        setGeminiOptionIsActive(false)
-        setActualChatGptResponse(null)
-        setActualGeminiResponse(null)
-    }
-
-    async function toggleChatGpt() {
-        if (!gptOptionIsActive) {
-            lowVibration()
-            setGptOptionIsActive(true);
-            setGeminiOptionIsActive(false);
-        }
-    }
-
-    async function toggleGemini() {
-        if (!geminiOptionIsActive) {
-            lowVibration()
-            setGeminiOptionIsActive(true);
-            setGptOptionIsActive(false);
-        }
     }
 
     return (
         <CustomSafeAreaView>
-            {loadingMessages ? (
-                <View style={{height: '100%', width: '100%', justifyContent: 'flex-end'}}>
-                    <MessagesLoadingSkeleton/>
-                </View>
-            ) : (
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                    style={{flex: 1, backgroundColor: 'green'}}
-                    keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
-                >
-                    <FlatList
-                        data={chatMessages}
-                        renderItem={renderMessage}
-                        keyExtractor={(item, index) => index.toString()}
-                        inverted={true}
-                        style={{
-                            marginBottom: 8,
-                            backgroundColor: 'blue'
-                            // backgroundColor: 'blue'
-                        }}
-                        ref={messageListRef}
-                        ListHeaderComponent={
-                            <>
-                                {renderSwippable && !waitingChatBots && (
-                                    //Lista para renderizar as opções de mensagens dos chatbots
-                                    <FlatList
-                                        horizontal
-                                        ref={optionListRef}
-                                        style={{
-                                            paddingLeft: 5,
-                                            paddingBottom: 20,
-                                            marginTop: 12,
-                                            // backgroundColor: 'red'
-                                        }}
-                                        contentContainerStyle={{alignItems: 'flex-start'}}
-                                        data={[actualChatGptResponse, actualGeminiResponse].filter(Boolean)}
-                                        keyExtractor={(item) => item!.from.toString()}
-                                        renderItem={({item}) => (
-                                            <Animatable.View animation={'fadeInUp'} duration={1000}>
-                                                <ChatbotOptionCard
-                                                    oasisMessage={item}
-                                                    toggle={() => item.from === 'ChatGPT' ? toggleChatGpt() : toggleGemini()}
-                                                    isActive={item.from === 'ChatGPT' ? gptOptionIsActive : geminiOptionIsActive}
-                                                />
-                                            </Animatable.View>
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+                style={{flex: 1}}
+                keyboardVerticalOffset={Platform.OS === 'ios' ? (height < 850 ? 70 : 100) : 0}
+            >
+                <FlexOneContainer>
+                    {loadingMessages ? (
+                        <View style={{height: '100%', width: '100%', justifyContent: 'flex-end'}}>
+                            <MessagesLoadingSkeleton/>
+                        </View>
+                    ) : (
+                        <Animatable.View animation={'fadeIn'} style={{flex: 1}}>
+                            <FlatList
+                                data={chatMessages}
+                                renderItem={renderMessage}
+                                keyExtractor={(item, index) => index.toString()}
+                                inverted={true}
+                                style={{
+                                    marginBottom: 8,
+                                }}
+                                ref={messageListRef}
+                                ListHeaderComponent={
+                                    <>
+                                        {renderSwippable && !waitingChatBots && (
+                                            //Lista para renderizar as opções de mensagens dos chatbots
+                                            <FlatList
+                                                horizontal
+                                                ref={optionListRef}
+                                                style={{
+                                                    paddingLeft: 5,
+                                                    paddingBottom: 20,
+                                                    marginTop: 12,
+                                                }}
+                                                contentContainerStyle={{alignItems: 'flex-start'}}
+                                                data={chatBotResponses}
+                                                keyExtractor={(item) => item!.from.toString()}
+                                                renderItem={({item}) => (
+                                                    <Animatable.View animation={'fadeInUp'} duration={1000}>
+                                                        <ChatbotOptionCard
+                                                            oasisMessage={item}
+                                                            toggle={() => item.from === ChatbotEnum.ChatGPT ? toggleChatGpt() : toggleGemini()}
+                                                            isActive={item.from === ChatbotEnum.ChatGPT ? gptOptionIsActive : geminiOptionIsActive}
+                                                        />
+                                                    </Animatable.View>
+                                                )}
+                                                snapToInterval={width}
+                                                decelerationRate={'fast'}
+                                                showsHorizontalScrollIndicator={false}
+                                            />
                                         )}
-                                        snapToInterval={width}
-                                        decelerationRate={'fast'}
-                                        showsHorizontalScrollIndicator={false}
-                                    />
-                                )}
-                                {waitingChatBots && <WaitingChatBotsSkeleton/>}
-                            </>
-                        }
-                    />
-                    {renderBottomContent()}
-                </KeyboardAvoidingView>
-            )}
+                                        {waitingChatBots && <WaitingChatBotsSkeleton/>}
+                                    </>
+                                }
+                            />
+                        </Animatable.View>
+                    )}
+
+                </FlexOneContainer>
+                {renderBottomContent()}
+            </KeyboardAvoidingView>
         </CustomSafeAreaView>
     );
 }
@@ -316,7 +291,6 @@ const BottomContent = styled.View`
     align-items: center;
     justify-content: space-between;
     height: 50px;
-    background-color: red;
     margin-bottom: 5px;
     gap: 10px;
     align-self: center;
@@ -346,4 +320,8 @@ const SaveText = styled.Text`
     font-size: 16px;
     font-weight: bold;
     color: black;
+`
+
+const FlexOneContainer = styled.View`
+    flex: 1;
 `

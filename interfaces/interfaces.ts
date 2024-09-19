@@ -44,3 +44,8 @@ export interface OasisMessage {
     createdAt?: string;
     isSaved?: boolean;
 }
+
+export interface ChatBotOption {
+    message: OasisMessage;
+    isActive: boolean;
+}

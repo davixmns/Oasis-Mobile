@@ -30,71 +30,69 @@ export function MessagesLoadingSkeleton() {
 
                 <SkeletonPlaceholder.Item alignSelf="flex-start" flexDirection={'row'} gap={10} marginRight={10} marginBottom={10}>
                     <SkeletonPlaceholder.Item
-                        width={30}  // Largura da mensagem
-                        height={30}          // Altura da mensagem
-                        borderRadius={30}    // Borda arredondada
-                        marginBottom={6}     // Espaçamento entre as mensagens
+                        width={30}
+                        height={30}
+                        borderRadius={30}
+                        marginBottom={6}
                     />
                     <SkeletonPlaceholder.Item
-                        width={70}  // Largura da mensagem
+                        width={70}
                         height={25}
-                        borderRadius={30}    // Borda arredondada
-                        marginBottom={6}     // Espaçamento entre as mensagens
-                        alignSelf={'center'}// Altura da mensagem
+                        borderRadius={30}
+                        marginBottom={6}
+                        alignSelf={'center'}
                     />
                 </SkeletonPlaceholder.Item>
 
                 <SkeletonPlaceholder.Item alignSelf="flex-start" marginBottom={10}>
                     <SkeletonPlaceholder.Item
-                        width={width * 0.75}  // Largura da mensagem
-                        height={200}           // Altura da mensagem
-                        borderRadius={15}     // Borda arredondada
-                        marginBottom={6}      // Espaçamento entre as mensagens
-                    />
-                </SkeletonPlaceholder.Item>
-
-                <SkeletonPlaceholder.Item alignSelf="flex-end" marginBottom={10}>
-                    <SkeletonPlaceholder.Item
-                        width={60}
-                        height={25}
-                        borderRadius={20}
-                        marginBottom={6}
-                    />
-                </SkeletonPlaceholder.Item>
-                <SkeletonPlaceholder.Item alignSelf="flex-end" marginLeft={10} marginBottom={10}>
-                    <SkeletonPlaceholder.Item
                         width={width * 0.75}
-                        height={80}
+                        height={200}
                         borderRadius={15}
                         marginBottom={6}
                     />
                 </SkeletonPlaceholder.Item>
 
-                <SkeletonPlaceholder.Item alignSelf="flex-start" flexDirection={'row'} gap={10} marginRight={10} marginBottom={10}>
-                    <SkeletonPlaceholder.Item
-                        width={30}  // Largura da mensagem
-                        height={30}          // Altura da mensagem
-                        borderRadius={30}    // Borda arredondada
-                        marginBottom={6}     // Espaçamento entre as mensagens
-                    />
-                    <SkeletonPlaceholder.Item
-                        width={70}  // Largura da mensagem
-                        height={25}
-                        borderRadius={30}    // Borda arredondada
-                        marginBottom={6}     // Espaçamento entre as mensagens
-                        alignSelf={'center'}// Altura da mensagem
-                    />
-                </SkeletonPlaceholder.Item>
-                <SkeletonPlaceholder.Item alignSelf="flex-start" marginBottom={10}>
-                    <SkeletonPlaceholder.Item
-                        width={width * 0.75}  // Largura da mensagem
-                        height={100}           // Altura da mensagem
-                        borderRadius={15}     // Borda arredondada
-                        marginBottom={6}      // Espaçamento entre as mensagens
-                    />
-                </SkeletonPlaceholder.Item>
+                {/*<SkeletonPlaceholder.Item alignSelf="flex-end" marginBottom={10}>*/}
+                {/*    <SkeletonPlaceholder.Item*/}
+                {/*        width={60}*/}
+                {/*        height={25}*/}
+                {/*        borderRadius={20}*/}
+                {/*        marginBottom={6}*/}
+                {/*    />*/}
+                {/*</SkeletonPlaceholder.Item>*/}
+                {/*<SkeletonPlaceholder.Item alignSelf="flex-end" marginLeft={10} marginBottom={10}>*/}
+                {/*    <SkeletonPlaceholder.Item*/}
+                {/*        width={width * 0.75}*/}
+                {/*        height={80}*/}
+                {/*        borderRadius={15}*/}
+                {/*        marginBottom={6}*/}
+                {/*    />*/}
+                {/*</SkeletonPlaceholder.Item>*/}
 
-                {/* Outra mensagem do chatbot */}
+                {/*<SkeletonPlaceholder.Item alignSelf="flex-start" flexDirection={'row'} gap={10} marginRight={10} marginBottom={10}>*/}
+                {/*    <SkeletonPlaceholder.Item*/}
+                {/*        width={30}*/}
+                {/*        height={30}*/}
+                {/*        borderRadius={30}*/}
+                {/*        marginBottom={6}*/}
+                {/*    />*/}
+                {/*    <SkeletonPlaceholder.Item*/}
+                {/*        width={70}*/}
+                {/*        height={25}*/}
+                {/*        borderRadius={30}*/}
+                {/*        marginBottom={6}*/}
+                {/*        alignSelf={'center'}*/}
+                {/*    />*/}
+                {/*</SkeletonPlaceholder.Item>*/}
+                {/*<SkeletonPlaceholder.Item alignSelf="flex-start" marginBottom={10}>*/}
+                {/*    <SkeletonPlaceholder.Item*/}
+                {/*        width={width * 0.75}*/}
+                {/*        height={100}*/}
+                {/*        borderRadius={15}*/}
+                {/*        marginBottom={6}*/}
+                {/*    />*/}
+                {/*</SkeletonPlaceholder.Item>*/}
             </SkeletonPlaceholder.Item>
         </SkeletonPlaceholder>
     );

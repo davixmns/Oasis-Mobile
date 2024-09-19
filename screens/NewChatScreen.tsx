@@ -41,7 +41,7 @@ export function NewChatScreen() {
                                 source={require('../assets/oasis_icon.png')}
                                 style={{width: 100, height: 50}}
                             />
-                            <Title>Send your First Message</Title>
+                            <Title>Start a Conversation</Title>
                         </LogoContainer>
                     </ChatContent>
                     <ChatInput
@@ -62,9 +62,9 @@ export function NewChatScreen() {
 }
 
 const Title = styled.Text`
-  font-size: 20px;
-  color: #fff;
-  margin: 10px;
+    font-size: 20px;
+    color: #fff;
+    margin: 10px;
 `
 
 const ChatContent = styled.View`
