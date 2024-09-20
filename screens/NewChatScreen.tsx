@@ -1,14 +1,18 @@
 import {useState} from "react";
 import {
-    Image, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, TouchableWithoutFeedback,
+    FlatList,
+    Image, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, TouchableWithoutFeedback, View,
 } from "react-native";
 import ChatInput from "../components/ChatInput";
 import styled from "styled-components/native";
 import {useChatContext} from "../contexts/ChatContext";
+import {getRandomMessageTips} from "../utils/MessageTipsTexts";
+import {MessageTipCard} from "../components/MessageTipCard";
 
 export function NewChatScreen() {
     const {createNewChat} = useChatContext();
     const [userMessage, setUserMessage] = useState('');
+    const messageTipos = getRandomMessageTips(3);
 
     async function handleSendFirsMessage() {
         if (userMessage === '') return;
@@ -31,43 +35,56 @@ export function NewChatScreen() {
                                 source={require('../assets/oasis_icon.png')}
                                 style={{width: 100, height: 50}}
                             />
-                            <Title>Start a Conversation</Title>
                         </LogoContainer>
                     </ChatContent>
-                    <ChatInput
-                        message={userMessage}
-                        setMessage={(text) => {
-                            if (text === '\n') {
-                                Keyboard.dismiss();
-                                return;
-                            }
-                            setUserMessage(text);
-                        }}
-                        onPress={handleSendFirsMessage}
-                    />
+                    <BottomContainer>
+                        <FlatList
+                            data={messageTipos}
+                            renderItem={({item}) => (
+                                <MessageTipCard
+                                    tipMessage={item}
+                                />
+                            )}
+                            style={{width: '100%', height: 100, backgroundColor: 'red'}}
+                            horizontal={true}
+                            keyExtractor={(item, index) => index.toString()}
+                        />
+                        <ChatInput
+                            message={userMessage}
+                            setMessage={(text) => {
+                                if (text === '\n') {
+                                    Keyboard.dismiss();
+                                    return;
+                                }
+                                setUserMessage(text);
+                            }}
+                            onPress={handleSendFirsMessage}
+                        />
+                    </BottomContainer>
                 </KeyboardAvoidingView>
             </TouchableWithoutFeedback>
         </SafeAreaView>
     );
 }
 
-const Title = styled.Text`
-    font-size: 20px;
-    color: #fff;
-    margin: 10px;
-`
-
 const ChatContent = styled.View`
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 `
 
 const LogoContainer = styled.View`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+`
+
+const BottomContainer = styled.View`
+    align-items: center;
+    justify-self: flex-end;
+    gap: 10px;
+    width: 100%;
 `

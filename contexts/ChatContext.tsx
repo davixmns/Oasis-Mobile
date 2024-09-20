@@ -43,11 +43,16 @@ export function ChatProvider({children}: ProviderProps) {
         await getAllUserChatsService()
             .then((response) => {
                 console.log("✅ Chats carregados")
-                let i = 1;
-                const chats = response.data.data;
-                chats.forEach((chat: OasisChat) => {
-                    chat.title = `${i}. ` + chat.title;
-                    i++;
+                const chats: OasisChat[] = response.data.data;
+
+                let spaceCounter = 0;
+                const repeatedTitles: string[] = []
+                chats.forEach((chat) => {
+                    if (repeatedTitles.includes(chat.title!)) {
+                        spaceCounter++;
+                        chat.title = `${chat.title}${' '.repeat(spaceCounter)}`
+                    }
+                    repeatedTitles.push(chat.title!)
                 })
                 setChats(chats);
             })
@@ -55,8 +60,9 @@ export function ChatProvider({children}: ProviderProps) {
                 if (error.response) {
                     console.log("❌ Erro ao buscar chats -> " + error.response.data)
                 }
-            })
+            });
     }
+
 
     async function createNewChat(fisrtUserMessage: string) {
         const randomChatId = Math.floor(Math.random() * 1000);
@@ -75,7 +81,7 @@ export function ChatProvider({children}: ProviderProps) {
             oasisUserId: 1,
             chatGptThreadId: "",
             geminiThreadId: "",
-            title: `${chats.length + 1}. Loading...`,
+            title: "Loading..." + ' '.repeat(Math.floor(Math.random() * 10)),
             isNewChat: true,
             chatBots: [
                 {

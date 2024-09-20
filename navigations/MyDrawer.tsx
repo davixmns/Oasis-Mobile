@@ -4,7 +4,7 @@ import {StatusBar} from 'expo-status-bar';
 import {Provider as PaperProvider} from 'react-native-paper';
 import {ChatScreen} from '../screens/ChatScreen';
 import {ChatBotSelector} from "../components/ChatBotSelector";
-import CustomDrawerContent from "../components/CustomDrawerContent";
+import CustomDrawerContent from "./CustomDrawerContent";
 import {useChatContext} from "../contexts/ChatContext";
 import {NewChatScreen} from "../screens/NewChatScreen";
 import {Image} from "react-native";

@@ -16,7 +16,7 @@ export function ChatbotOptionCard({chatBotOption, toggle}: ChatbotOptionCardProp
     const chatBotData = ChatBotDicionary[chatBotOption.message.chatBotEnum]
 
     return (
-        <OptionContainer isActive={chatBotOption.isActive}>
+        <OptionContainer isActive={chatBotOption.isActive} onPress={toggle} activeOpacity={1}>
             <Header>
                 <FromImage source={chatBotData.image}/>
                 <FromName>{chatBotData.name}</FromName>
@@ -41,7 +41,7 @@ export function ChatbotOptionCard({chatBotOption, toggle}: ChatbotOptionCardProp
     );
 }
 
-const OptionContainer = styled.View<{ isActive: boolean }>`
+const OptionContainer = styled.TouchableOpacity<{ isActive: boolean }>`
   display: flex;
   width: ${width * 0.9}px;
   gap: 7px;

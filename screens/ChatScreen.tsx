@@ -39,33 +39,29 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
     const [userMessage, setUserMessage] = useState('');
 
     const [chatInfo, setChatInfo] = useState<OasisChat>(chatData);
-    const [chatMessages, setChatMessages] = useState<OasisMessage[]>(chatInfo.messages);
 
+    const [renderSwippable, setRenderSwippable] = useState<boolean>(false)
     const [chatBotResponses, setChatBotResponses] = useState<ChatBotOptionToChoose[] | null>(null);
 
     // const [renderSwippable, setRenderSwippable] = useState<boolean>(true)
-    // const [chatBotResponses, setChatBotResponses] = useState<ChatBotOption[] | null>([
+    // const [chatBotResponses, setChatBotResponses] = useState<ChatBotOptionToChoose[] | null>([
     //     {
     //         message: {
-    //             from: ChatbotEnum.ChatGPT,
+    //             chatBotEnum: ChatbotEnum.ChatGPT,
     //             message: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lo',
-    //             oasisChatId: -1,
-    //             isSaved: false,
     //         },
     //         isActive: false,
     //     },
     //     {
     //         message: {
-    //             from: ChatbotEnum.Gemini,
+    //             chatBotEnum: ChatbotEnum.Gemini,
     //             message: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)....It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lo',
-    //             oasisChatId: -1,
-    //             isSaved: false,
     //         },
     //         isActive: false,
     //     },
     // ]);
 
-    const [renderSwippable, setRenderSwippable] = useState<boolean>(false)
+    const [chatMessages, setChatMessages] = useState<OasisMessage[]>(chatInfo.messages);
 
     const messageListRef = useRef<FlatList>(null);
     const optionListRef = useRef<FlatList>(null);
@@ -123,7 +119,12 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
     }
 
     function defineCurrentChatTitle(title: string) {
-        navigation.setOptions({title:`${chats.length}. ${title}`})
+        chats.forEach(chat => {
+            if(chat.title === title) {
+                navigation.setOptions({title: chat.title + " "})
+            }
+        })
+        navigation.setOptions({title: title})
     }
 
     async function handleLoadChatMessages() {
