@@ -5,15 +5,23 @@ import styled from "styled-components/native";
 import * as Animatable from 'react-native-animatable';
 import {useCallback, useEffect, useRef, useState} from "react";
 import ChatInput from "../components/ChatInput";
-import {ChatbotEnum, ChatBotOption, OasisChat, OasisChatBotDetails, OasisMessage} from "../interfaces/interfaces";
+import {
+    ChatbotEnum,
+    ChatBotMessage,
+    ChatBotOptionToChoose,
+    OasisChat,
+    OasisChatBotDetails,
+    OasisMessage
+} from "../interfaces/interfaces";
 import {useChatContext} from "../contexts/ChatContext";
 import {WaitingChatBotsSkeleton} from "../components/WaitingChatBotsSkeleton";
 import {UserMessageCard} from "../components/UserMessageCard";
 import {ChatbotMessageCard} from "../components/ChatbotMessageCard";
 import {ChatbotOptionCard} from "../components/ChatbotOptionCard";
-import {lowVibration, mediumVibration} from "../utils/utils";
 import {loadChatMessagesService} from "../service/apiService";
 import {MessagesLoadingSkeleton} from "../components/MessagesLoadingSkeleton";
+import MyVibration from "../utils/MyVibration";
+import {ImpactFeedbackStyle} from "expo-haptics";
 
 const {width, height} = Dimensions.get('window');
 
@@ -33,9 +41,31 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
     const [chatInfo, setChatInfo] = useState<OasisChat>(chatData);
     const [chatMessages, setChatMessages] = useState<OasisMessage[]>(chatInfo.messages);
 
-    const [chatBotResponses, setChatBotResponses] = useState<ChatBotOption[]>();
+    const [chatBotResponses, setChatBotResponses] = useState<ChatBotOptionToChoose[] | null>(null);
 
-    const [renderSwippable, setRenderSwippable] = useState<boolean>(true)
+    // const [renderSwippable, setRenderSwippable] = useState<boolean>(true)
+    // const [chatBotResponses, setChatBotResponses] = useState<ChatBotOption[] | null>([
+    //     {
+    //         message: {
+    //             from: ChatbotEnum.ChatGPT,
+    //             message: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lo',
+    //             oasisChatId: -1,
+    //             isSaved: false,
+    //         },
+    //         isActive: false,
+    //     },
+    //     {
+    //         message: {
+    //             from: ChatbotEnum.Gemini,
+    //             message: 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lorem ipsum\' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like)....It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using \'Content here, content here\', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for \'lo',
+    //             oasisChatId: -1,
+    //             isSaved: false,
+    //         },
+    //         isActive: false,
+    //     },
+    // ]);
+
+    const [renderSwippable, setRenderSwippable] = useState<boolean>(false)
 
     const messageListRef = useRef<FlatList>(null);
     const optionListRef = useRef<FlatList>(null);
@@ -44,14 +74,17 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
     useEffect(() => {
         async function init() {
             if (chatInfo.isNewChat) {
+                setLoadingMessages(false)
                 await handleSendFirstMessageToChat()
             } else {
-                await handleLoadChatMessages()
+                if(chatMessages.length === 0) {
+                    await handleLoadChatMessages()
+                }
             }
         }
 
         init();
-    }, [chatInfo]);
+    }, []);
 
     useFocusEffect(
         useCallback(() => {
@@ -62,26 +95,35 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
 
     async function handleSendFirstMessageToChat() {
         const firstMessage = chatData.messages[0].message;
+        const selectedChatBots = chatData.chatBots.map(chatbot => chatbot.chatbotEnum)
         if (firstMessage === '') return;
         setWaitingChatBots(true);
-        await sendFirstMessage(firstMessage)
+        await sendFirstMessage(firstMessage, selectedChatBots)
             .then((responseData: any) => {
-                setChatInfo(responseData.chat)
-                const formattedTitle = `${chats.length}. ${responseData.chat.title}`
-                navigation.setOptions({title: formattedTitle})
-                setChatBotResponses(responseData.chatbotMessages.map((message: OasisMessage) => {
-                    return {message, isActive: false}
-                }))
-                setRenderSwippable(true);
                 setUserMessage('')
-                chatInfo.isNewChat = false;
+                initializeConversation(responseData)
             })
             .catch((error) => {
-                Alert.alert('Erro ao enviar mensagem', error.response.status)
+                console.log(error)
+                Alert.alert('Erro ao enviar mensagem', error.response)
             })
             .finally(() => {
                 setWaitingChatBots(false);
             })
+    }
+
+    async function initializeConversation(responseData: any) {
+        const oasisChat = responseData.oasisChat
+        const chatBotMessages = responseData.chatBotMessages
+        setChatInfo(oasisChat)
+        defineCurrentChatTitle(oasisChat.title)
+        saveChatBotResponses(chatBotMessages)
+        openChatBotSelection()
+        chatInfo.isNewChat = false;
+    }
+
+    function defineCurrentChatTitle(title: string) {
+        navigation.setOptions({title:`${chats.length}. ${title}`})
     }
 
     async function handleLoadChatMessages() {
@@ -101,7 +143,7 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
     async function handleSendMessageToChat() {
         if (userMessage == '') return
         const formattedMessage: OasisMessage = {
-            from: ChatbotEnum.User,
+            chatBotEnum: ChatbotEnum.User,
             message: userMessage,
             oasisChatId: chatInfo.id,
             isSaved: true,
@@ -114,10 +156,10 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
         await sendMessageToChat(chatInfo.id, userMessage)
             .then((responseData: any) => {
                 setChatBotResponses(responseData)
-                setUserMessage('')
-                setRenderSwippable(true)
+                openChatBotSelection()
             })
             .catch((error) => {
+                console.log(error)
                 Alert.alert('Erro ao enviar mensagem')
             })
             .finally(() => {
@@ -128,24 +170,56 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
     async function handleSaveChatbotMessage() {
         const selectedOptions = chatBotResponses?.filter(option => option.isActive)
         if (!selectedOptions || selectedOptions.length !== 1) return
-        mediumVibration()
+        MyVibration.vibrateDevice(ImpactFeedbackStyle.Light)
         const formattedMessage: OasisMessage = {
-            ...selectedOptions[0].message,
+            message: selectedOptions[0].message.message,
+            chatBotEnum: selectedOptions[0].message.chatBotEnum,
             isSaved: true,
             oasisChatId: chatInfo.id
         }
         await saveChatbotMessage(formattedMessage)
             .then(async () => {
                 await setChatMessages([formattedMessage, ...chatMessages])
-                closeChatbotSelection()
+                closeChatBotSelection()
             })
             .catch((e) => {
                 Alert.alert('Erro ao salvar mensagem', e.response)
             })
     }
 
+    function scrollToStart() {
+        messageListRef.current?.scrollToOffset({offset: 0, animated: true})
+    }
+
+    function saveChatBotResponses(chatBotMessages: ChatBotMessage[]) {
+        setChatBotResponses(chatBotMessages.map((message: ChatBotMessage) => {
+            return {message, isActive: false}
+        }))
+    }
+
+    function openChatBotSelection(){
+        setRenderSwippable(true)
+    }
+
+    function closeChatBotSelection() {
+        setRenderSwippable(false)
+        setChatBotResponses(null)
+    }
+
+    function toggleChatBotOption(option: ChatBotOptionToChoose) {
+        if(!chatBotResponses) return;
+        const updatedOptions = chatBotResponses.map((response) => {
+            return {
+                ...response,
+                isActive: response.message.chatBotEnum === option.message.chatBotEnum
+            }
+        })
+        setChatBotResponses(updatedOptions)
+
+    }
+
     function renderMessage({item}: { item: OasisMessage }) {
-        const isChatbotSavedMessage = item.from !== ChatbotEnum.User
+        const isChatbotSavedMessage = item.chatBotEnum !== ChatbotEnum.User
         const isUserMessage = !isChatbotSavedMessage
         if (isUserMessage) return <UserMessageCard oasisMessage={item}/>
         if (isChatbotSavedMessage) return <ChatbotMessageCard oasisMessage={item}/>
@@ -153,23 +227,10 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
     }
 
     function renderBottomContent() {
-        const showChooseMessage = !waitingChatBots && renderSwippable
-        const showSaveMessage = !waitingChatBots
+        const isAnyChatBotActive = chatBotResponses?.some(option => option.isActive)
+        const showChooseMessage = !isAnyChatBotActive && chatBotResponses
+        const showSaveMessage = isAnyChatBotActive && chatBotResponses
 
-        if (showSaveMessage) {
-            return (
-                <Animatable.View animation={'fadeIn'} duration={1000}>
-                    <BottomContent style={{paddingHorizontal: 12}}>
-                        <SaveButton onPress={handleSaveChatbotMessage}>
-                            <SaveText>Save Message</SaveText>
-                        </SaveButton>
-                        <CancelButton onPress={closeChatbotSelection}>
-                            <SaveText style={{color: '#fff'}}>Cancel</SaveText>
-                        </CancelButton>
-                    </BottomContent>
-                </Animatable.View>
-            )
-        }
         if (showChooseMessage) {
             return (
                 // @ts-ignore
@@ -177,6 +238,20 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
                     <ChooseText>Choose a message</ChooseText>
                     <FontAwesome6 name={'circle-up'} size={30} color={'#fff'}/>
                 </BottomContent>
+            )
+        }
+        if (showSaveMessage) {
+            return (
+                <Animatable.View animation={'fadeIn'} duration={1000}>
+                    <BottomContent style={{paddingHorizontal: 12}}>
+                        <SaveButton onPress={handleSaveChatbotMessage}>
+                            <SaveText>Save Message</SaveText>
+                        </SaveButton>
+                        <CancelButton onPress={closeChatBotSelection}>
+                            <SaveText style={{color: '#fff'}}>Cancel</SaveText>
+                        </CancelButton>
+                    </BottomContent>
+                </Animatable.View>
             )
         }
         return (
@@ -195,14 +270,6 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
                 />
             </BottomContent>
         )
-    }
-
-    function scrollToStart() {
-        messageListRef.current?.scrollToOffset({offset: 0, animated: true})
-    }
-
-    function closeChatbotSelection() {
-        setRenderSwippable(false)
     }
 
     return (
@@ -237,18 +304,17 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
                                                 ref={optionListRef}
                                                 style={{
                                                     paddingLeft: 5,
-                                                    paddingBottom: 20,
+                                                    paddingBottom: 15,
                                                     marginTop: 12,
                                                 }}
                                                 contentContainerStyle={{alignItems: 'flex-start'}}
                                                 data={chatBotResponses}
-                                                keyExtractor={(item) => item!.from.toString()}
+                                                keyExtractor={(item, index) => index.toString()}
                                                 renderItem={({item}) => (
                                                     <Animatable.View animation={'fadeInUp'} duration={1000}>
                                                         <ChatbotOptionCard
-                                                            oasisMessage={item}
-                                                            toggle={() => item.from === ChatbotEnum.ChatGPT ? toggleChatGpt() : toggleGemini()}
-                                                            isActive={item.from === ChatbotEnum.ChatGPT ? gptOptionIsActive : geminiOptionIsActive}
+                                                            chatBotOption={item}
+                                                            toggle={() => toggleChatBotOption(item)}
                                                         />
                                                     </Animatable.View>
                                                 )}

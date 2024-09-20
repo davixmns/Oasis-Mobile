@@ -1,5 +1,5 @@
 import {createContext, useContext, useEffect, useState} from "react";
-import {createUserService, tryLoginService, verifyAccessTokenService} from "../service/apiService";
+import {createUserService, saveTokensOnStorage, tryLoginService, verifyAccessTokenService} from "../service/apiService";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {OasisUser, ProviderProps} from "../interfaces/interfaces";
 import {useNavigation} from "@react-navigation/native";
@@ -55,10 +55,9 @@ export function AuthProvider({children}: ProviderProps) {
             .then(async (response) => {
                 console.log("✅ Login efetuado")
                 const data = response.data.data;
-                setUser(data.refreshToken)
+                setUser(data.oasisUserResponse)
                 await AsyncStorage.setItem('@oasis-user', JSON.stringify(user))
-                await AsyncStorage.setItem('@oasis-accessToken', data.accessToken)
-                await AsyncStorage.setItem('@oasis-refreshToken', data.refreshToken)
+                await saveTokensOnStorage(data.accessToken, data.refreshToken)
                 setIsAuthenticated(true)
             })
             .catch((error) => {

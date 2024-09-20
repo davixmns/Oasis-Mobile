@@ -27,7 +27,7 @@ export function MyDrawer() {
         setSelectedChatbots(selecteds.map(chatbot => {
             return {
                 enum: chatbot.chatbotEnum,
-                enabled: chatbot.isSelected,
+                enabled: chatbot.isActive,
                 id: chatbot.id,
             }
         }));
@@ -37,7 +37,7 @@ export function MyDrawer() {
         setChats(chats.map(chat => {
             chat.chatBots = chat.chatBots.map(chatbot => {
                 if (chatbot.id === id) {
-                    chatbot.isSelected = isSelected;
+                    chatbot.isActive = isSelected;
                 }
                 return chatbot;
             });

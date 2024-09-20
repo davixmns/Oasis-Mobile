@@ -32,20 +32,25 @@ export interface OasisChatBotDetails {
     id: number;
     oasisChatId: number;
     chatbotEnum: ChatbotEnum;
-    isSelected: boolean;
+    isActive: boolean;
     threadId: string;
+}
+
+export interface ChatBotMessage {
+    message: string;
+    chatBotEnum: ChatbotEnum;
+}
+
+export interface ChatBotOptionToChoose {
+    isActive: boolean;
+    message: ChatBotMessage;
 }
 
 export interface OasisMessage {
     id?: number;
     oasisChatId: number;
     message: string;
-    from: ChatbotEnum;
+    chatBotEnum: ChatbotEnum;
     createdAt?: string;
     isSaved?: boolean;
-}
-
-export interface ChatBotOption {
-    message: OasisMessage;
-    isActive: boolean;
 }

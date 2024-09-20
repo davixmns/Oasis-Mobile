@@ -1,7 +1,3 @@
-import {ChatbotEnum, OasisUser} from "../interfaces/interfaces";
-import * as Haptics from 'expo-haptics';
-export const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-
 export const backgroundColors = [
     'rgba(0, 0, 255, 1)', // Blue
     'rgba(75, 0, 130, 1)', // Indigo
@@ -37,39 +33,3 @@ export const textColors = [
     'rgba(0, 255, 255, 1)', // Cyan for Purple
     'rgba(128, 0, 0, 1)'  // Maroon for Lime
 ];
-
-export function verifyEmail(email: string) {
-    return emailRegex.test(email)
-}
-
-export function verifyUser(user: OasisUser) {
-    let array = []
-    user.name.length > 3 ? array.push(true) : array.push(false)
-    verifyEmail(user.email) ? array.push(true) : array.push(false)
-    user.password?.length! > 7  ? array.push(true) : array.push(false)
-    return array;
-}
-
-export function lowVibration() {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-}
-
-export function mediumVibration() {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium)
-}
-
-
-export const ChatBotOptions: Record<ChatbotEnum, { name: string, image: any }> = {
-    [ChatbotEnum.User]: {
-        name: 'User',
-        image: require('../assets/chatGptLogo.png'),
-    },
-    [ChatbotEnum.ChatGPT]: {
-        name: 'ChatGPT',
-        image: require('../assets/chatGptLogo.png'),
-    },
-    [ChatbotEnum.Gemini]: {
-        name: 'Gemini',
-        image: require('../assets/geminiLogo.png'),
-    },
-};

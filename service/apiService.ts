@@ -13,7 +13,7 @@ api.interceptors.response.use(
         if(response.headers['x-new-tokens'] === 'true') {
             const newAccessToken = response.headers['x-new-access-token'];
             const newRefreshToken = response.headers['x-new-refresh-token'];
-            await setTokens(newAccessToken, newRefreshToken);
+            await saveTokensOnStorage(newAccessToken, newRefreshToken);
             console.log("🔑 Novos tokens salvos")
         }
         return response;
@@ -37,7 +37,7 @@ api.interceptors.response.use(
     }
 );
 
-async function setTokens(accessToken: string, refreshToken: string) {
+export async function saveTokensOnStorage(accessToken: string, refreshToken: string) {
     await AsyncStorage.setItem('@oasis-accessToken', accessToken);
     await AsyncStorage.setItem('@oasis-refreshToken', refreshToken);
 }
@@ -99,12 +99,12 @@ export async function loadChatMessagesService(oasisChatId: number) {
     });
 }
 
-export async function sendFirstMessageService(userMessage: string, chatbotEnums: number[]) {
+export async function sendFirstMessageService(userMessage: string, selectedChatBots: ChatbotEnum[]) {
     const {accessToken, refreshToken} = await getTokens();
 
-    return await api.post("/Chat/SendFirstMessage", {
+    return await api.post("/Chat/StartConversation", {
         Message: userMessage,
-        ChatbotEnums: chatbotEnums
+        ChatbotEnums: selectedChatBots
     }, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -127,7 +127,8 @@ export async function saveChatbotMessageService(chatbotMessage: OasisMessage) {
 export async function sendMessageToChatService(oasisChatId: number, message: string, chatbotEnums: ChatbotEnum[]) {
     const {accessToken, refreshToken} = await getTokens();
 
-    return await api.post("/Chat/SendMessage/" + oasisChatId, {
+    return await api.post("/Chat/ContinueConversation",{
+        OasisChatId: oasisChatId,
         Message: message,
         ChatbotEnums: chatbotEnums
     }, {

@@ -1,26 +1,25 @@
-import {OasisMessage} from "../interfaces/interfaces";
+import {ChatBotOptionToChoose} from "../interfaces/interfaces";
 import {Dimensions, ScrollView, TouchableOpacity} from "react-native";
 import styled from "styled-components/native";
-
-import {ChatBotOptions} from "../utils/utils";
+import {ChatBotDicionary} from "../utils/ChatBotDicionary";
 
 interface ChatbotOptionCardProps {
-    oasisMessage: OasisMessage
-    isActive: boolean,
+    chatBotOption: ChatBotOptionToChoose
     toggle: () => void
 }
 
 const width = Dimensions.get('window').width
 
-export function ChatbotOptionCard({oasisMessage, isActive, toggle}: ChatbotOptionCardProps) {
-    const shouldScroll = !oasisMessage.isSaved && oasisMessage.message.length > 700
-    const option = ChatBotOptions[oasisMessage.from]
+export function ChatbotOptionCard({chatBotOption, toggle}: ChatbotOptionCardProps) {
+    const shouldScroll = chatBotOption.message.message.length > 700
+
+    const chatBotData = ChatBotDicionary[chatBotOption.message.chatBotEnum]
 
     return (
-        <OptionContainer isActive={isActive!}>
+        <OptionContainer isActive={chatBotOption.isActive}>
             <Header>
-                <FromImage source={option.image}/>
-                <FromName>{option.name}</FromName>
+                <FromImage source={chatBotData.image}/>
+                <FromName>{chatBotData.name}</FromName>
             </Header>
             <OptionMessageContent shouldScroll={shouldScroll}>
                 {shouldScroll ? (
@@ -29,12 +28,12 @@ export function ChatbotOptionCard({oasisMessage, isActive, toggle}: ChatbotOptio
                         showsVerticalScrollIndicator={true}
                     >
                         <TouchableOpacity onPress={toggle} activeOpacity={1}>
-                            <Message>{oasisMessage.message}</Message>
+                            <Message>{chatBotOption.message.message}</Message>
                         </TouchableOpacity>
                     </ScrollView>
                 ) : (
                     <TouchableOpacity onPress={toggle} activeOpacity={1}>
-                        <Message>{oasisMessage.message}</Message>
+                        <Message>{chatBotOption.message.message}</Message>
                     </TouchableOpacity>
                 )}
             </OptionMessageContent>

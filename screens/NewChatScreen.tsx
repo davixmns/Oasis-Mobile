@@ -1,20 +1,10 @@
 import {useState} from "react";
 import {
-    FlatList,
-    Image,
-    Keyboard,
-    KeyboardAvoidingView,
-    Platform,
-    SafeAreaView,
-    Text,
-    TouchableWithoutFeedback,
-    View
+    Image, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, TouchableWithoutFeedback,
 } from "react-native";
 import ChatInput from "../components/ChatInput";
 import styled from "styled-components/native";
 import {useChatContext} from "../contexts/ChatContext";
-import {OasisChat, OasisMessage} from "../interfaces/interfaces";
-import {useNavigation} from "@react-navigation/native";
 
 export function NewChatScreen() {
     const {createNewChat} = useChatContext();

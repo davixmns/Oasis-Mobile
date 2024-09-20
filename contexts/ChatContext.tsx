@@ -14,7 +14,7 @@ interface ChatContextType {
     chats: OasisChat[];
     setChats: (chats: OasisChat[]) => void;
     createNewChat: (fisrtUserMessage: string) => Promise<void>;
-    sendFirstMessage: (userMessage: string) => Promise<any>;
+    sendFirstMessage: (userMessage: string, selectedChatBots: ChatbotEnum[]) => Promise<OasisMessage[]>;
     saveChatbotMessage: (chatbotMessage: OasisMessage) => Promise<void>;
     sendMessageToChat: (oasisChatId: number, message: string) => Promise<any>;
 }
@@ -63,7 +63,7 @@ export function ChatProvider({children}: ProviderProps) {
         const newChat: OasisChat = {
             messages: [
                 {
-                    from: ChatbotEnum.User,
+                    chatBotEnum: ChatbotEnum.User,
                     message: fisrtUserMessage,
                     oasisChatId: randomChatId,
                     id: 1,
@@ -82,14 +82,14 @@ export function ChatProvider({children}: ProviderProps) {
                     id: 1,
                     oasisChatId: randomChatId,
                     chatbotEnum: ChatbotEnum.ChatGPT,
-                    isSelected: true,
+                    isActive: true,
                     threadId: ""
                 },
                 {
                     id: 1,
                     oasisChatId: randomChatId,
                     chatbotEnum: ChatbotEnum.Gemini,
-                    isSelected: true,
+                    isActive: true,
                     threadId: ""
                 }
             ]
@@ -99,11 +99,11 @@ export function ChatProvider({children}: ProviderProps) {
         navigation.navigate(newChat.title, {chatData: newChat});
     }
 
-    async function sendFirstMessage(userMessage: string) {
-        return await sendFirstMessageService(userMessage, [ChatbotEnum.ChatGPT, ChatbotEnum.Gemini])
+    async function sendFirstMessage(userMessage: string, selectedChatBots: ChatbotEnum[]) {
+        return await sendFirstMessageService(userMessage, selectedChatBots)
             .then((response) => {
                 console.log("✅ Respostas recebidas")
-                return response.data.data;
+                return response.data;
             })
             .catch((error) => {
                 if (error.response) {
