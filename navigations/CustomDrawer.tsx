@@ -7,15 +7,21 @@ import {ChatBotSelector} from "../components/ChatBotSelector";
 import CustomDrawerContent from "./CustomDrawerContent";
 import {useChatContext} from "../contexts/ChatContext";
 import {NewChatScreen} from "../screens/NewChatScreen";
-import {Image} from "react-native";
+import {Image, Keyboard, TouchableOpacity} from "react-native";
+
 // @ts-ignore
 import OasisIcon from '../assets/oasis_icon.png';
 import {ChatbotEnum, OasisChatBotDetails} from "../interfaces/interfaces";
 import {updateChatBotDetailsService} from "../service/apiService";
+import {DrawerActions, useNavigation} from "@react-navigation/native";
+
+// @ts-ignore
+import menu from '../assets/menu2.png';
 
 const Drawer = createDrawerNavigator();
 
-export function MyDrawer() {
+export function CustomDrawer() {
+    const navigation = useNavigation();
     const {chats, setChats} = useChatContext();
 
     const [selectedChatbots, setSelectedChatbots] = useState([
@@ -59,6 +65,16 @@ export function MyDrawer() {
                     // @ts-ignore
                     screenOptions={{
                         ...drawerScreenOptions,
+                        headerLeft:() =>(
+                            <TouchableOpacity
+                                onPress={() =>{
+                                    Keyboard.dismiss();
+                                    navigation.dispatch(DrawerActions.openDrawer());
+                                }}
+                            >
+                                <Image source={menu} style={{width: 25, height: 25, marginLeft: 10}}/>
+                            </TouchableOpacity>
+                        ),
                         headerRight: () => (
                             <ChatBotSelector
                                 selectedChatbots={selectedChatbots}
@@ -134,4 +150,3 @@ export const newChatScreenOptions = {
     ),
     drawerActiveBackgroundColor: '#000',
 }
-

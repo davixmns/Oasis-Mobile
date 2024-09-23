@@ -2,7 +2,7 @@ import {CardStyleInterpolators, createStackNavigator} from '@react-navigation/st
 import {LoginScreen} from "../screens/LoginScreen";
 import {useAuthContext} from "../contexts/AuthContext";
 import {SplashScreen} from "../screens/SplashScreen";
-import {MyDrawer} from "./MyDrawer";
+import {CustomDrawer} from "./CustomDrawer";
 import SettingsScreen from "../screens/SettingsScreen";
 import {TouchableOpacity, View} from "react-native";
 import {FontAwesome6} from "@expo/vector-icons";
@@ -27,7 +27,7 @@ export function AuthStack() {
                 <>
                     <Stack.Screen
                         name={'MyDrawer'}
-                        component={MyDrawer}
+                        component={CustomDrawer}
                         //cor de fundo da transicao é preta
                         options={{
                             cardStyleInterpolator: CardStyleInterpolators.forVerticalIOS,

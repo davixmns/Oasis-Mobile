@@ -24,7 +24,6 @@ const ChatbotMessageContainer = styled.View`
     width: 90%;
     padding: 10px;
     margin-left: 3px;
-    margin-bottom: 13px;
 `
 
 const Message = styled.Text`

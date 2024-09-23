@@ -22,6 +22,7 @@ import {loadChatMessagesService} from "../service/apiService";
 import {MessagesLoadingSkeleton} from "../components/MessagesLoadingSkeleton";
 import MyVibration from "../utils/MyVibration";
 import {ImpactFeedbackStyle} from "expo-haptics";
+import {CustomKeyboardAvoidingView, CustomSafeAreaView} from "../styles/GlobalStyles";
 
 const {width, height} = Dimensions.get('window');
 
@@ -275,12 +276,7 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
 
     return (
         <CustomSafeAreaView>
-            <KeyboardAvoidingView
-                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                style={{flex: 1}}
-                keyboardVerticalOffset={Platform.OS === 'ios' ? (height < 850 ? 70 : 100) : 0}
-            >
-                <FlexOneContainer>
+            <CustomKeyboardAvoidingView>
                     {loadingMessages ? (
                         <View style={{height: '100%', width: '100%', justifyContent: 'flex-end'}}>
                             <MessagesLoadingSkeleton/>
@@ -331,20 +327,11 @@ export function ChatScreen({chatData, changeSelectedChatBots}: ChatScreenProps) 
                         </Animatable.View>
                     )}
 
-                </FlexOneContainer>
                 {renderBottomContent()}
-            </KeyboardAvoidingView>
+            </CustomKeyboardAvoidingView>
         </CustomSafeAreaView>
     );
 }
-
-const CustomSafeAreaView = styled(SafeAreaView)`
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex: 1;
-    background-color: #000;
-`
 
 const ChooseText = styled.Text`
     font-size: 20px;

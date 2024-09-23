@@ -1,13 +1,13 @@
 import styled from "styled-components/native";
 
-export function MessageTipCard({tipMessage}: {tipMessage: string}) {
+export function MessageTipCard({tipMessage, onPress}: {tipMessage: string, onPress: () => void}) {
     const words = tipMessage.split(' ');
 
     return (
-        <TipContainer>
+        <TipContainer onPress={onPress}>
             <TipContent>
-                <TipBold>{words.slice(0, 3)}</TipBold>
-                <TipText>{words.slice(3, words.length)}</TipText>
+                <TipBold>{words.slice(0, 3).join(' ')}</TipBold>
+                <TipText>{words.slice(3, words.length).join(' ')}</TipText>
             </TipContent>
         </TipContainer>
     );
@@ -17,22 +17,18 @@ export const TipContainer = styled.TouchableOpacity`
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 200px;
     height: 70px;
-    background-color: #303030;
-    margin-right: 10px;
-    margin-left: 10px;
-    border-radius: 10px;
+    max-width: 280px;
+    min-width: 150px;
+    background-color: #1e1e1e;
+    margin-right: 5px;
+    margin-left: 5px;
+    border-radius: 18px;
 `
-
-    //espaçamento de 10px
 export const TipContent = styled.View`
-    width: calc(100% - 20px);
-    height: calc(100% - 30px);
-    background-color: green;
-    
-    text-overflow: ellipsis;
-    
+    height: 40px;
+    margin-left: 20px;
+    margin-right: 20px;
 `
 
 export const TipBold = styled.Text`
@@ -43,6 +39,10 @@ export const TipBold = styled.Text`
 
 export const TipText = styled.Text`
     font-size: 16px;
-    color: #fff;
+    color: #949494;
     font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow-ellipsis: ellipsis;
 `

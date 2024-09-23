@@ -1,34 +1,26 @@
 import {useState} from "react";
-import {
-    FlatList,
-    Image, Keyboard, KeyboardAvoidingView, Platform, SafeAreaView, TouchableWithoutFeedback, View,
-} from "react-native";
+import {FlatList, Image, Keyboard, TouchableWithoutFeedback,} from "react-native";
 import ChatInput from "../components/ChatInput";
 import styled from "styled-components/native";
 import {useChatContext} from "../contexts/ChatContext";
 import {getRandomMessageTips} from "../utils/MessageTipsTexts";
 import {MessageTipCard} from "../components/MessageTipCard";
+import {CustomKeyboardAvoidingView, CustomSafeAreaView, CustomTouchableWithoutFeedback} from "../styles/GlobalStyles";
 
 export function NewChatScreen() {
     const {createNewChat} = useChatContext();
     const [userMessage, setUserMessage] = useState('');
-    const messageTipos = getRandomMessageTips(3);
 
-    async function handleSendFirsMessage() {
-        if (userMessage === '') return;
-        let msg = userMessage;
+    async function handleSendFirstMessage(message: string) {
+        if (message === '') return;
         setUserMessage('')
-        await createNewChat(msg)
+        await createNewChat(message)
     }
 
     return (
-        <SafeAreaView style={{flex: 1, backgroundColor: '#000'}}>
-            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                <KeyboardAvoidingView
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                    style={{flex: 1}}
-                    keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 0}
-                >
+        <CustomSafeAreaView>
+            <CustomTouchableWithoutFeedback>
+                <CustomKeyboardAvoidingView>
                     <ChatContent>
                         <LogoContainer>
                             <Image
@@ -39,14 +31,16 @@ export function NewChatScreen() {
                     </ChatContent>
                     <BottomContainer>
                         <FlatList
-                            data={messageTipos}
+                            data={getRandomMessageTips(5)}
                             renderItem={({item}) => (
                                 <MessageTipCard
                                     tipMessage={item}
+                                    onPress={() => handleSendFirstMessage(item)}
                                 />
                             )}
-                            style={{width: '100%', height: 100, backgroundColor: 'red'}}
+                            style={{width: '100%'}}
                             horizontal={true}
+                            showsHorizontalScrollIndicator={false}
                             keyExtractor={(item, index) => index.toString()}
                         />
                         <ChatInput
@@ -58,12 +52,12 @@ export function NewChatScreen() {
                                 }
                                 setUserMessage(text);
                             }}
-                            onPress={handleSendFirsMessage}
+                            onPress={() => handleSendFirstMessage(userMessage)}
                         />
                     </BottomContainer>
-                </KeyboardAvoidingView>
-            </TouchableWithoutFeedback>
-        </SafeAreaView>
+                </CustomKeyboardAvoidingView>
+            </CustomTouchableWithoutFeedback>
+        </CustomSafeAreaView>
     );
 }
 
