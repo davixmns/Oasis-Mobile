@@ -6,11 +6,6 @@ export interface MyColorScheme {
     secondaryText: string;
 }
 
-export const Themes = [
-    "light",
-    "dark",
-]
-
 export const darkColorScheme: MyColorScheme = {
     primaryBackground: '#000',
     secondaryBackground: '#1e1e1e',

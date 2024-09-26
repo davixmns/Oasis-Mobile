@@ -13,7 +13,6 @@ export const Content = styled.View`
   width: 90%;
   height: 80%;;
   align-items: center;
-  //justify-content: center;
 `
 
 export const ScreenTitle = styled.Text`

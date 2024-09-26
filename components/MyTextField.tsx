@@ -50,7 +50,7 @@ const Container = styled.View`
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: black;
+  background-color: transparent;
   border: 1px solid gray;
   justify-content: flex-start;
   gap: 12px;

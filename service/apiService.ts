@@ -1,12 +1,12 @@
 import axios from "axios";
-import {ChatbotEnum, OasisMessage, OasisUser} from "../interfaces/interfaces";
+import {OasisMessage, OasisUser} from "../interfaces/interfaces";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {useNavigation, useRoute} from "@react-navigation/native";
 import {Alert} from "react-native";
 
 const api = axios.create({
-    baseURL: "http://0.0.0.0:5013",
-    // baseURL: "http://10.50.185.139:5013",
+    // baseURL: "http://0.0.0.0:5013",
+    baseURL: "http://10.50.185.150:5013",
 });
 
 api.interceptors.response.use(

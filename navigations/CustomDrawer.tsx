@@ -9,7 +9,6 @@ import {useChatContext} from "../contexts/ChatContext";
 import {NewChatScreen} from "../screens/NewChatScreen";
 import {Image, Keyboard, TouchableOpacity} from "react-native";
 
-import OasisIcon from "../assets/oasis_icon.png";
 import {ChatbotEnum, OasisChatBotDetails} from "../interfaces/interfaces";
 import {updateChatBotDetailsService} from "../service/apiService";
 import {DrawerActions, useNavigation} from "@react-navigation/native";
@@ -17,12 +16,14 @@ import {DrawerActions, useNavigation} from "@react-navigation/native";
 import menu from "../assets/menu_icon.png";
 import MyVibration from "../utils/MyVibration";
 import {ImpactFeedbackStyle} from "expo-haptics";
+import {useColorSchemeContext} from "../contexts/ColorSchemeContext";
 
 const Drawer = createDrawerNavigator();
 
 export function CustomDrawer() {
     const navigation = useNavigation();
     const {chats, focusedScreen, setChats} = useChatContext();
+    const {colorScheme} = useColorSchemeContext();
 
     //Switches que se modificam de acordo com o chat selecionado
     const [selectedChatbots, setSelectedChatbots] = useState([
@@ -67,7 +68,18 @@ export function CustomDrawer() {
                     drawerContent={(props) => <CustomDrawerContent {...props} />}
                     // @ts-ignore
                     screenOptions={{
-                        ...drawerScreenOptions,
+                        headerStyle: {
+                            backgroundColor: colorScheme.primaryBackground,
+                            borderBottomWidth: 0,
+                            elevation: 0,
+                            shadowOpacity: 0,
+                        },
+                        drawerStyle: {
+                            backgroundColor: colorScheme.primaryBackground,
+                        },
+                        headerTintColor: colorScheme.primaryText,
+                        overlayColor: "rgba(123, 123, 123, 0.2)",
+
                         headerLeft: () => (
                             <TouchableOpacity
                                 onPress={() => {
@@ -76,7 +88,11 @@ export function CustomDrawer() {
                                     MyVibration.vibrateDevice(ImpactFeedbackStyle.Medium);
                                 }}
                             >
-                                <Image source={menu} style={{width: 25, height: 25, marginLeft: 10}}/>
+                                <Image
+                                    source={menu}
+                                    tintColor={colorScheme.primaryText}
+                                    style={{width: 25, height: 25, marginLeft: 10}}
+                                />
                             </TouchableOpacity>
                         ),
                         headerRight: () => (
@@ -94,7 +110,6 @@ export function CustomDrawer() {
                     <Drawer.Screen
                         name="Oasis"
                         component={NewChatScreen}
-                        options={newChatScreenOptions}
                     />
                     {chats.map((chat) => (
                         <Drawer.Screen
@@ -114,47 +129,3 @@ export function CustomDrawer() {
         </PaperProvider>
     );
 }
-
-export const drawerScreenOptions = {
-    headerStyle: {
-        backgroundColor: "#000",
-        borderBottomWidth: 0,
-        elevation: 0,
-        shadowOpacity: 0,
-    },
-    drawerStyle: {
-        backgroundColor: "#000",
-    },
-    headerTintColor: "#fff", // Cor do texto e dos ícones do header
-    overlayColor: "rgba(123, 123, 123, 0.2)",
-    drawerActiveBackgroundColor: "rgba(123, 123, 123, 0.3)",
-    drawerInactiveTintColor: "#fff",
-    drawerItemStyle: {
-        borderRadius: 12,
-    },
-    drawerLabelStyle: {
-        fontWeight: "600",
-        fontSize: 16,
-    },
-};
-
-export const newChatScreenOptions = {
-    drawerItemStyle: {
-        borderBottomWidth: 1,
-        borderBottomColor: "rgba(255, 255, 255, 0.3)",
-    },
-    drawerLabelStyle: {
-        fontSize: 20,
-    },
-    drawerIcon: () => (
-        <Image
-            source={OasisIcon}
-            style={{
-                width: 40,
-                height: 30,
-                marginRight: -25,
-            }}
-        />
-    ),
-    drawerActiveBackgroundColor: "#000",
-};

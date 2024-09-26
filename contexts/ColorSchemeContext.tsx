@@ -1,9 +1,9 @@
 import {ProviderProps} from "../interfaces/interfaces";
-import {createContext, useContext, useEffect, useState} from "react";
-import {useColorScheme} from "react-native";
+import {createContext, useCallback, useContext, useEffect, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {darkColorScheme, lightColorScheme, MyColorScheme} from "../styles/Colors";
 import {ThemeProvider} from "styled-components";
+import {useColorScheme} from "react-native";
 
 interface ColorSchemeContextType {
     colorScheme: MyColorScheme
@@ -19,27 +19,31 @@ export function useColorSchemeContext() {
 
 export default function ColorSchemeProvider({children}: ProviderProps) {
     const deviceColorScheme = useColorScheme();
-    const [colorScheme, setColorScheme] = useState<string>("light");
+    const [colorScheme, setColorScheme] = useState<string>("system");
 
-    async function getDeviceColorScheme() {
+    const themes: Record<string, MyColorScheme> = {
+        'system': deviceColorScheme === 'dark' ? darkColorScheme : lightColorScheme,
+        'light': lightColorScheme,
+        'dark': darkColorScheme
+    }
+
+    const theme = themes[colorScheme]
+
+    useEffect(() => {
+        getStorageColorScheme()
+    }, [deviceColorScheme]);
+
+    async function getStorageColorScheme() {
         const savedColorScheme = await AsyncStorage.getItem("@oasis-colorScheme")
-        if (savedColorScheme) {
-            setColorScheme(savedColorScheme)
-        } else {
-            setColorScheme(deviceColorScheme?.toString() || "light")
+        if(savedColorScheme !== 'system'){
+            setColorScheme(savedColorScheme || "light")
         }
     }
 
     async function changeColorScheme(newColorScheme: string) {
-        await AsyncStorage.setItem("@oasis-colorScheme", newColorScheme)
         setColorScheme(newColorScheme)
+        await AsyncStorage.setItem("@oasis-colorScheme", newColorScheme)
     }
-
-    useEffect(() => {
-        getDeviceColorScheme()
-    }, []);
-
-    const theme: MyColorScheme = colorScheme === "light" ? lightColorScheme : darkColorScheme;
 
     return (
         <ColorSchemeContext.Provider value={{theme: colorScheme, colorScheme: theme, changeColorScheme}}>

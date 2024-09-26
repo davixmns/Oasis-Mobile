@@ -4,11 +4,10 @@ import {Alert, Linking, ScrollView, View} from "react-native";
 import styled from "styled-components/native";
 import {FontAwesome6} from "@expo/vector-icons";
 import {useTranslation} from "react-i18next";
-import i18n, {changeLanguage, supportedLanguages} from "../translation/i18n";
+import i18n, {changeLanguage} from "../translation/i18n";
 import {CustomMenu} from "../components/CustomMenu";
 import {PaperProvider} from "react-native-paper";
 import {useColorSchemeContext} from "../contexts/ColorSchemeContext";
-import {Themes} from "../styles/Colors";
 
 export default function SettingsScreen() {
     const {theme, changeColorScheme} = useColorSchemeContext();
@@ -17,13 +16,18 @@ export default function SettingsScreen() {
     const goToLinkendin = () => Linking.openURL('https://www.linkedin.com/in/davi-ximenes-93314a20b/')
     const goToGithub = () => Linking.openURL('https://github.com/davixmns')
     const goToEmail = () => Linking.openURL('mailto:davixmnsl@gmail.com')
-    const languageDicionary: { [key: string]: string } = Object.keys(supportedLanguages).reduce((obj, key) => {
-        // @ts-ignore
-        obj[t(supportedLanguages[key])] = key;
-        return obj;
-    }, {});
-    const languageOptions = Object.keys(supportedLanguages).map(lang => t(supportedLanguages[lang]));
-    const selectedLanguage = t(supportedLanguages[i18n.language]);
+    const languageOptions = [
+        { code: 'en', label: t('english') },
+        { code: 'pt', label: t('portuguese') },
+        { code: 'es', label: t('spanish') },
+    ];
+    const themeOptions = [
+        { code: 'system', label: t('system') },
+        { code: 'light', label: t('light') },
+        { code: 'dark', label: t('dark') },
+    ];
+    const selectedLanguage = languageOptions.find(lang => lang.code === i18n.language)?.label || t('english')
+    const selectedTheme = themeOptions.find(t => t.code === theme)?.label || t('system')
 
     function handleSignOut() {
         Alert.alert(t('sign_out_confirmation'), '', [
@@ -37,7 +41,6 @@ export default function SettingsScreen() {
             }
         ])
     }
-
 
     return (
         <PaperProvider>
@@ -79,17 +82,23 @@ export default function SettingsScreen() {
                                 </OptionBoxContent>
 
                                 <CustomMenu
-                                    selectedOption={theme}
-                                    options={Themes}
+                                    selectedOption={selectedTheme}
+                                    options={themeOptions.map(option => option.label)}
                                     width={200}
-                                    selectOption={(option) => changeColorScheme(option)}
+                                    selectOption={async (optionLabel) => {
+                                        const selectedOption = themeOptions.find(option => option.label === optionLabel);
+                                        if (selectedOption) {
+                                            await changeColorScheme(selectedOption.code);
+                                        }
+                                    }}
                                     anchor={
                                         <LanguageContainer>
-                                            <OptionUserData>{theme}</OptionUserData>
+                                            <OptionUserData>{selectedTheme}</OptionUserData>
                                             <FontAwesome6 name={'chevron-down'} size={15} color={'#fff'}/>
                                         </LanguageContainer>
                                     }
                                 />
+
 
                             </OptionBox>
                             <OptionBox>
@@ -99,9 +108,14 @@ export default function SettingsScreen() {
                                 </OptionBoxContent>
                                 <CustomMenu
                                     selectedOption={selectedLanguage}
-                                    options={languageOptions}
+                                    options={languageOptions.map(option => option.label)}
                                     width={240}
-                                    selectOption={(option) => changeLanguage(languageDicionary[option])}
+                                    selectOption={(optionLabel) => {
+                                        const selectedOption = languageOptions.find(option => option.label === optionLabel);
+                                        if (selectedOption) {
+                                            changeLanguage(selectedOption.code);
+                                        }
+                                    }}
                                     anchor={
                                         <LanguageContainer>
                                             <OptionUserData>{selectedLanguage}</OptionUserData>
@@ -109,6 +123,7 @@ export default function SettingsScreen() {
                                         </LanguageContainer>
                                     }
                                 />
+
                             </OptionBox>
                         </OptionsContainer>
 

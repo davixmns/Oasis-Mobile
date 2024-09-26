@@ -56,11 +56,12 @@ export default function ChatInput({message, setMessage, onPress, onFocus, isLoad
 }
 
 const Container = styled.View`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 50px;background-color: green;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 50px;
+    background-color: green;
 `;
 
 const Content = styled.View`
@@ -70,6 +71,7 @@ const Content = styled.View`
     flex-direction: row;
     gap: 10px;
     width: 90%;
+    background-color: red;
 `;
 
 const InputContainer = styled.View`
@@ -83,25 +85,26 @@ const InputContainer = styled.View`
 `;
 
 const Input = styled.TextInput`
-  display: flex;
-  font-size: 16px;
-  height: 80%;
-  color: ${props => props.theme.primaryText};
+    display: flex;
+    font-size: 16px;
+    height: 80%;
+    background-color: aqua;
+    color: ${props => props.theme.primaryText};
 `;
 
 const SendButton = styled.TouchableOpacity`
-  height: 35px;
-  width: 35px;
-  align-items: center;
-  justify-content: center;
-  background-color: ${props => props.theme.primaryText};
-  border-radius: 20px;
+    height: 35px;
+    width: 35px;
+    align-items: center;
+    justify-content: center;
+    background-color: ${props => props.theme.primaryText};
+    border-radius: 20px;
 `;
 
 const LoadingContainer = styled.View`
-  display: flex;
-  width: 35px;
-  height: 35px;
-  align-items: center;
-  justify-content: center;
+    display: flex;
+    width: 35px;
+    height: 35px;
+    align-items: center;
+    justify-content: center;
 `

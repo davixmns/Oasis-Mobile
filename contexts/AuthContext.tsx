@@ -34,7 +34,6 @@ export function AuthProvider({children}: ProviderProps) {
     async function verifyAccessToken() {
         await verifyAccessTokenService()
             .then((response) => {
-                console.log("✅ Token valido")
                 setIsAuthenticated(true)
                 const userData = response.data.data
                 setUser(userData)

@@ -14,12 +14,6 @@ const resources = {
     es: {translation: es},
 };
 
-export const supportedLanguages: { [key: string]: string } = {
-    'en': 'english',
-    'pt': 'portuguese',
-    'es': 'spanish',
-}
-
 async function getDeviceLanguage() {
     const savedLanguage = await AsyncStorage.getItem('@oasis-language');
     return savedLanguage || Localization.getLocales()[0].languageCode || 'en'

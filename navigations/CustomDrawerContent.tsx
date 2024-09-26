@@ -10,6 +10,7 @@ import {useAuthContext} from "../contexts/AuthContext";
 import {FontAwesome6} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
 import {useTranslation} from "react-i18next";
+import {useColorSchemeContext} from "../contexts/ColorSchemeContext";
 
 function isSameDay(date1: Date, date2: Date): boolean {
     return (
@@ -56,6 +57,7 @@ export default function CustomDrawerContent(props: any) {
     const {chats} = useChatContext();
     const {user} = useAuthContext();
     const {t} = useTranslation()
+    const {colorScheme} = useColorSchemeContext();
     const currentRouteName = props.state.routes[props.state.index].name;
     const [groupedChats, setGroupedChats] = useState<{ [key: string]: OasisChat[] }>({
         today: [] as OasisChat[],
@@ -107,7 +109,10 @@ export default function CustomDrawerContent(props: any) {
                                                 props.navigation.navigate("Chat_" + chat.id)
                                             }
                                             labelStyle={[
-                                                styles.drawerLabelStyle,
+                                                {
+                                                    ...styles.drawerLabelStyle,
+                                                    color: colorScheme.primaryText,
+                                                },
                                                 isFocused && styles.activeLabelStyle,
                                             ]}
                                             style={[
@@ -135,7 +140,10 @@ export default function CustomDrawerContent(props: any) {
                                 name={"ellipsis-vertical"}
                                 size={20}
                                 color={"#fff"}
-                                style={styles.iconStyle}
+                                style={{
+                                    ...styles.iconStyle,
+                                    color: colorScheme.primaryText,
+                                }}
                             />
                         </>
                     )}
@@ -143,7 +151,10 @@ export default function CustomDrawerContent(props: any) {
                     // @ts-ignore
                     onPress={() => navigation.navigate("Settings")}
                     inactiveTintColor={"#fff"}
-                    labelStyle={styles.labelStyle}
+                    labelStyle={{
+                        ...styles.labelStyle,
+                        color: colorScheme.primaryText,
+                    }}
                     style={styles.drawerItemStyle}
                 />
             </ProfileContainer>
@@ -156,7 +167,6 @@ const styles = StyleSheet.create({
         borderRadius: 12,
     },
     drawerLabelStyle: {
-        color: "#fff",
         fontSize: 16,
     },
     activeItemStyle: {
