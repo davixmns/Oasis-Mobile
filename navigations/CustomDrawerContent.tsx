@@ -1,24 +1,128 @@
-import React from 'react';
-import {
-    DrawerContentScrollView, DrawerItem, DrawerItemList,
-} from '@react-navigation/drawer';
+import React, {useEffect, useRef, useState} from "react";
+import {View, Text, StyleSheet, Image} from "react-native";
+import {DrawerContentScrollView, DrawerItem} from "@react-navigation/drawer";
+import {useChatContext} from "../contexts/ChatContext";
+import styled from "styled-components/native";
+import {OasisChat} from "../interfaces/interfaces";
+import OasisIcon from "../assets/oasis_icon.png";
+import defaultPicture from "../assets/defaultPicture.jpeg";
 import {useAuthContext} from "../contexts/AuthContext";
-import {Image, View, StyleSheet} from "react-native";
-import {useNavigation} from "@react-navigation/native";
-// @ts-ignore
-import defaultPicture from '../assets/defaultPicture.jpeg'
 import {FontAwesome6} from "@expo/vector-icons";
+import {useNavigation} from "@react-navigation/native";
+import {useTranslation} from "react-i18next";
+
+function isSameDay(date1: Date, date2: Date): boolean {
+    return (
+        date1.getFullYear() === date2.getFullYear() &&
+        date1.getMonth() === date2.getMonth() &&
+        date1.getDate() === date2.getDate()
+    );
+}
+
+function groupChatsByUpdatedAt(chats: OasisChat[]) {
+    const today = new Date();
+    const yesterday = new Date();
+    yesterday.setDate(today.getDate() - 1);
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(today.getDate() - 7);
+    const threeMonthsAgo = new Date();
+    threeMonthsAgo.setMonth(today.getMonth() - 3);
+
+    const newGroupedChats: { [key: string]: OasisChat[] } = {
+        today: [],
+        yesterday: [],
+        previous_7_days: [],
+        previous_3_months: [],
+    };
+
+    chats.forEach((chat) => {
+        const chatDate = new Date(chat.updatedAt!);
+        if (isSameDay(chatDate, today)) {
+            newGroupedChats["today"].unshift(chat);
+        } else if (isSameDay(chatDate, yesterday)) {
+            newGroupedChats["yesterday"].unshift(chat);
+        } else if (chatDate >= sevenDaysAgo) {
+            newGroupedChats['previous_7_days'].unshift(chat);
+        } else if (chatDate >= threeMonthsAgo) {
+            newGroupedChats['previous_3_months'].unshift(chat);
+        }
+    });
+
+    return newGroupedChats;
+}
 
 export default function CustomDrawerContent(props: any) {
-    const {user} = useAuthContext();
     const navigation = useNavigation();
+    const {chats} = useChatContext();
+    const {user} = useAuthContext();
+    const {t} = useTranslation()
+    const currentRouteName = props.state.routes[props.state.index].name;
+    const [groupedChats, setGroupedChats] = useState<{ [key: string]: OasisChat[] }>({
+        today: [] as OasisChat[],
+        yesterday: [] as OasisChat[],
+        previous_7_days: [] as OasisChat[],
+        previous_3_months: [] as OasisChat[],
+    });
+
+    useEffect(() => {
+        if (chats.length > 0) {
+            setGroupedChats(groupChatsByUpdatedAt(chats));
+            console.log("🔁 Chats Agrupados");
+        }
+    }, [chats]);
 
     return (
-        <View style={{flex: 1}}>
-            <DrawerContentScrollView {...props}>
-                <DrawerItemList {...props}/>
+        <DrawerBox>
+            <DrawerItem
+                label={"Oasis"}
+                onPress={() => props.navigation.navigate("Oasis")}
+                style={{paddingTop: 50}}
+                labelStyle={styles.drawerLabelStyle}
+                icon={() => (
+                    <Image
+                        source={OasisIcon}
+                        style={{
+                            width: 40,
+                            height: 30,
+                            marginRight: -25,
+                        }}
+                    />
+                )}
+            />
+            <DrawerContentScrollView {...props} contentContainerStyle={{paddingTop: 'unset'}}>
+
+                {Object.keys(groupedChats).map(
+                    (label) =>
+                        groupedChats[label].length > 0 && (
+                            <View key={label}>
+                                <Line/>
+                                <TimeLabel>{t(label)}</TimeLabel>
+                                {groupedChats[label].map((chat) => {
+                                    const isFocused = "Chat_" + chat.id === currentRouteName;
+                                    return (
+                                        <DrawerItem
+                                            key={chat.id}
+                                            label={chat.title!}
+                                            onPress={() =>
+                                                props.navigation.navigate("Chat_" + chat.id)
+                                            }
+                                            labelStyle={[
+                                                styles.drawerLabelStyle,
+                                                isFocused && styles.activeLabelStyle,
+                                            ]}
+                                            style={[
+                                                styles.drawerItemStyle,
+                                                isFocused && styles.activeItemStyle,
+                                            ]}
+                                        />
+                                    );
+                                })}
+                            </View>
+                        )
+                )}
             </DrawerContentScrollView>
-            <View style={styles.profileContainer}>
+
+            <ProfileContainer>
                 <DrawerItem
                     icon={() => (
                         <>
@@ -30,55 +134,77 @@ export default function CustomDrawerContent(props: any) {
                             <FontAwesome6
                                 name={"ellipsis-vertical"}
                                 size={20}
-                                color={'#fff'}
+                                color={"#fff"}
                                 style={styles.iconStyle}
                             />
                         </>
                     )}
-                    label={user?.name ? user.name : 'usuário'}
+                    label={user?.name ? user.name : "usuário"}
                     // @ts-ignore
-                    onPress={() => navigation.navigate('Settings')}
-                    inactiveTintColor={'#fff'}
+                    onPress={() => navigation.navigate("Settings")}
+                    inactiveTintColor={"#fff"}
                     labelStyle={styles.labelStyle}
                     style={styles.drawerItemStyle}
                 />
-            </View>
-        </View>
+            </ProfileContainer>
+        </DrawerBox>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: 'red',
+    drawerItemStyle: {
+        borderRadius: 12,
     },
-    profileContainer: {
-        //@ts-ignore
-        position: 'fixed',
-        bottom: 0,
-        width: '100%',
-        marginBottom: 32,
+    drawerLabelStyle: {
+        color: "#fff",
+        fontSize: 16,
+    },
+    activeItemStyle: {
+        backgroundColor: "rgba(123, 123, 123, 0.3)",
+    },
+    activeLabelStyle: {
+        color: "#fff",
     },
     profileImage: {
         width: 35,
         height: 35,
-        borderRadius: 8
+        borderRadius: 8,
     },
     iconStyle: {
-        position: 'absolute',
+        position: "absolute",
         right: 11,
-        borderRadius: 50
+        borderRadius: 50,
     },
     labelStyle: {
         marginLeft: -16,
         fontSize: 16,
-        fontWeight: '600'
+        fontWeight: "600",
     },
-    drawerItemStyle: {
-        borderRadius: 12,
-    },
-    chatList: {
-        borderTopWidth: 1,
-        borderTopColor: '#fff',
-    }
 });
+
+const DrawerBox = styled.View`
+    flex: 1;
+`;
+
+const ProfileContainer = styled.View`
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    margin-bottom: 32px;
+`;
+
+const TimeLabel = styled.Text`
+    color: #949494;
+    margin-left: 16px;
+    margin-top: 16px;
+    font-size: 14px;
+`;
+
+const Line = styled.View`
+    width: 88%;
+    margin-left: 17px;
+    margin-right: 30px;
+    margin-top: 10px;
+    height: 1px;
+    background-color: rgba(123, 123, 123, 0.7);
+`;

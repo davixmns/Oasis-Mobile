@@ -3,6 +3,7 @@ import styled from "styled-components/native";
 export function MessageTipCard({tipMessage, onPress}: {tipMessage: string, onPress: () => void}) {
     const words = tipMessage.split(' ');
 
+
     return (
         <TipContainer onPress={onPress}>
             <TipContent>
@@ -18,9 +19,9 @@ export const TipContainer = styled.TouchableOpacity`
     justify-content: center;
     align-items: center;
     height: 70px;
-    max-width: 280px;
+    max-width: 320px;
     min-width: 150px;
-    background-color: #1e1e1e;
+    background-color: ${props => props.theme.secondaryBackground};
     margin-right: 5px;
     margin-left: 5px;
     border-radius: 18px;
@@ -33,13 +34,13 @@ export const TipContent = styled.View`
 
 export const TipBold = styled.Text`
     font-size: 16px;
-    color: #fff;
+    color: ${props => props.theme.primaryText};
     font-weight: bold;
 `
 
 export const TipText = styled.Text`
     font-size: 16px;
-    color: #949494;
+    color: ${props => props.theme.secondaryText};
     font-weight: 500;
     text-overflow: ellipsis;
     white-space: nowrap;

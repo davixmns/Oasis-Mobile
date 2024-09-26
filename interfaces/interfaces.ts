@@ -24,6 +24,8 @@ export interface OasisChat {
     chatGptThreadId: string;
     geminiThreadId?: string;
     isNewChat?: boolean;
+    createdAt?: string;
+    updatedAt?: string;
     messages: OasisMessage[];
     chatBots: OasisChatBotDetails[];
 }

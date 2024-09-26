@@ -7,7 +7,7 @@ const {height} = Dimensions.get('window')
 
 export const CustomSafeAreaView = styled(SafeAreaView)`
     flex: 1;
-    background-color: #000;
+    background-color: ${props => props.theme.primaryBackground};
 `
 
 export const CustomTouchableWithoutFeedback = styled(TouchableWithoutFeedback).attrs({
@@ -16,7 +16,7 @@ export const CustomTouchableWithoutFeedback = styled(TouchableWithoutFeedback).a
 
 export const CustomKeyboardAvoidingView = styled(KeyboardAvoidingView).attrs({
     behavior: Platform.OS === 'ios' ? 'padding' : 'height',
-    keyboardVerticalOffset: Platform.OS === 'ios' ? (height < 850 ? 70 : 115) : 0
+    keyboardVerticalOffset: Platform.OS === 'ios' ? (height < 650 ? 70 : 110) : 0
 })`
     flex: 1;
 `

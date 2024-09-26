@@ -2,6 +2,8 @@ import {useState} from "react";
 import {FontAwesome6} from "@expo/vector-icons";
 import styled from "styled-components/native";
 import {ActivityIndicator} from "react-native";
+import {useTranslation} from "react-i18next";
+import {useColorSchemeContext} from "../contexts/ColorSchemeContext";
 
 interface ChatInputProps {
     message: string,
@@ -13,6 +15,8 @@ interface ChatInputProps {
 
 export default function ChatInput({message, setMessage, onPress, onFocus, isLoading, ...props}: ChatInputProps) {
     const [height, setHeight] = useState(40);
+    const {t} = useTranslation();
+    const {colorScheme} = useColorSchemeContext();
 
     const handleContentSizeChange = (event: any) => {
         setHeight(event.nativeEvent.contentSize.height + 15);
@@ -27,7 +31,7 @@ export default function ChatInput({message, setMessage, onPress, onFocus, isLoad
                     <Input
                         onFocus={onFocus}
                         multiline
-                        placeholder="Write a message..."
+                        placeholder={t('write_message')}
                         value={message}
                         onChangeText={setMessage}
                         onContentSizeChange={handleContentSizeChange}
@@ -38,11 +42,11 @@ export default function ChatInput({message, setMessage, onPress, onFocus, isLoad
                 </InputContainer>
                 {isLoading ? (
                     <LoadingContainer>
-                        <ActivityIndicator size="large" color="#fff"/>
+                        <ActivityIndicator size={'small'} color={colorScheme.primaryText}/>
                     </LoadingContainer>
                 ) : (
                     <SendButton onPress={onPress}>
-                        <FontAwesome6 name={'arrow-up'} size={20} color={'#000'}/>
+                        <FontAwesome6 name={'arrow-up'} size={20} color={colorScheme.primaryBackground}/>
                     </SendButton>
                 )}
             </Content>
@@ -56,33 +60,33 @@ const Container = styled.View`
   align-items: center;
   justify-content: center;
   width: 100%;
-  padding-bottom: 10px;
-  padding-top: 10px;
+  height: 50px;background-color: green;
 `;
 
 const Content = styled.View`
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-direction: row;
-  width: 94%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row;
+    gap: 10px;
+    width: 90%;
 `;
 
 const InputContainer = styled.View`
-  flex-direction: row;
-  width: 87%;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid gray;
-  border-radius: 20px;
-  height: 40px;
+    flex-direction: row;
+    width: 87%;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    background-color: ${props => props.theme.secondaryBackground};
+    height: 40px;
 `;
 
 const Input = styled.TextInput`
   display: flex;
   font-size: 16px;
   height: 80%;
-  color: white;
+  color: ${props => props.theme.primaryText};
 `;
 
 const SendButton = styled.TouchableOpacity`
@@ -90,7 +94,7 @@ const SendButton = styled.TouchableOpacity`
   width: 35px;
   align-items: center;
   justify-content: center;
-  background-color: white;
+  background-color: ${props => props.theme.primaryText};
   border-radius: 20px;
 `;
 

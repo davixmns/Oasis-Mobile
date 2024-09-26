@@ -10,7 +10,7 @@ export function MessagesLoadingSkeleton() {
             highlightColor="#333333"   // Cor do destaque na animação
             speed={1000}               // Velocidade da animação
         >
-            <SkeletonPlaceholder.Item flexDirection="column" alignItems="flex-start" paddingHorizontal={15} marginTop={15} marginBottom={20} width={width}>
+            <SkeletonPlaceholder.Item flexDirection="column" alignItems="flex-start" paddingHorizontal={15} marginTop={15} marginBottom={5} width={width}>
                 <SkeletonPlaceholder.Item alignSelf="flex-end" marginBottom={10}>
                     <SkeletonPlaceholder.Item
                         width={60}

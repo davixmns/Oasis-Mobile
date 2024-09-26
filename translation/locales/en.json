@@ -1,8 +1,41 @@
-export function getRandomMessageTips(n: number) {
-    return messageTipsTexts.sort(() => Math.random() - Math.random()).slice(0, n);
-}
+{
+  "oasis_description": "Exploring new frontiers with AI",
+  "login": "Login",
+  "logout": "Logout",
+  "name": "Name",
+  "email": "Email",
+  "password": "Password",
+  "register": "Register",
+  "register_description": "Just a few fields to start chatting",
+  "register_success": "Account created successfully",
+  "register_error": "Error creating account",
+  "today": "Today",
+  "yesterday": "Yesterday",
+  "previous_7_days": "Previous 7 days",
+  "previous_3_months": "Previous 3 months",
+  "account": "Account",
+  "user_name": "Username",
+  "subscription": "Subscription",
+  "free_plan": "Free plan",
+  "app": "App",
+  "color_scheme": "Color scheme",
+  "language": "Language",
+  "dark": "Dark",
+  "light": "Light",
+  "system": "System",
+  "english": "English",
+  "portuguese": "Portuguese",
+  "spanish": "Spanish",
+  "developer": "Developer",
+  "software_engineer": "Software Engineer",
+  "sign_out": "Sign Out",
+  "write_message": "Write a message...",
+  "cancel": "Cancel",
+  "sign_out_confirmation": "Do you really want to sign out?",
+  "yes": "Yes",
+  "settings": "Settings",
 
-export const messageTipsTexts: string[] = [
+  "message_tips": [
     "Tell me a joke about robots.",
     "What's the meaning of life?",
     "Explain quantum physics in simple terms.",
@@ -284,4 +317,5 @@ export const messageTipsTexts: string[] = [
     "What's the importance of goal setting?",
     "How do I improve my teamwork skills?",
     "Explain the basics of environmental science."
-]
+  ]
+}

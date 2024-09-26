@@ -14,6 +14,7 @@ import {useAuthContext} from "../contexts/AuthContext";
 import {OasisUser} from "../interfaces/interfaces";
 import {backgroundColors, textColors} from "../utils/LoginBgColors";
 import {verifyEmail, verifyUser} from "../utils/Utils";
+import {useTranslation} from "react-i18next";
 
 const {height} = Dimensions.get('window');
 
@@ -44,6 +45,8 @@ export function LoginScreen() {
     const [registerPasswordIsCorrect, setRegisterPasswordIsCorrect] = useState<boolean | null>(null);
     const signUpEmailRef = useRef<TextInput>(null);
     const signUpPasswordRef = useRef<TextInput>(null);
+
+    const {t} = useTranslation();
 
     useEffect(() => {
         Animated.loop(
@@ -174,11 +177,11 @@ export function LoginScreen() {
         return (
             <Animatable.View animation={'fadeIn'} duration={1000} style={styles.bottomSheetContent} key={activeScreen}>
                 <RegisterTitleContainer>
-                    <ScreenTitle>Sign In</ScreenTitle>
+                    <ScreenTitle>{t('login')}</ScreenTitle>
                 </RegisterTitleContainer>
                 {/*EMAIL*/}
                 <MyTextField
-                    placeholder={'Email'}
+                    placeholder={t('email')}
                     value={signInEmail}
                     keyboardType={'email-address'}
                     autoCapitalize={'none'}
@@ -193,7 +196,7 @@ export function LoginScreen() {
                 />
                 {/*SENHA*/}
                 <MyTextField
-                    placeholder={'Password'}
+                    placeholder={t('password')}
                     value={signInPassword}
                     onChangeText={setSignInPassword}
                     secureTextEntry={true}
@@ -217,7 +220,9 @@ export function LoginScreen() {
                                     style={{paddingTop: 10}}
                                 />
                             ) : (
-                                'Sign In'
+                                <>
+                                    {t('login')}
+                                </>
                             )}
                         </MyButton>
                     </ButtonBox>
@@ -232,7 +237,7 @@ export function LoginScreen() {
                             }}
                             onPress={() => setActiveScreen('Sign Up')}
                         >
-                            Sign Up
+                            {t('register')}
                         </MyButton>
                     </ButtonBox>
                 </ButtonsContainer>
@@ -245,18 +250,18 @@ export function LoginScreen() {
             <Animatable.View animation={'fadeIn'} duration={700} style={styles.bottomSheetContent}>
                 <SignUpTitleContainer>
                     <TextContainer>
-                        <ScreenTitle>Sign Up</ScreenTitle>
+                        <ScreenTitle>{t('register')}</ScreenTitle>
                         <Xbutton onPress={() => setActiveScreen('Sign In')}>
                             <FontAwesome6 name={'angle-down'} size={30} color={'white'}/>
                         </Xbutton>
                     </TextContainer>
                     <TextContainer>
-                        <Descriptions>Just a few fields to get you started</Descriptions>
+                        <Descriptions>{t('register_description')}</Descriptions>
                     </TextContainer>
                 </SignUpTitleContainer>
                 <InputsContainer>
                     <MyTextField
-                        placeholder={'Name'}
+                        placeholder={t('name')}
                         value={registerName}
                         onChangeText={(text) => {
                             setRegisterName(text);
@@ -268,7 +273,7 @@ export function LoginScreen() {
                         isCorrect={registerNameIsCorret}
                     />
                     <MyTextField
-                        placeholder={'Email'}
+                        placeholder={t('email')}
                         value={registerEmail}
                         keyboardType={'email-address'}
                         autoCapitalize={"none"}
@@ -283,7 +288,7 @@ export function LoginScreen() {
                         isCorrect={registerEmailIsCorrect}
                     />
                     <MyTextField
-                        placeholder={'Password'}
+                        placeholder={t('password')}
                         value={registerPassword}
                         autoCapitalize={'none'}
                         onChangeText={(text) => {
@@ -307,7 +312,9 @@ export function LoginScreen() {
                         {requestIsLoading ? (
                             <ActivityIndicator size={'large'} color={'#fff'}/>
                         ) : (
-                            'Sign Up'
+                            <>
+                                {t('register')}
+                            </>
                         )}
                     </MyButton>
                 </ButtonsContainer>
@@ -322,7 +329,7 @@ export function LoginScreen() {
                 <Content style={{alignItems: 'unset'}}>
                     <AnimatedTitle style={{color: textColor}}>Oasis</AnimatedTitle>
                     <AnimatedSubtitle style={{color: textColor}}>
-                        Exploring new {'\n'}frontiers with AI
+                        {t('oasis_description')}
                     </AnimatedSubtitle>
                 </Content>
                 <BottomSheet
@@ -415,6 +422,7 @@ const OasisTitle = styled.Text`
 const OasisSubtitle = styled.Text`
     font-size: 30px;
     font-weight: 600;
+    max-width: 250px;
 `
 const RegisterTitleContainer = styled.View`
     display: flex;

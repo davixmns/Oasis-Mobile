@@ -1,16 +1,10 @@
 import React, {useState} from 'react';
 import {Button, Menu, Switch} from 'react-native-paper';
-import {View, StyleSheet} from 'react-native';
+import {StyleSheet} from 'react-native';
 import styled from "styled-components/native";
-
-// @ts-ignore
 import gptLogo from '../assets/chatGptLogo.png';
-// @ts-ignore
 import geminiLogo from '../assets/geminiLogo.png';
-
 import {ChatbotEnum} from "../interfaces/interfaces";
-import {useChatContext} from "../contexts/ChatContext";
-import {updateChatBotDetailsService} from "../service/apiService";
 
 interface ChatBotSelectorProps {
     selectedChatbots: { enum: ChatbotEnum, enabled: boolean, id: number }[];

@@ -6,6 +6,7 @@ import {Alert} from "react-native";
 
 const api = axios.create({
     baseURL: "http://0.0.0.0:5013",
+    // baseURL: "http://10.50.185.139:5013",
 });
 
 api.interceptors.response.use(
@@ -99,12 +100,11 @@ export async function loadChatMessagesService(oasisChatId: number) {
     });
 }
 
-export async function sendFirstMessageService(userMessage: string, selectedChatBots: ChatbotEnum[]) {
+export async function sendFirstMessageService(userMessage: string) {
     const {accessToken, refreshToken} = await getTokens();
 
     return await api.post("/Chat/StartConversation", {
         Message: userMessage,
-        ChatbotEnums: selectedChatBots
     }, {
         headers: {
             Authorization: `Bearer ${accessToken}`,
@@ -124,13 +124,12 @@ export async function saveChatbotMessageService(chatbotMessage: OasisMessage) {
     });
 }
 
-export async function sendMessageToChatService(oasisChatId: number, message: string, chatbotEnums: ChatbotEnum[]) {
+export async function sendMessageToChatService(oasisChatId: number, message: string) {
     const {accessToken, refreshToken} = await getTokens();
 
     return await api.post("/Chat/ContinueConversation",{
         OasisChatId: oasisChatId,
         Message: message,
-        ChatbotEnums: chatbotEnums
     }, {
         headers: {
             Authorization: `Bearer ${accessToken}`,

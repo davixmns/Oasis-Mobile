@@ -5,18 +5,39 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":wrench: ajustes nas promises">
-      <change afterPath="$PROJECT_DIR$/assets/menu.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/menu1.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/assets/menu2.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/styles/GlobalStyles.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/CustomMenu.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/contexts/ColorSchemeContext.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/index.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/styles/Colors.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/theme.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/translation/i18n.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/translation/locales/es.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/translation/locales/pt.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ChatbotMessageCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatbotMessageCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app.json" beforeDir="false" afterPath="$PROJECT_DIR$/app.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/menu.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/menu1.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/assets/menu2.png" beforeDir="false" afterPath="$PROJECT_DIR$/assets/menu_icon.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ChatBotSelector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatBotSelector.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ChatInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatInput.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/MessageTipCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/MessageTipCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/MessagesLoadingSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/MessagesLoadingSkeleton.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contexts/ChatContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/ChatContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/interfaces.ts" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/interfaces.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/navigations/AuthStack.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/AuthStack.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navigations/MyDrawer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/CustomDrawer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/navigations/CustomDrawer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/CustomDrawer.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/navigations/CustomDrawerContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/CustomDrawerContent.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/ChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ChatScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/LoginScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/LoginScreen.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/NewChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/NewChatScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/SettingsScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/SettingsScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/apiService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/service/apiService.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/styles/GlobalStyles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/styles/GlobalStyles.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/tsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/tsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/MessageTipsTexts.ts" beforeDir="false" afterPath="$PROJECT_DIR$/translation/locales/en.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/yarn.lock" beforeDir="false" afterPath="$PROJECT_DIR$/yarn.lock" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -63,7 +84,7 @@
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;yarn&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;/Users/davixmns/projetos/react-native/Oasis/node_modules/typescript/lib&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;/Users/davixmns/projetos/react-native/oasis/node_modules/typescript/lib&quot;,
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
@@ -84,11 +105,11 @@
       <recent name="$PROJECT_DIR$/assets" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
       <recent name="$PROJECT_DIR$/assets" />
       <recent name="$PROJECT_DIR$/navigations" />
       <recent name="$PROJECT_DIR$/components" />
       <recent name="$PROJECT_DIR$/contexts" />
-      <recent name="$PROJECT_DIR$/screens" />
     </key>
   </component>
   <component name="SharedIndexes">
@@ -176,7 +197,12 @@
       <workItem from="1726782108360" duration="3511000" />
       <workItem from="1726833947246" duration="11761000" />
       <workItem from="1726855512828" duration="7348000" />
-      <workItem from="1727097195707" duration="12674000" />
+      <workItem from="1727097195707" duration="16583000" />
+      <workItem from="1727130133465" duration="4101000" />
+      <workItem from="1727176200505" duration="10996000" />
+      <workItem from="1727197101452" duration="13288000" />
+      <workItem from="1727262826549" duration="32769000" />
+      <workItem from="1727349084933" duration="11971000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />

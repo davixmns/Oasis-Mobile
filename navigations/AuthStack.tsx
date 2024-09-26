@@ -7,12 +7,15 @@ import SettingsScreen from "../screens/SettingsScreen";
 import {TouchableOpacity, View} from "react-native";
 import {FontAwesome6} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
+import React from "react";
+import {useTranslation} from "react-i18next";
 
 const Stack = createStackNavigator();
 
 export function AuthStack() {
     const {isAuthenticated, isLoading} = useAuthContext()
     const navigation = useNavigation()
+    const {t} = useTranslation()
 
     if (isLoading) {
         return <SplashScreen/>
@@ -37,6 +40,7 @@ export function AuthStack() {
                         name={'Settings'}
                         component={SettingsScreen}
                         options={{
+                            title: t('settings'),
                             cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
                             gestureEnabled: true,
                             gestureDirection: 'vertical',
@@ -49,7 +53,7 @@ export function AuthStack() {
                             headerTintColor: '#fff',
                             headerRight: () => (
                                 <TouchableOpacity onPress={navigation.goBack} style={{marginRight: 20}}>
-                                    <FontAwesome6 name={'x'} size={20} color={'#fff'}/>
+                                    <FontAwesome6 name={'angle-down'} size={23} color={'white'}/>
                                 </TouchableOpacity>
                             )
                         }}

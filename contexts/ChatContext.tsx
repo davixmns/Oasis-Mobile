@@ -1,7 +1,7 @@
-import {createContext, useContext, useEffect, useState} from "react";
-import {ChatbotEnum, OasisChat, OasisMessage, ProviderProps} from "../interfaces/interfaces";
-import {useAuthContext} from "./AuthContext";
-import {useNavigation} from "@react-navigation/native";
+import { createContext, useContext, useEffect, useState } from "react";
+import { ChatbotEnum, OasisChat, OasisMessage, ProviderProps } from "../interfaces/interfaces";
+import { useAuthContext } from "./AuthContext";
+import { useNavigation } from "@react-navigation/native";
 
 import {
     getAllUserChatsService,
@@ -14,9 +14,12 @@ interface ChatContextType {
     chats: OasisChat[];
     setChats: (chats: OasisChat[]) => void;
     createNewChat: (fisrtUserMessage: string) => Promise<void>;
-    sendFirstMessage: (userMessage: string, selectedChatBots: ChatbotEnum[]) => Promise<OasisMessage[]>;
+    startConversationWithChatBots: (userMessage: string) => Promise<any>;
     saveChatbotMessage: (chatbotMessage: OasisMessage) => Promise<void>;
     sendMessageToChat: (oasisChatId: number, message: string) => Promise<any>;
+    getAllChats: () => Promise<void>;
+    focusedScreen: string;
+    setFocusedScreen: (screen: string) => void;
 }
 
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
@@ -25,10 +28,11 @@ export function useChatContext() {
     return useContext(ChatContext);
 }
 
-export function ChatProvider({children}: ProviderProps) {
-    const {isAuthenticated} = useAuthContext();
-    const [chats, setChats] = useState<OasisChat[]>([]);
+export function ChatProvider({ children }: ProviderProps) {
+    const { isAuthenticated } = useAuthContext();
     const navigation = useNavigation();
+    const [chats, setChats] = useState<OasisChat[]>([]);
+    const [focusedScreen, setFocusedScreen] = useState<string>("");
 
     useEffect(() => {
         async function fetchData() {
@@ -42,27 +46,16 @@ export function ChatProvider({children}: ProviderProps) {
     async function getAllChats() {
         await getAllUserChatsService()
             .then((response) => {
-                console.log("✅ Chats carregados")
                 const chats: OasisChat[] = response.data.data;
-
-                let spaceCounter = 0;
-                const repeatedTitles: string[] = []
-                chats.forEach((chat) => {
-                    if (repeatedTitles.includes(chat.title!)) {
-                        spaceCounter++;
-                        chat.title = `${chat.title}${' '.repeat(spaceCounter)}`
-                    }
-                    repeatedTitles.push(chat.title!)
-                })
                 setChats(chats);
+                console.log("✅ Chats carregados");
             })
             .catch((error) => {
                 if (error.response) {
-                    console.log("❌ Erro ao buscar chats -> " + error.response.data)
+                    console.log("❌ Erro ao buscar chats -> " + error.response.data);
                 }
             });
     }
-
 
     async function createNewChat(fisrtUserMessage: string) {
         const randomChatId = Math.floor(Math.random() * 1000);
@@ -75,76 +68,76 @@ export function ChatProvider({children}: ProviderProps) {
                     id: 1,
                     createdAt: new Date().toISOString(),
                     isSaved: true,
-                }
+                },
             ],
             id: randomChatId,
+            updatedAt: new Date().toISOString(),
             oasisUserId: 1,
             chatGptThreadId: "",
             geminiThreadId: "",
-            title: "Loading..." + ' '.repeat(Math.floor(Math.random() * 10)),
+            title: "Loading..." + " ".repeat(Math.floor(Math.random() * 10)),
             isNewChat: true,
             chatBots: [
                 {
-                    id: 1,
+                    id: 234,
                     oasisChatId: randomChatId,
                     chatbotEnum: ChatbotEnum.ChatGPT,
                     isActive: true,
-                    threadId: ""
+                    threadId: "",
                 },
                 {
-                    id: 1,
+                    id: 864,
                     oasisChatId: randomChatId,
                     chatbotEnum: ChatbotEnum.Gemini,
                     isActive: true,
-                    threadId: ""
-                }
-            ]
-        }
-        await setChats(currentChats => [...currentChats, newChat]);
+                    threadId: "",
+                },
+            ],
+        };
+        await setChats((currentChats) => [...currentChats, newChat]);
         // @ts-ignore
-        navigation.navigate(newChat.title, {chatData: newChat});
+        navigation.navigate("Chat_" + newChat.id, { chatData: newChat });
     }
 
-    async function sendFirstMessage(userMessage: string, selectedChatBots: ChatbotEnum[]) {
-        return await sendFirstMessageService(userMessage, selectedChatBots)
-            .then((response) => {
-                console.log("✅ Respostas recebidas")
+    async function startConversationWithChatBots(userMessage: string) {
+        return await sendFirstMessageService(userMessage)
+            .then(async (response) => {
                 return response.data;
             })
             .catch((error) => {
                 if (error.response) {
-                    console.log("❌ Erro ao enviar primeira mensagem -> " + error.response)
+                    console.log("❌ Erro ao enviar primeira mensagem -> " + error.response);
                     throw error;
                 }
-            })
+            });
     }
 
     async function saveChatbotMessage(chatbotMessage: OasisMessage) {
         await saveChatbotMessageService(chatbotMessage)
             .then(() => {
-                console.log("✅ Mensagem do escolhida salva")
+                console.log("✅ Mensagem escolhida salva");
             })
             .catch((error) => {
                 if (error.response) {
-                    console.log('erro ao salvar mensagem -> ' + error.response)
+                    console.log("erro ao salvar mensagem -> " + error.response);
                     throw error;
                 }
-            })
+            });
     }
 
     async function sendMessageToChat(oasisChatId: number, message: string) {
-        if (!oasisChatId || !message) return
-        return await sendMessageToChatService(oasisChatId, message, [ChatbotEnum.ChatGPT, ChatbotEnum.Gemini])
+        if (!oasisChatId || !message) return;
+        return await sendMessageToChatService(oasisChatId, message)
             .then((response) => {
-                console.log('✅ Respostas recebidas')
-                return response.data.data
+                console.log("✅ Respostas recebidas");
+                return response.data.data;
             })
             .catch((error) => {
                 if (error.response) {
-                    console.log('❌ Erro ao enviar mensagem -> ' + error.response)
-                    throw error
+                    console.log("❌ Erro ao enviar mensagem -> " + error.response);
+                    throw error;
                 }
-            })
+            });
     }
 
     return (
@@ -153,9 +146,12 @@ export function ChatProvider({children}: ProviderProps) {
                 chats,
                 setChats,
                 createNewChat,
-                sendFirstMessage,
+                startConversationWithChatBots,
                 saveChatbotMessage,
                 sendMessageToChat,
+                getAllChats,
+                focusedScreen,
+                setFocusedScreen,
             }}
         >
             {children}
