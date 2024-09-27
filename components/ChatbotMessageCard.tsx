@@ -28,8 +28,8 @@ const ChatbotMessageContainer = styled.View`
 
 const Message = styled.Text`
     font-size: 16px;
-    color: #fff;
-    font-weight: 500;
+    color: ${props => props.theme.primaryText};
+    font-weight: normal;
 `
 
 const Header = styled.View`
@@ -46,7 +46,7 @@ const FromImage = styled.Image`
 const FromName = styled.Text`
     font-size: 16px;
     font-weight: bold;
-    color: white;
+    color: ${props => props.theme.primaryText};
     margin: 5px;
     align-self: center;
 `

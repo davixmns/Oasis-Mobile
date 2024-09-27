@@ -4,6 +4,7 @@ import {useState} from "react";
 import styled from "styled-components/native";
 import {FontAwesome6} from "@expo/vector-icons";
 import {StyleSheet} from "react-native";
+import {useColorSchemeContext} from "../contexts/ColorSchemeContext";
 
 interface CustomMenuProps {
     options: string[];
@@ -15,6 +16,7 @@ interface CustomMenuProps {
 
 export function CustomMenu({options, selectedOption, selectOption, width, anchor}: CustomMenuProps) {
     const [isVisible, setIsVisible] = useState(false);
+    const {colorScheme} = useColorSchemeContext();
 
     function handleSelectOption(option: string) {
         selectOption(option);
@@ -26,7 +28,14 @@ export function CustomMenu({options, selectedOption, selectOption, width, anchor
             visible={isVisible}
             onDismiss={() => setIsVisible(false)}
             anchor={<TouchableOpacity onPress={() => setIsVisible(true)}>{anchor}</TouchableOpacity>}
-            contentStyle={[styles.menuStyle, {width: width, height: 45 * options.length}]}
+            contentStyle={[
+                {
+                    ...styles.menuStyle,
+                    backgroundColor: colorScheme.settingsItemBackground,
+                    width: width,
+                    height: 45 * options.length
+                },
+            ]}
             anchorPosition={'top'}
         >
             {options.map((option, index) => (
@@ -48,19 +57,18 @@ export function CustomMenu({options, selectedOption, selectOption, width, anchor
 
 const styles = StyleSheet.create({
     menuStyle: {
-        backgroundColor: '#2d2d2d',
         paddingTop: -10,
         borderRadius: 15,
         bottom: 85,
         right: 8,
-        shadowColor: '#000',
+        shadowColor: 'black',
         shadowOffset: {
             width: 0,
             height: 0,
         },
-        shadowOpacity: 0.9,
-        shadowRadius: 40,
-        elevation: 5,
+        shadowOpacity: 0.1,
+        shadowRadius: 10,
+        elevation: 1,
     }
 })
 
@@ -77,8 +85,8 @@ const MenuItem = styled.View`
 const CheckIcon = styled(FontAwesome6).attrs({
     name: 'check',
     size: 15,
-    color: 'white',
 })`
+    color: ${props => props.theme.primaryText};
     position: absolute;
     left: 16px;
     top: 15px;
@@ -86,12 +94,13 @@ const CheckIcon = styled(FontAwesome6).attrs({
 
 const OptionText = styled.Text`
     font-size: 15px;
-    color: white;
+    color: ${props => props.theme.primaryText};
     margin-left: 40px;
 `
 
 const WhiteLine = styled.View`
     width: 100%;
     height: 1px;
-    background-color: #424245;
+    opacity: 0.2;
+    background-color: gray;
 `

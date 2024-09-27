@@ -17,7 +17,6 @@ export default function App() {
                     <AuthProvider>
                         <UserProvider>
                             <ChatProvider>
-                                <StatusBar style="auto" backgroundColor={'transparent'}/>
                                 <AuthStack/>
                             </ChatProvider>
                         </UserProvider>

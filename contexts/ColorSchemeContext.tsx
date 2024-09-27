@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import {darkColorScheme, lightColorScheme, MyColorScheme} from "../styles/Colors";
 import {ThemeProvider} from "styled-components";
 import {useColorScheme} from "react-native";
+import {StatusBar} from "expo-status-bar";
 
 interface ColorSchemeContextType {
     colorScheme: MyColorScheme

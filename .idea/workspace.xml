@@ -6,17 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":wrench: ajustes nas promises">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ChatInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatInput.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/MyTextField.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/MyTextField.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contexts/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/AuthContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ChatbotMessageCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatbotMessageCard.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/CustomMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/CustomMenu.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/UserMessageCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/UserMessageCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/contexts/ColorSchemeContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/ColorSchemeContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/navigations/AuthStack.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/AuthStack.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/navigations/CustomDrawer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/CustomDrawer.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/navigations/CustomDrawerContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/CustomDrawerContent.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/SettingsScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/SettingsScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/Styles.ts" beforeDir="false" afterPath="$PROJECT_DIR$/screens/Styles.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/service/apiService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/service/apiService.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/styles/Colors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/styles/Colors.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/translation/i18n.ts" beforeDir="false" afterPath="$PROJECT_DIR$/translation/i18n.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -180,7 +179,8 @@
       <workItem from="1727176200505" duration="10996000" />
       <workItem from="1727197101452" duration="13288000" />
       <workItem from="1727262826549" duration="32769000" />
-      <workItem from="1727349084933" duration="24139000" />
+      <workItem from="1727349084933" duration="24188000" />
+      <workItem from="1727435812186" duration="9395000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
@@ -583,5 +583,17 @@
     <MESSAGE value=":art: colocando logo" />
     <MESSAGE value=":wrench: ajustes nas promises" />
     <option name="LAST_COMMIT_MESSAGE" value=":wrench: ajustes nas promises" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="javascript">
+          <url>file://$PROJECT_DIR$/screens/SettingsScreen.tsx</url>
+          <line>149</line>
+          <properties lambdaOrdinal="-1" />
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

@@ -32,19 +32,19 @@ const Header = styled.View`
 
 const Message = styled.Text`
   font-size: 16px;
-  color: #fff;
-  font-weight: 500;
+  color: ${props => props.theme.primaryText};
+  font-weight: normal;
 `
 
 const FromName = styled.Text`
   font-size: 16px;
   font-weight: bold;
-  color: white;
+  color: ${props => props.theme.secondaryText};
   align-self: center;
 `
 
 const MessageBubble = styled.View`
-  background-color: #222222;
+  background-color: ${props => props.theme.secondaryBackground};
   padding: 10px;
   border-radius: 10px 0 10px 10px;
 `

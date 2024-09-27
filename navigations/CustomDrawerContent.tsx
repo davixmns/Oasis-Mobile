@@ -79,7 +79,10 @@ export default function CustomDrawerContent(props: any) {
                 label={"Oasis"}
                 onPress={() => props.navigation.navigate("Oasis")}
                 style={{paddingTop: 50}}
-                labelStyle={styles.drawerLabelStyle}
+                labelStyle={{
+                    ...styles.drawerLabelStyle,
+                    color: colorScheme.primaryText,
+                }}
                 icon={() => (
                     <Image
                         source={OasisIcon}
@@ -113,11 +116,16 @@ export default function CustomDrawerContent(props: any) {
                                                     ...styles.drawerLabelStyle,
                                                     color: colorScheme.primaryText,
                                                 },
-                                                isFocused && styles.activeLabelStyle,
+                                                isFocused && {
+                                                    color: colorScheme.primaryText,
+                                                },
                                             ]}
                                             style={[
                                                 styles.drawerItemStyle,
-                                                isFocused && styles.activeItemStyle,
+
+                                                isFocused && {
+                                                    backgroundColor: colorScheme.secondaryBackground,
+                                                },
                                             ]}
                                         />
                                     );
@@ -168,12 +176,7 @@ const styles = StyleSheet.create({
     },
     drawerLabelStyle: {
         fontSize: 16,
-    },
-    activeItemStyle: {
-        backgroundColor: "rgba(123, 123, 123, 0.3)",
-    },
-    activeLabelStyle: {
-        color: "#fff",
+        fontWeight: "500",
     },
     profileImage: {
         width: 35,
@@ -205,13 +208,14 @@ const ProfileContainer = styled.View`
 
 const TimeLabel = styled.Text`
     color: #949494;
-    margin-left: 16px;
+    margin-left: 19px;
     margin-top: 16px;
+    font-weight: 500;
     font-size: 14px;
 `;
 
 const Line = styled.View`
-    width: 88%;
+    width: 85%;
     margin-left: 17px;
     margin-right: 30px;
     margin-top: 10px;
