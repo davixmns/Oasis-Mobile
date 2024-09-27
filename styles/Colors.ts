@@ -1,4 +1,4 @@
-export interface MyColorScheme {
+export interface OasisTheme {
     primaryBackground: string;
     secondaryBackground: string;
     settingsBackground: string;
@@ -14,7 +14,7 @@ export interface MyColorScheme {
     secondaryText: string;
 }
 
-export const darkColorScheme: MyColorScheme = {
+export const darkOasisTheme: OasisTheme = {
     primaryBackground: '#000',
     secondaryBackground: '#1e1e1e',
 
@@ -31,7 +31,7 @@ export const darkColorScheme: MyColorScheme = {
     secondaryText: '#949494',
 }
 
-export const lightColorScheme: MyColorScheme = {
+export const lightOasisTheme: OasisTheme = {
     primaryBackground: '#fff',
     secondaryBackground: '#f1f1f1',
     settingsBackground: '#f2f2f7',

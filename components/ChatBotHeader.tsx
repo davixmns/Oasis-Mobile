@@ -1,17 +1,17 @@
 import styled from "styled-components/native";
 import {ChatbotEnum} from "../interfaces/interfaces";
 import {ChatBotDicionary} from "../utils/ChatBotDicionary";
-import {useColorSchemeContext} from "../contexts/ColorSchemeContext";
+import {useOasisThemeContext} from "../contexts/OasisThemeContext";
 
 export function ChatBotHeader({chatBotEnum}: { chatBotEnum: ChatbotEnum }) {
-    const {colorScheme} = useColorSchemeContext()
+    const {oasisTheme} = useOasisThemeContext()
 
     const chatBotData = ChatBotDicionary[chatBotEnum]
 
     return (
         <Header>
             {/*@ts-ignore*/}
-            <FromImage source={chatBotData.image} tintColor={chatBotEnum === ChatbotEnum.ChatGPT && colorScheme.primaryText}/>
+            <FromImage source={chatBotData.image} tintColor={chatBotEnum === ChatbotEnum.ChatGPT && oasisTheme.primaryText}/>
             <FromName>{chatBotData.name}</FromName>
         </Header>
     );

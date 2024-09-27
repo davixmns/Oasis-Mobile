@@ -4,7 +4,7 @@ import {useState} from "react";
 import styled from "styled-components/native";
 import {FontAwesome6} from "@expo/vector-icons";
 import {StyleSheet} from "react-native";
-import {useColorSchemeContext} from "../contexts/ColorSchemeContext";
+import {useOasisThemeContext} from "../contexts/OasisThemeContext";
 
 interface CustomMenuProps {
     options: string[];
@@ -16,7 +16,7 @@ interface CustomMenuProps {
 
 export function CustomMenu({options, selectedOption, selectOption, width, anchor}: CustomMenuProps) {
     const [isVisible, setIsVisible] = useState(false);
-    const {colorScheme} = useColorSchemeContext();
+    const {oasisTheme} = useOasisThemeContext();
 
     function handleSelectOption(option: string) {
         selectOption(option);
@@ -31,7 +31,7 @@ export function CustomMenu({options, selectedOption, selectOption, width, anchor
             contentStyle={[
                 {
                     ...styles.menuStyle,
-                    backgroundColor: colorScheme.settingsItemBackground,
+                    backgroundColor: oasisTheme.settingsItemBackground,
                     width: width,
                     height: 45 * options.length
                 },

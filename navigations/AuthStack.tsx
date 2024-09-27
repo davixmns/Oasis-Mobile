@@ -9,7 +9,7 @@ import {FontAwesome6} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
 import React from "react";
 import {useTranslation} from "react-i18next";
-import {useColorSchemeContext} from "../contexts/ColorSchemeContext";
+import {useOasisThemeContext} from "../contexts/OasisThemeContext";
 
 const Stack = createStackNavigator();
 
@@ -17,7 +17,7 @@ export function AuthStack() {
     const {isAuthenticated, isLoading} = useAuthContext()
     const navigation = useNavigation()
     const {t} = useTranslation()
-    const {colorScheme} = useColorSchemeContext()
+    const {oasisTheme} = useOasisThemeContext()
 
     if (isLoading) {
         return <SplashScreen/>
@@ -44,14 +44,14 @@ export function AuthStack() {
                         options={{
                             title: t('settings'),
                             headerTitleStyle: {
-                                color: colorScheme.primaryText,
+                                color: oasisTheme.primaryText,
                             },
                             cardStyleInterpolator: CardStyleInterpolators.forModalPresentationIOS,
                             gestureEnabled: true,
                             gestureDirection: 'vertical',
                             headerShown: true,
                             headerStyle: {
-                                backgroundColor: colorScheme.settingsBackground,
+                                backgroundColor: oasisTheme.settingsBackground,
                                 borderBottomWidth: 0,
                                 elevation: 0,
                                 shadowOpacity: 0,
@@ -61,7 +61,7 @@ export function AuthStack() {
                             headerTintColor: '#fff',
                             headerRight: () => (
                                 <TouchableOpacity onPress={navigation.goBack} style={{marginRight: 20}}>
-                                    <FontAwesome6 name={'angle-down'} size={23} color={colorScheme.primaryText}/>
+                                    <FontAwesome6 name={'angle-down'} size={23} color={oasisTheme.primaryText}/>
                                 </TouchableOpacity>
                             )
                         }}

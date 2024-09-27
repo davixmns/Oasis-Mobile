@@ -5,7 +5,7 @@ import styled from "styled-components/native";
 import gptLogo from '../assets/chatgpt_logo.png';
 import geminiLogo from '../assets/gemini_logo.png';
 import {ChatbotEnum} from "../interfaces/interfaces";
-import {useColorSchemeContext} from "../contexts/ColorSchemeContext";
+import {useOasisThemeContext} from "../contexts/OasisThemeContext";
 
 interface ChatBotSelectorProps {
     selectedChatbots: { enum: ChatbotEnum, enabled: boolean, id: number }[];
@@ -16,7 +16,7 @@ const {width} = Dimensions.get('window');
 
 export function ChatBotSelector({selectedChatbots, updateChatBotOption}: ChatBotSelectorProps) {
     const [menuVisible, setMenuVisible] = useState(false);
-    const {colorScheme} = useColorSchemeContext()
+    const {oasisTheme} = useOasisThemeContext()
 
     return (
         <Menu
@@ -37,14 +37,14 @@ export function ChatBotSelector({selectedChatbots, updateChatBotOption}: ChatBot
                 zIndex: 1000,
                 marginRight: 10,
                 paddingHorizontal: 10,
-                backgroundColor: colorScheme.secondaryBackground
+                backgroundColor: oasisTheme.secondaryBackground
             }}
         >
             <OptionContainer>
                 <OptionContent>
                     <ChatbotLogo
                         source={gptLogo}
-                        tintColor={colorScheme.primaryText}
+                        tintColor={oasisTheme.primaryText}
                     />
                     <ChatbotText>ChatGPT 4o</ChatbotText>
                 </OptionContent>

@@ -7,10 +7,10 @@ import {useTranslation} from "react-i18next";
 import i18n, {changeLanguage} from "../translation/i18n";
 import {CustomMenu} from "../components/CustomMenu";
 import {PaperProvider} from "react-native-paper";
-import {useColorSchemeContext} from "../contexts/ColorSchemeContext";
+import {useOasisThemeContext} from "../contexts/OasisThemeContext";
 
 export default function SettingsScreen() {
-    const {theme, changeColorScheme} = useColorSchemeContext();
+    const {selectedTheme, updateOasisTheme} = useOasisThemeContext();
     const {user, signOut} = useAuthContext()
     const {t} = useTranslation()
     const goToLinkendin = () => Linking.openURL('https://www.linkedin.com/in/davi-ximenes-93314a20b/')
@@ -27,7 +27,7 @@ export default function SettingsScreen() {
         {code: 'dark', label: t('dark')},
     ];
     const selectedLanguage = languageOptions.find(lang => lang.code === i18n.language)?.label || t('english')
-    const selectedTheme = themeOptions.find(t => t.code === theme)?.label || t('system')
+    const currentTheme = themeOptions.find(t => t.code === selectedTheme)?.label || t('system')
 
     function handleSignOut() {
         Alert.alert(t('sign_out_confirmation'), '', [
@@ -89,18 +89,18 @@ export default function SettingsScreen() {
                                     </OptionBoxContent>
 
                                     <CustomMenu
-                                        selectedOption={selectedTheme}
+                                        selectedOption={currentTheme}
                                         options={themeOptions.map(option => option.label)}
                                         width={240}
                                         selectOption={async (optionLabel) => {
                                             const selectedOption = themeOptions.find(option => option.label === optionLabel);
                                             if (selectedOption) {
-                                                await changeColorScheme(selectedOption.code);
+                                                await updateOasisTheme(selectedOption.code);
                                             }
                                         }}
                                         anchor={
                                             <LanguageContainer>
-                                                <OptionUserData>{selectedTheme}</OptionUserData>
+                                                <OptionUserData>{currentTheme}</OptionUserData>
                                                 <FontAwesome6 name={'chevron-down'} size={15} color={'grey'}/>
                                             </LanguageContainer>
                                         }

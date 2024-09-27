@@ -10,7 +10,7 @@ import {useAuthContext} from "../contexts/AuthContext";
 import {FontAwesome6} from "@expo/vector-icons";
 import {useNavigation} from "@react-navigation/native";
 import {useTranslation} from "react-i18next";
-import {useColorSchemeContext} from "../contexts/ColorSchemeContext";
+import {useOasisThemeContext} from "../contexts/OasisThemeContext";
 
 function isSameDay(date1: Date, date2: Date): boolean {
     return (
@@ -57,7 +57,7 @@ export default function CustomDrawerContent(props: any) {
     const {chats} = useChatContext();
     const {user} = useAuthContext();
     const {t} = useTranslation()
-    const {colorScheme} = useColorSchemeContext();
+    const {oasisTheme} = useOasisThemeContext();
     const currentRouteName = props.state.routes[props.state.index].name;
     const [groupedChats, setGroupedChats] = useState<{ [key: string]: OasisChat[] }>({
         today: [] as OasisChat[],
@@ -81,7 +81,7 @@ export default function CustomDrawerContent(props: any) {
                 style={{paddingTop: 50}}
                 labelStyle={{
                     ...styles.drawerLabelStyle,
-                    color: colorScheme.primaryText,
+                    color: oasisTheme.primaryText,
                 }}
                 icon={() => (
                     <Image
@@ -114,17 +114,17 @@ export default function CustomDrawerContent(props: any) {
                                             labelStyle={[
                                                 {
                                                     ...styles.drawerLabelStyle,
-                                                    color: colorScheme.primaryText,
+                                                    color: oasisTheme.primaryText,
                                                 },
                                                 isFocused && {
-                                                    color: colorScheme.primaryText,
+                                                    color: oasisTheme.primaryText,
                                                 },
                                             ]}
                                             style={[
                                                 styles.drawerItemStyle,
 
                                                 isFocused && {
-                                                    backgroundColor: colorScheme.secondaryBackground,
+                                                    backgroundColor: oasisTheme.secondaryBackground,
                                                 },
                                             ]}
                                         />
@@ -150,7 +150,7 @@ export default function CustomDrawerContent(props: any) {
                                 color={"#fff"}
                                 style={{
                                     ...styles.iconStyle,
-                                    color: colorScheme.primaryText,
+                                    color: oasisTheme.primaryText,
                                 }}
                             />
                         </>
@@ -161,7 +161,7 @@ export default function CustomDrawerContent(props: any) {
                     inactiveTintColor={"#fff"}
                     labelStyle={{
                         ...styles.labelStyle,
-                        color: colorScheme.primaryText,
+                        color: oasisTheme.primaryText,
                     }}
                     style={styles.drawerItemStyle}
                 />

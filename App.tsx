@@ -7,12 +7,12 @@ import {ChatProvider} from "./contexts/ChatContext";
 import {I18nextProvider} from "react-i18next";
 import i18n from "./translation/i18n";
 import './translation/i18n';
-import ColorSchemeProvider from "./contexts/ColorSchemeContext";
+import OasisThemeProvider from "./contexts/OasisThemeContext";
 
 export default function App() {
     return (
         <I18nextProvider i18n={i18n}>
-            <ColorSchemeProvider>
+            <OasisThemeProvider>
                 <NavigationContainer>
                     <AuthProvider>
                         <UserProvider>
@@ -22,7 +22,7 @@ export default function App() {
                         </UserProvider>
                     </AuthProvider>
                 </NavigationContainer>
-            </ColorSchemeProvider>
+            </OasisThemeProvider>
         </I18nextProvider>
     );
 }

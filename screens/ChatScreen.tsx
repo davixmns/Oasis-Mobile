@@ -17,7 +17,6 @@ import {useChatContext} from "../contexts/ChatContext";
 import {WaitingChatBotsSkeleton} from "../components/WaitingChatBotsSkeleton";
 import {UserMessageCard} from "../components/UserMessageCard";
 import {ChatbotMessageCard} from "../components/ChatbotMessageCard";
-import {ChatBotOptionCard} from "../components/ChatBotOptionCard";
 import {loadChatMessagesService} from "../service/apiService";
 import {MessagesLoadingSkeleton} from "../components/MessagesLoadingSkeleton";
 import MyVibration from "../utils/MyVibration";
@@ -27,6 +26,7 @@ import {
     CustomSafeAreaView,
 } from "../styles/GlobalStyles";
 import {useTranslation} from "react-i18next";
+import {ChatBotOptionCard} from "../components/ChatBotOptionCard";
 
 const {width} = Dimensions.get("window");
 

@@ -3,7 +3,7 @@ import {FontAwesome6} from "@expo/vector-icons";
 import styled from "styled-components/native";
 import {ActivityIndicator} from "react-native";
 import {useTranslation} from "react-i18next";
-import {useColorSchemeContext} from "../contexts/ColorSchemeContext";
+import {useOasisThemeContext} from "../contexts/OasisThemeContext";
 
 interface ChatInputProps {
     message: string,
@@ -16,7 +16,7 @@ interface ChatInputProps {
 export default function ChatInput({message, setMessage, onPress, onFocus, isLoading, ...props}: ChatInputProps) {
     const [height, setHeight] = useState(40);
     const {t} = useTranslation();
-    const {colorScheme} = useColorSchemeContext();
+    const {oasisTheme} = useOasisThemeContext();
 
     const handleContentSizeChange = (event: any) => {
         setHeight(event.nativeEvent.contentSize.height + 15);
@@ -42,17 +42,16 @@ export default function ChatInput({message, setMessage, onPress, onFocus, isLoad
                 </InputContainer>
                 {isLoading ? (
                     <LoadingContainer>
-                        <ActivityIndicator size={'small'} color={colorScheme.primaryText}/>
+                        <ActivityIndicator size={'small'} color={oasisTheme.primaryText}/>
                     </LoadingContainer>
                 ) : (
                     <SendButton onPress={onPress}>
-                        <FontAwesome6 name={'arrow-up'} size={17} color={colorScheme.primaryBackground}/>
+                        <FontAwesome6 name={'arrow-up'} size={17} color={oasisTheme.primaryBackground}/>
                     </SendButton>
                 )}
             </Content>
         </Container>
     )
-        ;
 }
 
 const Container = styled.View`

@@ -15,14 +15,14 @@ import {DrawerActions, useNavigation} from "@react-navigation/native";
 import menu from "../assets/menu_icon.png";
 import MyVibration from "../utils/MyVibration";
 import {ImpactFeedbackStyle} from "expo-haptics";
-import {useColorSchemeContext} from "../contexts/ColorSchemeContext";
+import {useOasisThemeContext} from "../contexts/OasisThemeContext";
 
 const Drawer = createDrawerNavigator();
 
 export function CustomDrawer() {
     const navigation = useNavigation();
     const {chats, focusedScreen, setChats} = useChatContext();
-    const {colorScheme} = useColorSchemeContext();
+    const {oasisTheme} = useOasisThemeContext();
 
     //Switches que se modificam de acordo com o chat selecionado
     const [selectedChatbots, setSelectedChatbots] = useState([
@@ -66,16 +66,16 @@ export function CustomDrawer() {
                     drawerContent={(props) => <CustomDrawerContent {...props} />}
                     screenOptions={{
                         headerStyle: {
-                            backgroundColor: colorScheme.primaryBackground,
+                            backgroundColor: oasisTheme.primaryBackground,
                             borderBottomWidth: 0,
                             elevation: 0,
                             shadowOpacity: 0,
                         },
                         drawerStyle: {
-                            backgroundColor: colorScheme.primaryBackground,
+                            backgroundColor: oasisTheme.primaryBackground,
                             width: 300
                         },
-                        headerTintColor: colorScheme.primaryText,
+                        headerTintColor: oasisTheme.primaryText,
                         overlayColor: "rgba(123, 123, 123, 0.2)",
                         headerLeft: () => (
                             <TouchableOpacity
@@ -87,7 +87,7 @@ export function CustomDrawer() {
                             >
                                 <Image
                                     source={menu}
-                                    tintColor={colorScheme.primaryText}
+                                    tintColor={oasisTheme.primaryText}
                                     style={{width: 25, height: 25, marginLeft: 10}}
                                 />
                             </TouchableOpacity>

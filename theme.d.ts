@@ -1,4 +1,4 @@
-import { MyColorScheme } from './styles/Colors';  // Importe a interface do esquema de cores que você criou
+import { OasisTheme } from './styles/Colors';  // Importe a interface do esquema de cores que você criou
 import 'styled-components/native';  // Importe o módulo do styled-components
 // // Declare o módulo para sobrecarregar a tipagem do styled-components
 // declare module 'styled-components' {
@@ -6,5 +6,5 @@ import 'styled-components/native';  // Importe o módulo do styled-components
 // }
 
 declare module 'styled-components/native' {
-    export interface DefaultTheme extends MyColorScheme {}
+    export interface DefaultTheme extends OasisTheme {}
 }

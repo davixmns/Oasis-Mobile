@@ -1,7 +1,6 @@
 import {ChatBotOptionToChoose} from "../interfaces/interfaces";
 import {Dimensions, ScrollView, TouchableOpacity} from "react-native";
 import styled from "styled-components/native";
-import {ChatBotDicionary} from "../utils/ChatBotDicionary";
 import {ChatBotHeader} from "./ChatBotHeader";
 
 interface ChatbotOptionCardProps {
