@@ -1,6 +1,5 @@
 import {useState} from "react";
 import {createDrawerNavigator} from "@react-navigation/drawer";
-import {StatusBar} from "expo-status-bar";
 import {Provider as PaperProvider} from "react-native-paper";
 import {ChatScreen} from "../screens/ChatScreen";
 import {ChatBotSelector} from "../components/ChatBotSelector";
@@ -63,10 +62,8 @@ export function CustomDrawer() {
     return (
         <PaperProvider>
             <>
-                <StatusBar style="light" backgroundColor="#000"/>
                 <Drawer.Navigator
                     drawerContent={(props) => <CustomDrawerContent {...props} />}
-                    // @ts-ignore
                     screenOptions={{
                         headerStyle: {
                             backgroundColor: colorScheme.primaryBackground,
@@ -76,10 +73,10 @@ export function CustomDrawer() {
                         },
                         drawerStyle: {
                             backgroundColor: colorScheme.primaryBackground,
+                            width: 300
                         },
                         headerTintColor: colorScheme.primaryText,
                         overlayColor: "rgba(123, 123, 123, 0.2)",
-
                         headerLeft: () => (
                             <TouchableOpacity
                                 onPress={() => {
@@ -110,6 +107,9 @@ export function CustomDrawer() {
                     <Drawer.Screen
                         name="Oasis"
                         component={NewChatScreen}
+                        options={{
+
+                        }}
                     />
                     {chats.map((chat) => (
                         <Drawer.Screen

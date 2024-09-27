@@ -36,7 +36,7 @@ export default function ChatInput({message, setMessage, onPress, onFocus, isLoad
                         onChangeText={setMessage}
                         onContentSizeChange={handleContentSizeChange}
                         placeholderTextColor={'gray'}
-                        style={{width: '90%'}}
+                        style={{width: '95%'}}
                         {...props}
                     />
                 </InputContainer>
@@ -46,7 +46,7 @@ export default function ChatInput({message, setMessage, onPress, onFocus, isLoad
                     </LoadingContainer>
                 ) : (
                     <SendButton onPress={onPress}>
-                        <FontAwesome6 name={'arrow-up'} size={20} color={colorScheme.primaryBackground}/>
+                        <FontAwesome6 name={'arrow-up'} size={17} color={colorScheme.primaryBackground}/>
                     </SendButton>
                 )}
             </Content>
@@ -60,18 +60,17 @@ const Container = styled.View`
     align-items: center;
     justify-content: center;
     width: 100%;
-    height: 50px;
-    background-color: green;
 `;
 
 const Content = styled.View`
+    background-color: ${props => props.theme.secondaryBackground};
+    width: 95%;
+    padding: 2px 10px 2px 10px;
+    border-radius: 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
-    gap: 10px;
-    width: 90%;
-    background-color: red;
 `;
 
 const InputContainer = styled.View`
@@ -79,8 +78,6 @@ const InputContainer = styled.View`
     width: 87%;
     align-items: center;
     justify-content: center;
-    border-radius: 20px;
-    background-color: ${props => props.theme.secondaryBackground};
     height: 40px;
 `;
 
@@ -88,13 +85,12 @@ const Input = styled.TextInput`
     display: flex;
     font-size: 16px;
     height: 80%;
-    background-color: aqua;
     color: ${props => props.theme.primaryText};
 `;
 
 const SendButton = styled.TouchableOpacity`
-    height: 35px;
-    width: 35px;
+    height: 30px;
+    width: 30px;
     align-items: center;
     justify-content: center;
     background-color: ${props => props.theme.primaryText};

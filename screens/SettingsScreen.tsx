@@ -17,14 +17,14 @@ export default function SettingsScreen() {
     const goToGithub = () => Linking.openURL('https://github.com/davixmns')
     const goToEmail = () => Linking.openURL('mailto:davixmnsl@gmail.com')
     const languageOptions = [
-        { code: 'en', label: t('english') },
-        { code: 'pt', label: t('portuguese') },
-        { code: 'es', label: t('spanish') },
+        {code: 'en', label: t('english')},
+        {code: 'pt', label: t('portuguese')},
+        {code: 'es', label: t('spanish')},
     ];
     const themeOptions = [
-        { code: 'system', label: t('system') },
-        { code: 'light', label: t('light') },
-        { code: 'dark', label: t('dark') },
+        {code: 'system', label: t('system')},
+        {code: 'light', label: t('light')},
+        {code: 'dark', label: t('dark')},
     ];
     const selectedLanguage = languageOptions.find(lang => lang.code === i18n.language)?.label || t('english')
     const selectedTheme = themeOptions.find(t => t.code === theme)?.label || t('system')
@@ -45,93 +45,113 @@ export default function SettingsScreen() {
     return (
         <PaperProvider>
             <SettingsContainer>
-                <ScrollContainer>
+                <SettingsScroll>
                     <SettingsContent>
 
                         <OptionsContainer>
                             <SectionTitle>{t('account').toUpperCase()}</SectionTitle>
-                            <OptionBox>
-                                <OptionBoxContent>
-                                    <Icon name={'user'}/>
-                                    <OptionsTitle>{t('user_name')}</OptionsTitle>
-                                </OptionBoxContent>
-                                <OptionUserData>{user?.name}</OptionUserData>
-                            </OptionBox>
-                            <OptionBox>
-                                <OptionBoxContent>
-                                    <Icon name={'envelope'}/>
-                                    <OptionsTitle>E-mail</OptionsTitle>
-                                </OptionBoxContent>
-                                <OptionUserData>{user?.email}</OptionUserData>
-                            </OptionBox>
-                            <OptionBox>
-                                <OptionBoxContent>
-                                    <Icon name={'square-plus'}/>
-                                    <OptionsTitle>{t('subscription')}</OptionsTitle>
-                                </OptionBoxContent>
-                                <OptionUserData>{t('free_plan')}</OptionUserData>
-                            </OptionBox>
+
+                            <OptionsContent>
+                                <OptionBox>
+                                    <OptionBoxContent>
+                                        <SettingIcon name={'user'}/>
+                                        <OptionsTitle>{t('user_name')}</OptionsTitle>
+                                    </OptionBoxContent>
+                                    <OptionUserData>{user?.name}</OptionUserData>
+                                </OptionBox>
+
+                                <OptionBox style={{borderTopWidth: 0.2, borderTopColor: '#626262'}}>
+                                    <OptionBoxContent>
+                                        <SettingIcon name={'envelope'}/>
+                                        <OptionsTitle>E-mail</OptionsTitle>
+                                    </OptionBoxContent>
+                                    <OptionUserData>{user?.email}</OptionUserData>
+                                </OptionBox>
+
+                                <OptionBox style={{borderTopWidth: 0.2, borderTopColor: '#626262'}}>
+                                    <OptionBoxContent>
+                                        <SettingIcon name={'square-plus'}/>
+                                        <OptionsTitle>{t('subscription')}</OptionsTitle>
+                                    </OptionBoxContent>
+                                    <OptionUserData>{t('free_plan')}</OptionUserData>
+                                </OptionBox>
+                            </OptionsContent>
                         </OptionsContainer>
 
                         <OptionsContainer>
                             <SectionTitle>{t('app').toUpperCase()}</SectionTitle>
-                            <OptionBox>
-                                <OptionBoxContent>
-                                    <Icon name={'moon'}/>
-                                    <OptionsTitle>{t('color_scheme')}</OptionsTitle>
-                                </OptionBoxContent>
+                            <OptionsContent>
 
-                                <CustomMenu
-                                    selectedOption={selectedTheme}
-                                    options={themeOptions.map(option => option.label)}
-                                    width={200}
-                                    selectOption={async (optionLabel) => {
-                                        const selectedOption = themeOptions.find(option => option.label === optionLabel);
-                                        if (selectedOption) {
-                                            await changeColorScheme(selectedOption.code);
+                                <OptionBox>
+                                    <OptionBoxContent>
+                                        <SettingIcon name={'moon'}/>
+                                        <OptionsTitle>{t('color_scheme')}</OptionsTitle>
+                                    </OptionBoxContent>
+
+                                    <CustomMenu
+                                        selectedOption={selectedTheme}
+                                        options={themeOptions.map(option => option.label)}
+                                        width={240}
+                                        selectOption={async (optionLabel) => {
+                                            const selectedOption = themeOptions.find(option => option.label === optionLabel);
+                                            if (selectedOption) {
+                                                await changeColorScheme(selectedOption.code);
+                                            }
+                                        }}
+                                        anchor={
+                                            <LanguageContainer>
+                                                <OptionUserData>{selectedTheme}</OptionUserData>
+                                                <FontAwesome6 name={'chevron-down'} size={15} color={'grey'}/>
+                                            </LanguageContainer>
                                         }
-                                    }}
-                                    anchor={
-                                        <LanguageContainer>
-                                            <OptionUserData>{selectedTheme}</OptionUserData>
-                                            <FontAwesome6 name={'chevron-down'} size={15} color={'#fff'}/>
-                                        </LanguageContainer>
-                                    }
-                                />
+                                    />
+                                </OptionBox>
 
-
-                            </OptionBox>
-                            <OptionBox>
-                                <OptionBoxContent>
-                                    <Icon name={'earth-americas'}/>
-                                    <OptionsTitle>{t('language')}</OptionsTitle>
-                                </OptionBoxContent>
-                                <CustomMenu
-                                    selectedOption={selectedLanguage}
-                                    options={languageOptions.map(option => option.label)}
-                                    width={240}
-                                    selectOption={(optionLabel) => {
-                                        const selectedOption = languageOptions.find(option => option.label === optionLabel);
-                                        if (selectedOption) {
-                                            changeLanguage(selectedOption.code);
+                                <OptionBox style={{borderTopWidth: 0.2, borderTopColor: '#626262'}}>
+                                    <OptionBoxContent>
+                                        <SettingIcon name={'earth-americas'}/>
+                                        <OptionsTitle>{t('language')}</OptionsTitle>
+                                    </OptionBoxContent>
+                                    <CustomMenu
+                                        selectedOption={selectedLanguage}
+                                        options={languageOptions.map(option => option.label)}
+                                        width={240}
+                                        selectOption={(optionLabel) => {
+                                            const selectedOption = languageOptions.find(option => option.label === optionLabel);
+                                            if (selectedOption) {
+                                                changeLanguage(selectedOption.code);
+                                            }
+                                        }}
+                                        anchor={
+                                            <LanguageContainer>
+                                                <OptionUserData>{selectedLanguage}</OptionUserData>
+                                                <FontAwesome6 name={'chevron-down'} size={15} color={'grey'}/>
+                                            </LanguageContainer>
                                         }
-                                    }}
-                                    anchor={
-                                        <LanguageContainer>
-                                            <OptionUserData>{selectedLanguage}</OptionUserData>
-                                            <FontAwesome6 name={'chevron-down'} size={15} color={'#fff'}/>
-                                        </LanguageContainer>
-                                    }
-                                />
+                                    />
+                                </OptionBox>
 
-                            </OptionBox>
+                            </OptionsContent>
                         </OptionsContainer>
 
                         <OptionsContainer>
+                            <SectionTitle>SESSION</SectionTitle>
+                            <OptionsContent>
+                                <SignOutOptionBox onPress={handleSignOut}>
+                                    <OptionBoxContent>
+                                        <SettingIcon name={'arrow-right-from-bracket'}/>
+                                        <OptionsTitle>{t('sign_out')}</OptionsTitle>
+                                    </OptionBoxContent>
+                                    <OptionUserData/>
+                                </SignOutOptionBox>
+                            </OptionsContent>
+                        </OptionsContainer>
+
+                        <OptionsContainer style={{marginTop: 10}}>
                             <SectionTitle>{t('developer').toUpperCase()}</SectionTitle>
                             <OptionBox>
                                 <OptionBoxContent>
-                                    <Icon name={'at'}/>
+                                    <SettingIcon name={'at'} style={{paddingLeft: 10}}/>
                                     <OptionsTitle>Davi Ximenes</OptionsTitle>
                                 </OptionBoxContent>
                                 <OptionUserData>{t('software_engineer')}</OptionUserData>
@@ -140,65 +160,62 @@ export default function SettingsScreen() {
 
                         <SquareContainer>
                             <SquareButton onPress={goToLinkendin}>
-                                <FontAwesome6 name={'linkedin'} size={25} color={'#fff'}/>
+                                <MediaIcon name={'linkedin'}/>
                             </SquareButton>
                             <SquareButton onPress={goToGithub}>
-                                <FontAwesome6 name={'github'} size={25} color={'#fff'}/>
+                                <MediaIcon name={'github'}/>
                             </SquareButton>
                             <SquareButton onPress={goToEmail}>
-                                <FontAwesome6 name={'envelope'} size={25} color={'#fff'}/>
+                                <MediaIcon name={'envelope'}/>
                             </SquareButton>
                         </SquareContainer>
 
-                        <SignOutBox onPress={handleSignOut}>
-                            <OptionBoxContent>
-                                <Icon name={'arrow-right-from-bracket'}/>
-                                <OptionsTitle>{t('sign_out')}</OptionsTitle>
-                            </OptionBoxContent>
-                        </SignOutBox>
 
                     </SettingsContent>
-                </ScrollContainer>
+                </SettingsScroll>
             </SettingsContainer>
         </PaperProvider>
     )
 }
 
-const Icon = styled(FontAwesome6).attrs({
-    size: 18,
-    color: '#fff'
+const MediaIcon = styled(FontAwesome6).attrs({
+    size: 25,
 })`
-    padding: 10px 12px 10px 15px;
+    color: ${props => props.theme.primaryText};
+`
+
+const SettingIcon = styled(FontAwesome6).attrs({
+    size: 18,
+})`
+    color: ${props => props.theme.primaryText};
+    padding: 10px 12px 10px 18px;
 `
 
 const SectionTitle = styled.Text`
-    color: white;
+    color: ${props => props.theme.secondaryText};
     font-size: 12px;
     font-weight: 500;
     margin: 0 0 -5px 10px;
 `
 
 const OptionsTitle = styled.Text`
-    color: white;
+    color: ${props => props.theme.primaryText};
     font-size: 15px;
-    font-weight: 500;
 `
 
 const OptionUserData = styled.Text`
     color: grey;
     font-size: 15px;
-    font-weight: 500;
 `
 
 const SettingsContainer = styled(Container)`
-    background-color: #1a1b1d;
+    background-color: ${props => props.theme.settingsBackground};
     justify-content: flex-start;
     align-items: center;
 `
 
-const ScrollContainer = styled(ScrollView).attrs({
+const SettingsScroll = styled(ScrollView).attrs({
     contentContainerStyle: {
-        backgroundColor: '#1a1b1d',
         flex: 1,
         width: '100%',
         display: 'flex',
@@ -208,32 +225,36 @@ const ScrollContainer = styled(ScrollView).attrs({
 
 const SettingsContent = styled.View`
     width: 90%;
-    margin-top: 20px;
     gap: 25px;
 `
 
 const OptionsContainer = styled.View`
     width: 100%;
     gap: 10px;
+`
+
+const OptionsContent = styled.View`
+    width: 100%;
+    background-color: ${props => props.theme.settingsItemBackground};
     border-radius: 10px;
 `
 
 const OptionBox = styled.View`
     width: 100%;
+    height: 45px;
     display: flex;
     align-items: center;
     flex-direction: row;
-    background-color: #2c2c2e;
-    border-radius: 10px;
     justify-content: space-between;
     padding-right: 15px;
 `
 
-const SignOutBox = styled.TouchableOpacity`
+const SignOutOptionBox = styled.TouchableOpacity`
+    width: 100%;
+    height: 45px;
     display: flex;
     align-items: center;
     flex-direction: row;
-    background-color: #2c2c2e;
     border-radius: 10px;
     justify-content: space-between;
     padding-right: 15px;
@@ -254,10 +275,8 @@ const SquareContainer = styled.View`
 `
 
 const SquareButton = styled.TouchableOpacity`
-    width: 30%;
+    flex: 1;
     height: 50px;
-    background-color: #2c2c2e;
-    border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;

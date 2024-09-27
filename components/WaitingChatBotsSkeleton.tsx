@@ -1,14 +1,17 @@
 import SkeletonPlaceholder from "expo-react-native-skeleton-placeholder";
-import {Dimensions, View} from "react-native";
+import {Dimensions} from "react-native";
+import {useColorSchemeContext} from "../contexts/ColorSchemeContext";
 
 const {width} = Dimensions.get('window');
 
 export function WaitingChatBotsSkeleton() {
+    const {colorScheme} = useColorSchemeContext();
+
     return (
 
             <SkeletonPlaceholder
-                backgroundColor="#202020"  // Fundo do placeholder
-                highlightColor="#333333"  // Cor da animação
+                backgroundColor={colorScheme.loadingBackground}
+                highlightColor={colorScheme.loadingHighlight}
                 speed={1000}
             >
                 <SkeletonPlaceholder.Item flexDirection={'column'} alignItems={'flex-start'}  paddingLeft={10} marginTop={15} marginBottom={20}>

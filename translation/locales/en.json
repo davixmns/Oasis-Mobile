@@ -30,6 +30,8 @@
   "software_engineer": "Software Engineer",
   "sign_out": "Sign Out",
   "write_message": "Write a message...",
+  "save_message": "Save Message",
+  "choose_message": "Choose a message",
   "cancel": "Cancel",
   "sign_out_confirmation": "Do you really want to sign out?",
   "yes": "Yes",

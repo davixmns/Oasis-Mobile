@@ -1,30 +1,50 @@
 import React, {useState} from 'react';
 import {Button, Menu, Switch} from 'react-native-paper';
-import {StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet} from 'react-native';
 import styled from "styled-components/native";
-import gptLogo from '../assets/chatGptLogo.png';
-import geminiLogo from '../assets/geminiLogo.png';
+import gptLogo from '../assets/chatgpt_logo.png';
+import geminiLogo from '../assets/gemini_logo.png';
 import {ChatbotEnum} from "../interfaces/interfaces";
+import {useColorSchemeContext} from "../contexts/ColorSchemeContext";
 
 interface ChatBotSelectorProps {
     selectedChatbots: { enum: ChatbotEnum, enabled: boolean, id: number }[];
     updateChatBotOption: (id: number, isSelected: boolean) => void;
 }
 
+const {width} = Dimensions.get('window');
+
 export function ChatBotSelector({selectedChatbots, updateChatBotOption}: ChatBotSelectorProps) {
     const [menuVisible, setMenuVisible] = useState(false);
+    const {colorScheme} = useColorSchemeContext()
 
     return (
         <Menu
             visible={menuVisible}
-            onDismiss={() =>  setMenuVisible(false)}
-            anchor={<Button onPress={() => setMenuVisible(true)}>Bots</Button>}
-            contentStyle={styles.menu}
+            onDismiss={() => setMenuVisible(false)}
+            anchor={
+                <Button onPress={() => setMenuVisible(true)}>
+                    <TextBold>
+                        Bots
+                    </TextBold>
+                </Button>
+            }
+            contentStyle={{
+                width: width * 0.9,
+                maxWidth: 400,
+                borderRadius: 12,
+                marginTop: 45,
+                zIndex: 1000,
+                marginRight: 10,
+                paddingHorizontal: 10,
+                backgroundColor: colorScheme.secondaryBackground
+            }}
         >
             <OptionContainer>
                 <OptionContent>
                     <ChatbotLogo
                         source={gptLogo}
+                        tintColor={colorScheme.primaryText}
                     />
                     <ChatbotText>ChatGPT 4o</ChatbotText>
                 </OptionContent>
@@ -53,19 +73,6 @@ export function ChatBotSelector({selectedChatbots, updateChatBotOption}: ChatBot
     );
 }
 
-const styles = StyleSheet.create({
-    menu: {
-        backgroundColor: '#000',
-        borderStyle: 'solid',
-        borderWidth: 0.2,
-        borderColor: '#fff',
-        borderRadius: 12,
-        marginTop: 45,
-        marginRight: 10,
-        zIndex: 1000,
-    }
-});
-
 const OptionContainer = styled.View`
     display: flex;
     flex-direction: row;
@@ -84,7 +91,7 @@ const OptionContent = styled.View`
 `;
 
 const ChatbotText = styled.Text`
-    color: #fff;
+    color: ${props => props.theme.primaryText};
     font-size: 16px;
     font-weight: bold;
 `;
@@ -92,4 +99,8 @@ const ChatbotText = styled.Text`
 const ChatbotLogo = styled.Image`
     height: 30px;
     width: 30px;
+`;
+
+const TextBold = styled.Text`
+    font-weight: bold;
 `;
