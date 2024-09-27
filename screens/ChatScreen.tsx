@@ -1,5 +1,5 @@
 import {useState, useEffect, useRef, useCallback, useMemo} from "react";
-import {FlatList, Keyboard, View, Alert} from "react-native";
+import {FlatList, Keyboard, View, Alert, Dimensions} from "react-native";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
 import {FontAwesome6} from "@expo/vector-icons";
 import styled from "styled-components/native";
@@ -17,7 +17,7 @@ import {useChatContext} from "../contexts/ChatContext";
 import {WaitingChatBotsSkeleton} from "../components/WaitingChatBotsSkeleton";
 import {UserMessageCard} from "../components/UserMessageCard";
 import {ChatbotMessageCard} from "../components/ChatbotMessageCard";
-import {ChatbotOptionCard} from "../components/ChatbotOptionCard";
+import {ChatBotOptionCard} from "../components/ChatBotOptionCard";
 import {loadChatMessagesService} from "../service/apiService";
 import {MessagesLoadingSkeleton} from "../components/MessagesLoadingSkeleton";
 import MyVibration from "../utils/MyVibration";
@@ -26,6 +26,9 @@ import {
     CustomKeyboardAvoidingView,
     CustomSafeAreaView,
 } from "../styles/GlobalStyles";
+import {useTranslation} from "react-i18next";
+
+const {width} = Dimensions.get("window");
 
 interface ChatScreenProps {
     chatData: OasisChat;
@@ -37,28 +40,30 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
         setFocusedScreen, startConversationWithChatBots, saveChatbotMessage,
         sendMessageToChat, setChats
     } = useChatContext();
+    const {t} = useTranslation();
     const [waitingChatBots, setWaitingChatBots] = useState<boolean>(false);
     const [fetchingMessages, setFetchingMessages] = useState<boolean>(true);
     const [userMessage, setUserMessage] = useState("");
     const [currentChataData, setCurrentChataData] = useState<OasisChat>(chatData);
-    const [renderSwippable, setRenderSwippable] = useState<boolean>(true);
-    // const [chatBotResponses, setChatBotResponses] = useState<ChatBotOptionToChoose[] | null>(null);
-    const [chatBotResponses, setChatBotResponses] = useState<ChatBotOptionToChoose[] | null>([
-        {
-            message: {
-                chatBotEnum: ChatbotEnum.ChatGPT,
-                message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            },
-            isActive: false,
-        },
-        {
-            message: {
-                chatBotEnum: ChatbotEnum.Gemini,
-                message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-            },
-            isActive: false,
-        },
-    ]);
+    const [renderSwippable, setRenderSwippable] = useState<boolean>(false);
+    const [chatBotResponses, setChatBotResponses] = useState<ChatBotOptionToChoose[] | null>(null);
+    // const [renderSwippable, setRenderSwippable] = useState<boolean>(true);
+    // const [chatBotResponses, setChatBotResponses] = useState<ChatBotOptionToChoose[] | null>([
+    //     {
+    //         message: {
+    //             chatBotEnum: ChatbotEnum.ChatGPT,
+    //             message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    //         },
+    //         isActive: false,
+    //     },
+    //     {
+    //         message: {
+    //             chatBotEnum: ChatbotEnum.Gemini,
+    //             message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    //         },
+    //         isActive: false,
+    //     },
+    // ]);
     const [messages, setMessages] = useState<OasisMessage[]>(currentChataData.messages);
     const navigation = useNavigation();
     const messageListRef = useRef<FlatList>(null);
@@ -234,20 +239,20 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
             return (
                 //@ts-ignore
                 <BottomContent style={{width: "unset", gap: 10}}>
-                    <ChooseText>Escolha uma mensagem</ChooseText>
-                    <Icon name={"circle-up"} size={30}/>
+                    <ChooseText>{t('choose_message')}</ChooseText>
+                    {/*<Icon name={"circle-up"} size={30}/>*/}
                 </BottomContent>
             );
         }
         if (showSaveMessage) {
             return (
                 <Animatable.View animation={"fadeIn"} duration={1000}>
-                    <BottomContent style={{paddingHorizontal: 12}}>
+                    <BottomContent style={{paddingHorizontal: 10}}>
                         <SaveButton onPress={handleSaveChatbotMessage}>
-                            <SaveText>Salvar Mensagem</SaveText>
+                            <SaveText>{t('save_message')}</SaveText>
                         </SaveButton>
                         <CancelButton onPress={closeChatBotsSwippable}>
-                            <CancelText>Cancelar</CancelText>
+                            <CancelText>{t('cancel')}</CancelText>
                         </CancelButton>
                     </BottomContent>
                 </Animatable.View>
@@ -291,9 +296,8 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
                             renderItem={renderMessage}
                             keyExtractor={(item, index) => index.toString()}
                             inverted={true}
-                            style={{
-                                marginBottom: 8,
-                            }}
+                            style={{marginBottom: 8}}
+                            showsVerticalScrollIndicator={true}
                             ref={messageListRef}
                             ListHeaderComponent={
                                 <>
@@ -302,7 +306,7 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
                                         <FlatList
                                             horizontal
                                             style={{
-                                                paddingLeft: 5,
+                                                paddingLeft: 8,
                                                 paddingBottom: 15,
                                                 marginTop: 12,
                                             }}
@@ -310,14 +314,18 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
                                             data={chatBotResponses}
                                             keyExtractor={(item, index) => index.toString()}
                                             renderItem={({item}) => (
-                                                <Animatable.View animation={"fadeInUp"} duration={1000}>
-                                                    <ChatbotOptionCard
+                                                <Animatable.View animation={"slideInLeft"} duration={1000}>
+                                                    <ChatBotOptionCard
                                                         chatBotOption={item}
                                                         toggle={() => toggleChatBotOption(item)}
                                                     />
                                                 </Animatable.View>
                                             )}
                                             showsHorizontalScrollIndicator={false}
+                                            ListFooterComponent={<View style={{width: 10}}/>}
+                                            snapToInterval={width * 0.85 + 12} // Largura do item + margem
+                                            decelerationRate={"fast"}
+                                            snapToAlignment={"start"}
                                         />
                                     )}
                                     {waitingChatBots && <WaitingChatBotsSkeleton/>}

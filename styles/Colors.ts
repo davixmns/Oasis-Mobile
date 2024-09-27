@@ -7,6 +7,9 @@ export interface MyColorScheme {
     loadingBackground: string;
     loadingHighlight: string;
 
+    inactiveOptionCard: string;
+    activeOptionCard: string;
+
     primaryText: string;
     secondaryText: string;
 }
@@ -21,6 +24,9 @@ export const darkColorScheme: MyColorScheme = {
     loadingBackground: '#202020',
     loadingHighlight: '#333333',
 
+    inactiveOptionCard: '#1e1e1e',
+    activeOptionCard: '#2c2c2c',
+
     primaryText: '#fff',
     secondaryText: '#949494',
 }
@@ -33,6 +39,9 @@ export const lightColorScheme: MyColorScheme = {
 
     loadingBackground: '#e6e6e6',
     loadingHighlight: '#dfdfdf',
+
+    inactiveOptionCard: '#d8d8d8',
+    activeOptionCard: '#ececec',
 
     primaryText: '#222222',
     secondaryText: '#949494',

@@ -2,8 +2,8 @@ import React, {useState} from 'react';
 import {Button, Menu, Switch} from 'react-native-paper';
 import {Dimensions, StyleSheet} from 'react-native';
 import styled from "styled-components/native";
-import gptLogo from '../assets/chatGptLogo.png';
-import geminiLogo from '../assets/geminiLogo.png';
+import gptLogo from '../assets/chatgpt_logo.png';
+import geminiLogo from '../assets/gemini_logo.png';
 import {ChatbotEnum} from "../interfaces/interfaces";
 import {useColorSchemeContext} from "../contexts/ColorSchemeContext";
 
@@ -21,8 +21,14 @@ export function ChatBotSelector({selectedChatbots, updateChatBotOption}: ChatBot
     return (
         <Menu
             visible={menuVisible}
-            onDismiss={() =>  setMenuVisible(false)}
-            anchor={<Button onPress={() => setMenuVisible(true)}>Bots</Button>}
+            onDismiss={() => setMenuVisible(false)}
+            anchor={
+                <Button onPress={() => setMenuVisible(true)}>
+                    <TextBold>
+                        Bots
+                    </TextBold>
+                </Button>
+            }
             contentStyle={{
                 width: width * 0.9,
                 maxWidth: 400,
@@ -30,6 +36,7 @@ export function ChatBotSelector({selectedChatbots, updateChatBotOption}: ChatBot
                 marginTop: 45,
                 zIndex: 1000,
                 marginRight: 10,
+                paddingHorizontal: 10,
                 backgroundColor: colorScheme.secondaryBackground
             }}
         >
@@ -37,6 +44,7 @@ export function ChatBotSelector({selectedChatbots, updateChatBotOption}: ChatBot
                 <OptionContent>
                     <ChatbotLogo
                         source={gptLogo}
+                        tintColor={colorScheme.primaryText}
                     />
                     <ChatbotText>ChatGPT 4o</ChatbotText>
                 </OptionContent>
@@ -91,4 +99,8 @@ const ChatbotText = styled.Text`
 const ChatbotLogo = styled.Image`
     height: 30px;
     width: 30px;
+`;
+
+const TextBold = styled.Text`
+    font-weight: bold;
 `;

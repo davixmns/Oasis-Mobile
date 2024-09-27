@@ -38,7 +38,7 @@ const Message = styled.Text`
 
 const FromName = styled.Text`
   font-size: 16px;
-  font-weight: bold;
+  font-weight: 600;
   color: ${props => props.theme.secondaryText};
   align-self: center;
 `

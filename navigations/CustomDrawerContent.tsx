@@ -219,6 +219,6 @@ const Line = styled.View`
     margin-left: 17px;
     margin-right: 30px;
     margin-top: 10px;
-    height: 1px;
+    height: 0.5px;
     background-color: rgba(123, 123, 123, 0.7);
 `;
