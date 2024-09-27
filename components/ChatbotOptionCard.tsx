@@ -48,7 +48,7 @@ const OptionContainer = styled.TouchableOpacity<{ isActive: boolean }>`
   justify-content: flex-start;
   margin-right: 12px;
   align-items: flex-start;
-  background-color: ${props => props.isActive ? '#303030' : '#212121'};
+  background-color: ${props => props.isActive ? '#303030' : props.theme.secondaryBackground};
   border-radius: 10px;
   padding: 10px;
   border: 2px solid ${props => props.isActive ? 'gray' : null};
@@ -56,8 +56,7 @@ const OptionContainer = styled.TouchableOpacity<{ isActive: boolean }>`
 
 const Message = styled.Text`
   font-size: 16px;
-  color: #fff;
-  font-weight: 500;
+  color: ${props => props.theme.primaryText};
 `
 
 const Header = styled.View`
@@ -68,7 +67,7 @@ const Header = styled.View`
 const FromName = styled.Text`
   font-size: 16px;
   font-weight: bold;
-  color: white;
+  color: ${props => props.theme.primaryText};
   margin: 5px;
   align-self: center;
 `

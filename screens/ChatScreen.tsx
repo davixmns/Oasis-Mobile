@@ -34,18 +34,31 @@ interface ChatScreenProps {
 
 export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) {
     const {
-        setFocusedScreen,
-        startConversationWithChatBots,
-        saveChatbotMessage,
-        sendMessageToChat,
-        setChats
+        setFocusedScreen, startConversationWithChatBots, saveChatbotMessage,
+        sendMessageToChat, setChats
     } = useChatContext();
     const [waitingChatBots, setWaitingChatBots] = useState<boolean>(false);
     const [fetchingMessages, setFetchingMessages] = useState<boolean>(true);
     const [userMessage, setUserMessage] = useState("");
     const [currentChataData, setCurrentChataData] = useState<OasisChat>(chatData);
-    const [renderSwippable, setRenderSwippable] = useState<boolean>(false);
-    const [chatBotResponses, setChatBotResponses] = useState<ChatBotOptionToChoose[] | null>(null);
+    const [renderSwippable, setRenderSwippable] = useState<boolean>(true);
+    // const [chatBotResponses, setChatBotResponses] = useState<ChatBotOptionToChoose[] | null>(null);
+    const [chatBotResponses, setChatBotResponses] = useState<ChatBotOptionToChoose[] | null>([
+        {
+            message: {
+                chatBotEnum: ChatbotEnum.ChatGPT,
+                message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            },
+            isActive: false,
+        },
+        {
+            message: {
+                chatBotEnum: ChatbotEnum.Gemini,
+                message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+            },
+            isActive: false,
+        },
+    ]);
     const [messages, setMessages] = useState<OasisMessage[]>(currentChataData.messages);
     const navigation = useNavigation();
     const messageListRef = useRef<FlatList>(null);
@@ -222,7 +235,7 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
                 //@ts-ignore
                 <BottomContent style={{width: "unset", gap: 10}}>
                     <ChooseText>Escolha uma mensagem</ChooseText>
-                    <FontAwesome6 name={"circle-up"} size={30} color={"#fff"}/>
+                    <Icon name={"circle-up"} size={30}/>
                 </BottomContent>
             );
         }
@@ -234,7 +247,7 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
                             <SaveText>Salvar Mensagem</SaveText>
                         </SaveButton>
                         <CancelButton onPress={closeChatBotsSwippable}>
-                            <SaveText style={{color: "#fff"}}>Cancelar</SaveText>
+                            <CancelText>Cancelar</CancelText>
                         </CancelButton>
                     </BottomContent>
                 </Animatable.View>
@@ -320,10 +333,14 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
     );
 }
 
+const Icon = styled(FontAwesome6)`
+    color: ${(props) => props.theme.primaryText};
+`
+
 const ChooseText = styled.Text`
     font-size: 20px;
     font-weight: 500;
-    color: white;
+    color: ${(props) => props.theme.primaryText};
 `;
 
 const BottomContent = styled.View`
@@ -338,7 +355,7 @@ const BottomContent = styled.View`
 `;
 
 const SaveButton = styled.TouchableOpacity`
-    background-color: #fff;
+    background-color: ${(props) => props.theme.primaryText};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -348,7 +365,7 @@ const SaveButton = styled.TouchableOpacity`
 `;
 
 const CancelButton = styled.TouchableOpacity`
-    border: white;
+    border: 2px solid ${(props) => props.theme.primaryText};
     display: flex;
     justify-content: center;
     align-items: center;
@@ -360,5 +377,11 @@ const CancelButton = styled.TouchableOpacity`
 const SaveText = styled.Text`
     font-size: 16px;
     font-weight: bold;
-    color: black;
+    color: ${(props) => props.theme.primaryBackground};
+`;
+
+const CancelText = styled.Text`
+    font-size: 16px;
+    font-weight: bold;
+    color: ${(props) => props.theme.primaryText};
 `;
