@@ -1,5 +1,5 @@
 import SkeletonPlaceholder from "expo-react-native-skeleton-placeholder";
-import {Dimensions, View} from "react-native";
+import {Dimensions} from "react-native";
 import {useOasisThemeContext} from "../contexts/OasisThemeContext";
 
 const {width} = Dimensions.get('window');

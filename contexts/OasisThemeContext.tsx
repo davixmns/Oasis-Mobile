@@ -47,7 +47,7 @@ export default function OasisThemeProvider({children}: ProviderProps) {
 
     return (
         <OasisThemeContext.Provider value={{selectedTheme, oasisTheme, updateOasisTheme}}>
-            <ThemeProvider theme={oasisThemes[selectedTheme]}>
+            <ThemeProvider theme={oasisTheme}>
                 <StatusBar style={statusBarTheme}/>
                 {children}
             </ThemeProvider>

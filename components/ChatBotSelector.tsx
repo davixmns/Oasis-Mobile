@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Button, Menu, Switch} from 'react-native-paper';
-import {Dimensions, StyleSheet} from 'react-native';
+import {Dimensions} from 'react-native';
 import styled from "styled-components/native";
 import gptLogo from '../assets/chatgpt_logo.png';
 import geminiLogo from '../assets/gemini_logo.png';

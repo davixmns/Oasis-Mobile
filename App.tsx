@@ -1,4 +1,3 @@
-import {StatusBar} from 'expo-status-bar';
 import {NavigationContainer} from "@react-navigation/native";
 import {AuthStack} from "./navigations/AuthStack";
 import {AuthProvider} from "./contexts/AuthContext";
@@ -10,6 +9,7 @@ import './translation/i18n';
 import OasisThemeProvider from "./contexts/OasisThemeContext";
 
 export default function App() {
+
     return (
         <I18nextProvider i18n={i18n}>
             <OasisThemeProvider>

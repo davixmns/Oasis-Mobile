@@ -5,24 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":wrench: ajustes nas promises">
-      <change afterPath="$PROJECT_DIR$/contexts/OasisThemeContext.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ChatBotHeader.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatBotHeader.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ChatBotOptionCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatBotOptionCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/ChatBotSelector.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatBotSelector.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/ChatInput.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ChatInput.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/CustomMenu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/CustomMenu.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/MessagesLoadingSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/MessagesLoadingSkeleton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/WaitingChatBotsSkeleton.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/WaitingChatBotsSkeleton.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/contexts/ColorSchemeContext.tsx" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/navigations/AuthStack.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/AuthStack.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navigations/CustomDrawer.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/CustomDrawer.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/navigations/CustomDrawerContent.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/navigations/CustomDrawerContent.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/ChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ChatScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/screens/SettingsScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/SettingsScreen.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/styles/Colors.ts" beforeDir="false" afterPath="$PROJECT_DIR$/styles/Colors.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/theme.d.ts" beforeDir="false" afterPath="$PROJECT_DIR$/theme.d.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/contexts/OasisThemeContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/contexts/OasisThemeContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/service/apiService.ts" beforeDir="false" afterPath="$PROJECT_DIR$/service/apiService.ts" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -189,7 +177,10 @@
       <workItem from="1727262826549" duration="32769000" />
       <workItem from="1727349084933" duration="24188000" />
       <workItem from="1727435812186" duration="21911000" />
-      <workItem from="1727464959624" duration="2995000" />
+      <workItem from="1727464959624" duration="3101000" />
+      <workItem from="1727731986961" duration="1449000" />
+      <workItem from="1727899517386" duration="1023000" />
+      <workItem from="1728569127465" duration="774000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />
