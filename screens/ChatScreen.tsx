@@ -52,7 +52,6 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
 
     const [currentChataData, setCurrentChataData] = useState<OasisChat>(chatData);
     const [messages, setMessages] = useState<OasisMessage[]>([]);
-    const [buttonIsDisabled, setButtonIsDisabled] = useState<boolean>(false);
 
     const navigation = useNavigation();
     const messageListRef = useRef<FlatList>(null);
@@ -242,7 +241,6 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
         return (
             <BottomContent>
                 <ChatInput
-                    isDisabled={buttonIsDisabled}
                     message={userMessage}
                     setMessage={(text) => {
                         if (text === "\n") {
