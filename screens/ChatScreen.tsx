@@ -1,7 +1,6 @@
-import {useState, useEffect, useRef, useCallback, useMemo} from "react";
+import {useState, useRef, useCallback, useMemo} from "react";
 import {FlatList, Keyboard, View, Alert, Dimensions} from "react-native";
 import {useFocusEffect, useNavigation} from "@react-navigation/native";
-import {FontAwesome6} from "@expo/vector-icons";
 import styled from "styled-components/native";
 import * as Animatable from "react-native-animatable";
 import ChatInput from "../components/ChatInput";
@@ -59,6 +58,8 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
     async function init() {
         setFocusedScreen("ChatScreen");
         if (currentChataData.isNewChat) {
+            setFetchingMessages(false)
+
             await handleStartConversationWithChatBots();
         } else {
             await handleLoadChatData();
@@ -75,6 +76,7 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
     async function handleStartConversationWithChatBots() {
         const firstUserMessage = chatData.messages[0].message;
         setWaitingChatBots(true);
+        setMessages([chatData.messages[0], ...messages]);
         await startConversationWithChatBots(firstUserMessage)
             .then((responseData: any) => {
                 initializeConversation(responseData);
