@@ -1,9 +1,10 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {FontAwesome6} from "@expo/vector-icons";
 import styled from "styled-components/native";
 import {ActivityIndicator} from "react-native";
 import {useTranslation} from "react-i18next";
 import {useOasisThemeContext} from "../contexts/OasisThemeContext";
+import {useChatContext} from "../contexts/ChatContext";
 
 interface ChatInputProps {
     message: string,
@@ -17,6 +18,13 @@ export default function ChatInput({message, setMessage, onPress, onFocus, isLoad
     const [height, setHeight] = useState(40);
     const {t} = useTranslation();
     const {oasisTheme} = useOasisThemeContext();
+    const {selectedChatbots} = useChatContext();
+    const [buttonIsDisabled, setButtonIsDisabled] = useState(false);
+
+    useEffect(() => {
+        const result = selectedChatbots.filter((chatbot) => chatbot.enabled).length === 0;
+        setButtonIsDisabled(result);
+    }, [selectedChatbots]);
 
     const handleContentSizeChange = (event: any) => {
         setHeight(event.nativeEvent.contentSize.height + 15);
@@ -45,7 +53,7 @@ export default function ChatInput({message, setMessage, onPress, onFocus, isLoad
                         <ActivityIndicator size={'small'} color={oasisTheme.primaryText}/>
                     </LoadingContainer>
                 ) : (
-                    <SendButton onPress={onPress}>
+                    <SendButton onPress={onPress} style={{opacity: buttonIsDisabled ? 0.3 : 1}} disabled={buttonIsDisabled}>
                         <FontAwesome6 name={'arrow-up'} size={17} color={oasisTheme.primaryBackground}/>
                     </SendButton>
                 )}

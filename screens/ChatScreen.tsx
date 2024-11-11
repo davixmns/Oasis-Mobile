@@ -41,55 +41,37 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
         sendMessageToChat, setChats
     } = useChatContext();
     const {t} = useTranslation();
+
+    const [userMessage, setUserMessage] = useState("");
+
     const [waitingChatBots, setWaitingChatBots] = useState<boolean>(false);
     const [fetchingMessages, setFetchingMessages] = useState<boolean>(true);
-    const [userMessage, setUserMessage] = useState("");
-    const [currentChataData, setCurrentChataData] = useState<OasisChat>(chatData);
+
     const [renderSwippable, setRenderSwippable] = useState<boolean>(false);
     const [chatBotResponses, setChatBotResponses] = useState<ChatBotOptionToChoose[] | null>(null);
-    // const [renderSwippable, setRenderSwippable] = useState<boolean>(true);
-    // const [chatBotResponses, setChatBotResponses] = useState<ChatBotOptionToChoose[] | null>([
-    //     {
-    //         message: {
-    //             chatBotEnum: ChatbotEnum.ChatGPT,
-    //             message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    //         },
-    //         isActive: false,
-    //     },
-    //     {
-    //         message: {
-    //             chatBotEnum: ChatbotEnum.Gemini,
-    //             message: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    //         },
-    //         isActive: false,
-    //     },
-    // ]);
-    const [messages, setMessages] = useState<OasisMessage[]>(currentChataData.messages);
+
+    const [currentChataData, setCurrentChataData] = useState<OasisChat>(chatData);
+    const [messages, setMessages] = useState<OasisMessage[]>([]);
+    const [buttonIsDisabled, setButtonIsDisabled] = useState<boolean>(false);
+
     const navigation = useNavigation();
     const messageListRef = useRef<FlatList>(null);
 
-    useEffect(() => {
-        async function init() {
-            setFocusedScreen("ChatScreen");
-            if (currentChataData.isNewChat) {
-                setFetchingMessages(false)
-                //Envia a mensagem inicial para os chatbots
-                await handleStartConversationWithChatBots();
-            } else {
-                if (messages.length === 0) {
-                    await handleLoadChatMessages();
-                }
-            }
+    async function init() {
+        setFocusedScreen("ChatScreen");
+        if (currentChataData.isNewChat) {
+            await handleStartConversationWithChatBots();
+        } else {
+            await handleLoadChatData();
         }
-
-        init()
-    }, []);
+        setFetchingMessages(false)
+    }
 
     useFocusEffect(
         useCallback(() => {
-            modifySelectedChatBots(currentChataData.chatBots);
-        }, [currentChataData.chatBots])
-    );
+            init();
+        }, [])
+    )
 
     async function handleStartConversationWithChatBots() {
         const firstUserMessage = chatData.messages[0].message;
@@ -116,19 +98,17 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
         currentChataData.isNewChat = false;
     }
 
-    async function handleLoadChatMessages() {
-        await new Promise((resolve) => setTimeout(resolve, 400));
-        setFetchingMessages(true);
+    async function handleLoadChatData() {
+        await new Promise((resolve) => setTimeout(resolve, 200));
         await loadChatMessagesService(currentChataData.id)
-            .then((response: any) => {
-                setMessages(response.data.data);
+            .then(async (response: any) => {
+                setCurrentChataData(response.data.data);
+                setMessages(response.data.data.messages);
+                modifySelectedChatBots(response.data.data.chatBots);
             })
             .catch((error) => {
                 console.log("Erro ao carregar mensagens", error);
             })
-            .finally(() => {
-                setFetchingMessages(false);
-            });
     }
 
     function updateChatTitle(title: string) {
@@ -258,9 +238,11 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
                 </Animatable.View>
             );
         }
+
         return (
             <BottomContent>
                 <ChatInput
+                    isDisabled={buttonIsDisabled}
                     message={userMessage}
                     setMessage={(text) => {
                         if (text === "\n") {
@@ -340,10 +322,6 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
         </CustomSafeAreaView>
     );
 }
-
-const Icon = styled(FontAwesome6)`
-    color: ${(props) => props.theme.primaryText};
-`
 
 const ChooseText = styled.Text`
     font-size: 20px;

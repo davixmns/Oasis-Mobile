@@ -21,14 +21,8 @@ const Drawer = createDrawerNavigator();
 
 export function CustomDrawer() {
     const navigation = useNavigation();
-    const {chats, focusedScreen, setChats} = useChatContext();
+    const {chats, focusedScreen, selectedChatbots, setSelectedChatbots} = useChatContext();
     const {oasisTheme} = useOasisThemeContext();
-
-    //Switches que se modificam de acordo com o chat selecionado
-    const [selectedChatbots, setSelectedChatbots] = useState([
-        {enum: ChatbotEnum.ChatGPT, enabled: true, id: -1},
-        {enum: ChatbotEnum.Gemini, enabled: true, id: -1},
-    ]);
 
     //Atualiza o estado dos switches de acordo com os chatbots selecionados da conversa atual
     function modifySelectedChatBots(selecteds: OasisChatBotDetails[]) {
@@ -45,17 +39,16 @@ export function CustomDrawer() {
 
     //Atualiza os chatbots selecionados na conversa atual
     async function handleUpdateChatBotOption(id: number, isSelected: boolean) {
-        setChats(chats.map((chat) => {
-            chat.chatBots = chat.chatBots.map((chatbot) => {
+        setSelectedChatbots(
+            selectedChatbots.map((chatbot) => {
                 if (chatbot.id === id) {
-                    chatbot.isActive = isSelected;
+                    chatbot.enabled = isSelected;
                 }
                 return chatbot;
-            });
-            return chat;
-        }));
+            })
+        );
         updateChatBotDetailsService(id, isSelected).catch((error) => {
-            console.log("❌ Erro ao atualizar chatbot -> " + error.response);
+            console.error(error.response.data);
         });
     }
 

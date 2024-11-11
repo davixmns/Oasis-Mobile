@@ -20,6 +20,8 @@ interface ChatContextType {
     getAllChats: () => Promise<void>;
     focusedScreen: string;
     setFocusedScreen: (screen: string) => void;
+    selectedChatbots: { enum: ChatbotEnum, enabled: boolean, id: number }[];
+    setSelectedChatbots: (selectedChatbots: { enum: ChatbotEnum, enabled: boolean, id: number }[]) => void;
 }
 
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
@@ -33,6 +35,11 @@ export function ChatProvider({ children }: ProviderProps) {
     const navigation = useNavigation();
     const [chats, setChats] = useState<OasisChat[]>([]);
     const [focusedScreen, setFocusedScreen] = useState<string>("");
+
+    const [selectedChatbots, setSelectedChatbots] = useState([
+        {enum: ChatbotEnum.ChatGPT, enabled: true, id: -1},
+        {enum: ChatbotEnum.Gemini, enabled: true, id: -1},
+    ]);
 
     useEffect(() => {
         async function fetchData() {
@@ -152,6 +159,8 @@ export function ChatProvider({ children }: ProviderProps) {
                 getAllChats,
                 focusedScreen,
                 setFocusedScreen,
+                selectedChatbots,
+                setSelectedChatbots
             }}
         >
             {children}
