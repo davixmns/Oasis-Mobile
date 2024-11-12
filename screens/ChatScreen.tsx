@@ -59,7 +59,6 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
         setFocusedScreen("ChatScreen");
         if (currentChataData.isNewChat) {
             setFetchingMessages(false)
-
             await handleStartConversationWithChatBots();
         } else {
             await handleLoadChatData();
@@ -97,6 +96,7 @@ export function ChatScreen({chatData, modifySelectedChatBots}: ChatScreenProps) 
         updateChatTitle(oasisChat.title);
         openChatBotsSwippable(chatBotMessages);
         currentChataData.isNewChat = false;
+        modifySelectedChatBots(oasisChat.chatBots);
     }
 
     async function handleLoadChatData() {

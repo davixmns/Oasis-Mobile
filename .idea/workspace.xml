@@ -5,7 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e16a9d8-c472-4503-b2ad-db3f4690e0b6" name="Changes" comment=":wrench: ajustes nas promises">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/screens/ChatScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/ChatScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/LoginScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/LoginScreen.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/screens/SettingsScreen.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/screens/SettingsScreen.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -186,7 +189,9 @@
       <workItem from="1729860259333" duration="5000" />
       <workItem from="1730144385328" duration="2566000" />
       <workItem from="1730898275614" duration="162000" />
-      <workItem from="1731343677312" duration="6738000" />
+      <workItem from="1731343677312" duration="7528000" />
+      <workItem from="1731359515401" duration="641000" />
+      <workItem from="1731411873396" duration="2314000" />
     </task>
     <task id="LOCAL-00001" summary=":tada: first">
       <option name="closed" value="true" />

@@ -8,10 +8,12 @@ import i18n, {changeLanguage} from "../translation/i18n";
 import {CustomMenu} from "../components/CustomMenu";
 import {PaperProvider} from "react-native-paper";
 import {useOasisThemeContext} from "../contexts/OasisThemeContext";
+import {useChatContext} from "../contexts/ChatContext";
 
 export default function SettingsScreen() {
     const {selectedTheme, updateOasisTheme} = useOasisThemeContext();
     const {user, signOut} = useAuthContext()
+    const {setChats} = useChatContext()
     const {t} = useTranslation()
     const goToLinkendin = () => Linking.openURL('https://www.linkedin.com/in/davi-ximenes-93314a20b/')
     const goToGithub = () => Linking.openURL('https://github.com/davixmns')
@@ -37,7 +39,10 @@ export default function SettingsScreen() {
             },
             {
                 text: t('sign_out'),
-                onPress: signOut
+                onPress: () => {
+                    setChats([])
+                    signOut()
+                }
             }
         ])
     }
